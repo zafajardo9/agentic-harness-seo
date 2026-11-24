@@ -6,7 +6,7 @@ argument-hint: "[command] [url]"
 license: MIT
 metadata:
   version: "2.6.2"
-compatibility: "Requires BING_WEBMASTER_API_KEY and (optionally) INDEXNOW_KEY in ~/.claude/settings.json env. The skill ships with the claude-seo plugin; run extensions/bing-webmaster/install.sh once to store the keys."
+compatibility: "Requires BING_WEBMASTER_API_KEY and (optionally) INDEXNOW_KEY in ~/.claude/settings.json env. The skill ships with the agentic-harness-seo plugin; run extensions/bing-webmaster/install.sh once to store the keys."
 ---
 
 # seo-bing
@@ -18,7 +18,7 @@ specifically for **Amazon/Bing/Naver/Seznam.cz/Yandex/Yep indexing** and
 
 ## Prerequisites
 
-- This skill loads with the claude-seo plugin, so a plugin install needs no
+- This skill loads with the agentic-harness-seo plugin, so a plugin install needs no
   skill copy. Manual installs get it from the main installer.
 - Store the keys once: run `extensions/bing-webmaster/install.sh` or `install.ps1`
   from the plugin or repository folder. It writes `BING_WEBMASTER_API_KEY`,
@@ -32,11 +32,11 @@ specifically for **Amazon/Bing/Naver/Seznam.cz/Yandex/Yep indexing** and
 
 | Command | Underlying script |
 |---|---|
-| `/seo bing links <url>` | `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run bing_webmaster.py links <url>` |
-| `/seo bing compare <urlA> <urlB>` | `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run bing_webmaster.py compare <urlA> <urlB>`; both properties must be registered to the API account |
-| `/seo bing submit <url>` (single URL) | `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run indexnow_submit.py --host ... --urls <url>` |
-| `/seo bing submit-batch <file>` | `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run indexnow_submit.py --host ... --urls-file <file>` |
-| `/seo bing verify-indexnow` | `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run indexnow_submit.py --host ... --verify-only` |
+| `/seo bing links <url>` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run bing_webmaster.py links <url>` |
+| `/seo bing compare <urlA> <urlB>` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run bing_webmaster.py compare <urlA> <urlB>`; both properties must be registered to the API account |
+| `/seo bing submit <url>` (single URL) | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run indexnow_submit.py --host ... --urls <url>` |
+| `/seo bing submit-batch <file>` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run indexnow_submit.py --host ... --urls-file <file>` |
+| `/seo bing verify-indexnow` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run indexnow_submit.py --host ... --verify-only` |
 
 ## When this skill applies
 

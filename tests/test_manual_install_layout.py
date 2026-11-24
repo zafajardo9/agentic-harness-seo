@@ -13,7 +13,7 @@ def test_bash_installer_copies_google_update_data_beside_scripts() -> None:
     installer = _text("install.sh")
     assert 'mkdir -p "${SKILL_DIR}/data"' in installer
     assert (
-        'cp -r "${TEMP_DIR}/claude-seo/data/"* "${SKILL_DIR}/data/"'
+        'cp -r "${TEMP_DIR}/agentic-harness-seo/data/"* "${SKILL_DIR}/data/"'
         in installer
     )
 

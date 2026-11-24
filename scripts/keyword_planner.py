@@ -14,7 +14,7 @@ Prerequisites:
     - Developer Token (apply at Google Ads API Center)
     - OAuth credentials or service account
     - google-ads Python library: pip install google-ads
-    - Config: google-api.json in ~/.config/claude-seo/ or $CLAUDE_SEO_PROFILE_DIR, with:
+    - Config: google-api.json in ~/.config/agentic-harness-seo/ or $AGENTIC_HARNESS_SEO_PROFILE_DIR, with:
       {
         "ads_developer_token": "YOUR_DEV_TOKEN",
         "ads_customer_id": "123-456-7890",

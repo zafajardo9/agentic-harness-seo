@@ -1,6 +1,12 @@
+# Dependabot keeps the Python runtime dependencies and the commit-pinned
+# GitHub Actions current. It only opens pull requests, so review stays the gate.
 version: 2
 
 updates:
+  # Python runtime dependencies. requirements.txt uses bounded ranges with the
+  # CVE floors documented in comments, so a bump here changes the floor rather
+  # than locking an exact version; the CI `dep-audit` job is what proves the
+  # result is still clean against the advisory database.
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
@@ -9,6 +15,15 @@ updates:
       time: "06:00"
       timezone: "UTC"
     open-pull-requests-limit: 5
+    # One PR for routine bumps instead of one per package. Major bumps still
+    # arrive individually because those can change behavior.
+    groups:
+      python-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
     labels:
       - "dependencies"
       - "python"
@@ -16,20 +31,23 @@ updates:
       prefix: "deps"
       include: "scope"
 
+  # Actions are referenced by commit SHA with a version comment. Grouping the
+  # minor and patch bumps produces one reviewable PR; a major bump gets its own
+  # because those can break a workflow.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
       time: "06:00"
       timezone: "UTC"
+    open-pull-requests-limit: 2
     groups:
       actions-minor-patch:
         patterns:
-          - '*'
+          - "*"
         update-types:
           - minor
           - patch
-    open-pull-requests-limit: 2
     labels:
       - "dependencies"
       - "github-actions"

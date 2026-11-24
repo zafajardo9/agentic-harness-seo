@@ -7,8 +7,8 @@ the host can start the Chromium sandbox, with every connection forced through
 a local proxy that refuses non-public destinations, redirect hops included.
 Where the sandbox cannot start (Ubuntu 23.10 and later, most containers,
 root) the browser runs without it, with a warning on stderr and
-"sandbox": false in the result. CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX=1 makes
-that an error; CLAUDE_SEO_CHROMIUM_NO_SANDBOX=1 skips the sandbox attempt.
+"sandbox": false in the result. AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX=1 makes
+that an error; AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX=1 skips the sandbox attempt.
 
 Usage:
     python analyze_visual.py https://example.com

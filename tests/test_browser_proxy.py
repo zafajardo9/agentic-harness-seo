@@ -180,8 +180,8 @@ def _map_public_host(monkeypatch, port: int) -> None:
 def _hermetic_environment(monkeypatch):
     """No test inherits the developer's proxy, allowlist or sandbox opt-out."""
     monkeypatch.setattr(url_safety.requests.utils, "getproxies", lambda: {})
-    monkeypatch.delenv("CLAUDE_SEO_LOCAL_TARGETS", raising=False)
-    monkeypatch.delenv("CLAUDE_SEO_TRUSTED_PROXIES", raising=False)
+    monkeypatch.delenv("AGENTIC_HARNESS_SEO_LOCAL_TARGETS", raising=False)
+    monkeypatch.delenv("AGENTIC_HARNESS_SEO_TRUSTED_PROXIES", raising=False)
     monkeypatch.setattr(browser_proxy.os, "geteuid", lambda: 1000, raising=False)
     monkeypatch.delenv(browser_proxy.NO_SANDBOX_ENV, raising=False)
     monkeypatch.delenv(browser_proxy.REQUIRE_SANDBOX_ENV, raising=False)
@@ -206,7 +206,7 @@ def test_browser_proxy_never_reads_the_operator_allowlist(monkeypatch, url):
     """Rendering an allowlisted local target was refused before the guard
     existed (the route handler never read the allowlist) and still is."""
     monkeypatch.setenv(
-        "CLAUDE_SEO_LOCAL_TARGETS", "localhost:3000,127.0.0.1:8080,100.101.102.103"
+        "AGENTIC_HARNESS_SEO_LOCAL_TARGETS", "localhost:3000,127.0.0.1:8080,100.101.102.103"
     )
     loopback = lambda host, port, *a, **k: [  # noqa: E731
         (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("127.0.0.1", port or 0))
@@ -374,7 +374,7 @@ def test_proxy_refuses_unsafe_or_malformed_targets(monkeypatch, origin, request_
 
 
 def test_proxy_refuses_before_reading_the_environment_allowlist(monkeypatch):
-    monkeypatch.setenv("CLAUDE_SEO_LOCAL_TARGETS", "127.0.0.1:9000,localhost:9000")
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_LOCAL_TARGETS", "127.0.0.1:9000,localhost:9000")
     with browser_proxy.guarded_proxy() as proxy:
         for line in (b"GET http://127.0.0.1:9000/", b"CONNECT localhost:9000"):
             answer = _exchange(proxy, line + b" HTTP/1.1\r\nHost: x\r\n\r\n")
@@ -797,22 +797,22 @@ def test_chromium_launches_sandboxed_and_proxied_by_default(regular_user):
 
 @pytest.mark.parametrize("value", ["1", "true", " YES ", "on"])
 def test_no_sandbox_opt_out_skips_the_sandboxed_attempt(monkeypatch, regular_user, value, capsys):
-    monkeypatch.setenv("CLAUDE_SEO_CHROMIUM_NO_SANDBOX", value)
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX", value)
     browser_type = _FakeBrowserType()
     with browser_proxy.guarded_chromium(browser_type) as browser:
         assert browser_proxy.chromium_sandboxed(browser) is False
     (kwargs,) = browser_type.calls
     assert kwargs["chromium_sandbox"] is False
     warning = capsys.readouterr().err
-    assert "disabled by CLAUDE_SEO_CHROMIUM_NO_SANDBOX" in warning
+    assert "disabled by AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX" in warning
     assert "rendered without it" in warning
-    assert "CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX=1" in warning
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX=1" in warning
 
 
 @pytest.mark.parametrize("value", ["", "0", "false", "no"])
 def test_other_values_keep_the_sandbox(monkeypatch, regular_user, value, capsys):
-    monkeypatch.setenv("CLAUDE_SEO_CHROMIUM_NO_SANDBOX", value)
-    monkeypatch.setenv("CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX", value)
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX", value)
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX", value)
     browser_type = _FakeBrowserType()
     with browser_proxy.guarded_chromium(browser_type) as browser:
         assert browser_proxy.chromium_sandboxed(browser) is True
@@ -854,12 +854,12 @@ def test_sandbox_failure_falls_back_once_behind_the_same_guard(
     assert browser_type.browser.closed == 1
 
     warning = capsys.readouterr().err
-    assert warning.count("claude-seo warning") == 1
+    assert warning.count("agentic-harness-seo warning") == 1
     assert "sandbox is unavailable on this system" in warning
     assert "rendered without it" in warning
     assert "Ubuntu 23.10 and later block unprivileged user namespaces" in warning
     assert browser_proxy.USERNS_DOC_URL in warning
-    assert "CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX=1" in warning
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX=1" in warning
     # No secret and no path in the warning.
     assert second["proxy"]["password"] not in warning
     assert "127.0.0.1" not in warning and "zygote" not in warning
@@ -889,18 +889,18 @@ def test_root_falls_back_without_a_sandboxed_attempt(monkeypatch, capsys):
     assert "running as root" in warning
     assert "rendered without it" in warning
     assert "a browser exploit would run as root" in warning
-    assert "CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX=1" in warning
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX=1" in warning
 
 
 def test_root_with_the_opt_out_still_gets_the_root_wording(monkeypatch, capsys):
     monkeypatch.setattr(browser_proxy.os, "geteuid", lambda: 0, raising=False)
-    monkeypatch.setenv("CLAUDE_SEO_CHROMIUM_NO_SANDBOX", "1")
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX", "1")
     browser_type = _FakeBrowserType()
     with browser_proxy.guarded_chromium(browser_type):
         pass
     assert [call["chromium_sandbox"] for call in browser_type.calls] == [False]
     warning = capsys.readouterr().err
-    assert "disabled by CLAUDE_SEO_CHROMIUM_NO_SANDBOX" in warning
+    assert "disabled by AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX" in warning
     assert "a browser exploit would run as root" in warning
 
 
@@ -909,7 +909,7 @@ def test_the_warning_is_printed_once_per_process(regular_user, capsys):
         browser_type = _FakeBrowserType(sandbox_error=RuntimeError(SANDBOX_LOG))
         with browser_proxy.guarded_chromium(browser_type) as browser:
             assert browser_proxy.chromium_sandboxed(browser) is False
-    assert capsys.readouterr().err.count("claude-seo warning") == 1
+    assert capsys.readouterr().err.count("agentic-harness-seo warning") == 1
 
 
 def test_a_failed_fallback_launch_is_raised_unchanged(regular_user, capsys):
@@ -937,15 +937,15 @@ def test_a_failed_fallback_launch_is_raised_unchanged(regular_user, capsys):
 @pytest.mark.parametrize("log", SANDBOX_LOGS[:2] + [SANDBOX_LOG])
 def test_strict_mode_fails_instead_of_falling_back(monkeypatch, regular_user, value, log, capsys):
     monkeypatch.setattr(browser_proxy.sys, "platform", "linux")
-    monkeypatch.setenv("CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX", value)
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX", value)
     browser_type = _FakeBrowserType(sandbox_error=RuntimeError(log))
     with pytest.raises(browser_proxy.ChromiumSandboxError) as excinfo:
         with browser_proxy.guarded_chromium(browser_type):
             pass
     message = str(excinfo.value)
     assert "sandbox could not start on this system" in message
-    assert "CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX" in message
-    assert "CLAUDE_SEO_CHROMIUM_NO_SANDBOX=1" in message
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX" in message
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX=1" in message
     assert browser_proxy.USERNS_DOC_URL in message
     assert excinfo.value.__cause__ is browser_type.sandbox_error
     assert [call["chromium_sandbox"] for call in browser_type.calls] == [True]
@@ -954,20 +954,20 @@ def test_strict_mode_fails_instead_of_falling_back(monkeypatch, regular_user, va
 
 def test_strict_mode_as_root_fails_before_launch(monkeypatch):
     monkeypatch.setattr(browser_proxy.os, "geteuid", lambda: 0, raising=False)
-    monkeypatch.setenv("CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX", "1")
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX", "1")
     browser_type = _FakeBrowserType()
     with pytest.raises(browser_proxy.ChromiumSandboxError) as excinfo:
         with browser_proxy.guarded_chromium(browser_type):
             pass
     message = str(excinfo.value)
     assert "root" in message
-    assert "CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX" in message
-    assert "CLAUDE_SEO_CHROMIUM_NO_SANDBOX=1" in message
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX" in message
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX=1" in message
     assert browser_type.calls == []
 
 
 def test_strict_mode_keeps_a_working_sandbox(monkeypatch, regular_user, capsys):
-    monkeypatch.setenv("CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX", "1")
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX", "1")
     browser_type = _FakeBrowserType()
     with browser_proxy.guarded_chromium(browser_type) as browser:
         assert browser_proxy.chromium_sandboxed(browser) is True
@@ -978,15 +978,15 @@ def test_strict_mode_keeps_a_working_sandbox(monkeypatch, regular_user, capsys):
 @pytest.mark.parametrize("euid", [1000, 0])
 def test_both_variables_set_is_a_conflict_and_require_wins(monkeypatch, euid, capsys):
     monkeypatch.setattr(browser_proxy.os, "geteuid", lambda: euid, raising=False)
-    monkeypatch.setenv("CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX", "1")
-    monkeypatch.setenv("CLAUDE_SEO_CHROMIUM_NO_SANDBOX", "1")
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX", "1")
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX", "1")
     browser_type = _FakeBrowserType()
     with pytest.raises(browser_proxy.ChromiumSandboxError) as excinfo:
         with browser_proxy.guarded_chromium(browser_type):
             pass
     message = str(excinfo.value)
-    assert "CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX and CLAUDE_SEO_CHROMIUM_NO_SANDBOX are both set" in message
-    assert "CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX wins" in message
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX and AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX are both set" in message
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX wins" in message
     assert browser_type.calls == []
     assert capsys.readouterr().err == ""
 
@@ -998,7 +998,7 @@ def test_an_error_after_launch_never_relaunches_or_changes_the_state(
     """The fallback is decided on the launch error only. A renderer crash or
     a page error that quotes Chromium's sandbox message is not a launch."""
     if strict:
-        monkeypatch.setenv("CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX", "1")
+        monkeypatch.setenv("AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX", "1")
     browser_type = _FakeBrowserType()
     error = RuntimeError("Page.goto: Target crashed\n" + SANDBOX_LOG)
     seen = {}
@@ -1061,7 +1061,7 @@ def test_other_launch_failures_are_not_blamed_on_the_sandbox(monkeypatch, regula
     assert len(browser_type.calls) == 1  # no retry
 
     # With the opt-out set, a sandbox message is not ours to rewrite either.
-    monkeypatch.setenv("CLAUDE_SEO_CHROMIUM_NO_SANDBOX", "1")
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX", "1")
     error = RuntimeError("No usable sandbox!")
     browser_type = _FakeBrowserType(error=error)
     with pytest.raises(RuntimeError) as excinfo:
@@ -1210,7 +1210,7 @@ def _visual_manager_in_mode(url, mode, launches):
     [
         ("sandboxed", True, [True], ""),
         ("fallback", False, [True, False], "sandbox is unavailable on this system"),
-        ("opt_out", False, [False], "disabled by CLAUDE_SEO_CHROMIUM_NO_SANDBOX"),
+        ("opt_out", False, [False], "disabled by AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX"),
     ],
 )
 def test_analyze_visual_json_says_whether_chromium_was_sandboxed(
@@ -1271,8 +1271,8 @@ def test_analyze_visual_in_strict_mode_reports_the_sandbox_failure(monkeypatch):
         analyze_visual, "sync_playwright", lambda: _VisualManager("https://site.example/")
     )
     result = analyze_visual.analyze_visual("https://site.example/")
-    assert "CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX" in result["error"]
-    assert "CLAUDE_SEO_CHROMIUM_NO_SANDBOX=1" in result["error"]
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX" in result["error"]
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX=1" in result["error"]
     assert result["sandbox"] is None
 
 
@@ -1861,10 +1861,10 @@ def _basic(username: str, password: str) -> bytes:
     "credential_header",
     [
         b"",
-        _basic("claude-seo", "wrong"),
+        _basic("agentic-harness-seo", "wrong"),
         _basic("other", "s3cret"),
-        _basic("claude-seo", "s3cre"),
-        _basic("claude-seo", "s3cret-and-more"),
+        _basic("agentic-harness-seo", "s3cre"),
+        _basic("agentic-harness-seo", "s3cret-and-more"),
         b"Proxy-Authorization: Bearer s3cret\r\n",
         b"Proxy-Authorization: Basic\r\n",
         b"Proxy-Authorization: Basic !!!not-base64!!!\r\n",
@@ -1875,7 +1875,7 @@ def test_authenticated_guard_refuses_a_missing_or_wrong_credential(
     monkeypatch, origin, credential_header
 ):
     _map_public_host(monkeypatch, origin.port)
-    with browser_proxy.guarded_proxy(("claude-seo", "s3cret")) as proxy:
+    with browser_proxy.guarded_proxy(("agentic-harness-seo", "s3cret")) as proxy:
         for line in (
             f"GET http://{PUBLIC_HOST}:{origin.port}/".encode(),
             f"CONNECT {PUBLIC_HOST}:{origin.port}".encode(),
@@ -1885,7 +1885,7 @@ def test_authenticated_guard_refuses_a_missing_or_wrong_credential(
             answer = _exchange(proxy, line + b" HTTP/1.1\r\nHost: x\r\n" + credential_header + b"\r\n")
             head = answer.partition(b"\r\n\r\n")[0].split(b"\r\n")
             assert head[0] == b"HTTP/1.0 407 Proxy Authentication Required"
-            assert b'Proxy-Authenticate: Basic realm="claude-seo egress guard"' in head
+            assert b'Proxy-Authenticate: Basic realm="agentic-harness-seo egress guard"' in head
     assert origin.requests == []
 
 
@@ -1893,10 +1893,10 @@ def test_authenticated_guard_serves_the_right_credential(monkeypatch, origin):
     _map_public_host(monkeypatch, origin.port)
     echo = _EchoServer()
     try:
-        with browser_proxy.guarded_proxy(("claude-seo", "s3cret")) as proxy:
+        with browser_proxy.guarded_proxy(("agentic-harness-seo", "s3cret")) as proxy:
             request = (
                 f"GET http://{PUBLIC_HOST}:{origin.port}/ HTTP/1.1\r\nHost: x\r\n".encode()
-                + _basic("claude-seo", "s3cret")
+                + _basic("agentic-harness-seo", "s3cret")
                 + b"\r\n"
             )
             assert _exchange(proxy, request).endswith(b"origin body")
@@ -1905,7 +1905,7 @@ def test_authenticated_guard_serves_the_right_credential(monkeypatch, origin):
 
             connect = (
                 f"CONNECT {PUBLIC_HOST}:{echo.port} HTTP/1.1\r\n".encode()
-                + _basic("claude-seo", "s3cret")
+                + _basic("agentic-harness-seo", "s3cret")
                 + b"\r\n"
             )
             port = int(proxy.rsplit(":", 1)[1])
@@ -1916,7 +1916,7 @@ def test_authenticated_guard_serves_the_right_credential(monkeypatch, origin):
                 assert client.recv(4096) == b"PING"
 
             # The destination policy is unchanged for an authenticated client.
-            internal = b"GET http://127.0.0.1:9000/ HTTP/1.1\r\n" + _basic("claude-seo", "s3cret") + b"\r\n"
+            internal = b"GET http://127.0.0.1:9000/ HTTP/1.1\r\n" + _basic("agentic-harness-seo", "s3cret") + b"\r\n"
             assert _exchange(proxy, internal).startswith(b"HTTP/1.0 403 ")
     finally:
         echo.close()
@@ -2002,14 +2002,14 @@ def test_a_zygote_log_line_alone_is_not_a_sandbox_failure() -> None:
 
 
 # ---------------------------------------------------------------------------
-# CLAUDE_SEO_TRUSTED_PROXIES: a local upstream proxy the operator named
+# AGENTIC_HARNESS_SEO_TRUSTED_PROXIES: a local upstream proxy the operator named
 # ---------------------------------------------------------------------------
 #
 # These tests use the real ``url_safety.upstream_http_proxy`` and the real
 # ``_destination``: only DNS and the proxy environment are faked. The upstream
 # is a loopback server that records what it is asked to reach.
 
-_TRUSTED_ENV = "CLAUDE_SEO_TRUSTED_PROXIES"
+_TRUSTED_ENV = "AGENTIC_HARNESS_SEO_TRUSTED_PROXIES"
 _PUBLIC_IP = "93.184.216.34"
 
 
@@ -2162,7 +2162,7 @@ def test_local_targets_stay_unread_behind_a_trusted_upstream(monkeypatch):
     internal = _Origin()
     try:
         _behind_local_upstream(monkeypatch, upstream.port)
-        monkeypatch.setenv("CLAUDE_SEO_LOCAL_TARGETS", f"127.0.0.1:{internal.port},127.0.0.1")
+        monkeypatch.setenv("AGENTIC_HARNESS_SEO_LOCAL_TARGETS", f"127.0.0.1:{internal.port},127.0.0.1")
         with browser_proxy.guarded_proxy() as proxy:
             assert _ask(proxy, f"GET http://127.0.0.1:{internal.port}/").startswith(b"HTTP/1.0 403 ")
     finally:
@@ -2245,8 +2245,8 @@ def test_trusted_upstream_name_is_dialled_at_the_checked_address(monkeypatch):
         ("socks5://127.0.0.1:1080", "127.0.0.1:1080", "Only http:// proxies"),
         ("socks5h://127.0.0.1:1080", "127.0.0.1", "Only http:// proxies"),
         ("https://127.0.0.1:3129", "127.0.0.1:3129", "Only http:// proxies"),
-        ("http://127.0.0.1:3128", "127.0.0.1:3129", "CLAUDE_SEO_TRUSTED_PROXIES"),
-        ("http://127.0.0.1:3128", "", "CLAUDE_SEO_TRUSTED_PROXIES"),
+        ("http://127.0.0.1:3128", "127.0.0.1:3129", "AGENTIC_HARNESS_SEO_TRUSTED_PROXIES"),
+        ("http://127.0.0.1:3128", "", "AGENTIC_HARNESS_SEO_TRUSTED_PROXIES"),
     ],
 )
 def test_upstreams_the_guard_cannot_use_fail_before_launch_even_when_listed(
@@ -2278,7 +2278,7 @@ def test_a_trusted_upstream_changes_nothing_about_the_launch(monkeypatch, regula
     (before,), (after,) = plain.calls, trusted.calls
     assert after["chromium_sandbox"] is True
     assert after["args"] == before["args"]
-    assert after["proxy"]["bypass"] == "" and after["proxy"]["username"] == "claude-seo"
+    assert after["proxy"]["bypass"] == "" and after["proxy"]["username"] == "agentic-harness-seo"
     assert len(after["proxy"]["password"]) >= 32
     assert after["proxy"]["password"] != before["proxy"]["password"]
     assert re.fullmatch(r"http://127\.0\.0\.1:\d+", after["proxy"]["server"])

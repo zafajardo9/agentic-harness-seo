@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Matomo credential management for Claude SEO.
+Matomo credential management for Agentic Harness SEO.
 
 Loads and validates credentials for the Matomo Reporting API.
 Supports config file and environment variable fallbacks.
@@ -57,7 +57,7 @@ from profile_paths import config_dir_fields, describe_config_dir, profile_dir_or
 CONFIG_PATH = str(profile_dir_or_exit() / "matomo.json")
 DEFAULT_TIMEOUT = 15
 USER_AGENT = "ClaudeSEO/2.3.0"
-LOCAL_TARGETS_ENV = "CLAUDE_SEO_LOCAL_TARGETS"
+LOCAL_TARGETS_ENV = "AGENTIC_HARNESS_SEO_LOCAL_TARGETS"
 
 _SECRET_RE = re.compile(r"(token_auth|token|password)=[^\s&\"']+", re.IGNORECASE)
 
@@ -218,8 +218,8 @@ def _normalize_instance_url(url: str) -> Optional[str]:
     Shape only: scheme, host, no userinfo, no trailing slash. Whether the
     instance may actually be contacted is decided by ``url_safety`` at request
     time (see :func:`instance_endpoint` and :func:`post_to_instance`), which is
-    the single place in claude-seo that reads
-    ``CLAUDE_SEO_LOCAL_TARGETS``. Deciding it here as well would put a second,
+    the single place in agentic-harness-seo that reads
+    ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS``. Deciding it here as well would put a second,
     divergent SSRF policy in the tree.
 
     Returns:
@@ -260,7 +260,7 @@ def resolves_to_private_address(url: str) -> bool:
     """True when the instance URL's host resolves to a non-public address.
 
     Used by the installers to decide whether to print the
-    ``CLAUDE_SEO_LOCAL_TARGETS`` hint. Best-effort: a host that does not
+    ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS`` hint. Best-effort: a host that does not
     resolve at all is not reported as private.
     """
     normalized = _normalize_instance_url(url)
@@ -298,7 +298,7 @@ def post_to_instance(endpoint: str, data: dict,
 
     Every outbound request to the user's Matomo instance goes through here.
     ``safe_requests_session`` validates the endpoint with
-    ``validate_url_strict`` (which consults ``CLAUDE_SEO_LOCAL_TARGETS`` for
+    ``validate_url_strict`` (which consults ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS`` for
     this top-level URL) and pins the hostname to the validated address for the
     life of the session, so the address cannot be re-bound between validation
     and connect.
@@ -528,7 +528,7 @@ TIER 1: MATOMO REPORTING API (one token, your own instance)
 
   1. Log in to your Matomo instance as a Super User or Admin
   2. Go to Administration -> Personal -> Security -> API Tokens
-  3. Click "Create a new token". Give it a meaningful name (e.g. "claude-seo")
+  3. Click "Create a new token". Give it a meaningful name (e.g. "agentic-harness-seo")
      and at least "view" access on the sites you want to analyze
   4. Copy the generated token_auth (a 32-character hex string)
 
@@ -552,11 +552,11 @@ TIER 1: MATOMO REPORTING API (one token, your own instance)
             privacy headers and Matomo's keyword anonymization rules).
 
   Note on self-hosted instances: every request to your Matomo instance goes
-  through claude-seo's SSRF guard, which refuses private and loopback
+  through agentic-harness-seo's SSRF guard, which refuses private and loopback
   addresses by default. If your instance lives on such an address, name it in
-  the CLAUDE_SEO_LOCAL_TARGETS allowlist:
+  the AGENTIC_HARNESS_SEO_LOCAL_TARGETS allowlist:
 
-    export CLAUDE_SEO_LOCAL_TARGETS="matomo.internal:8080"
+    export AGENTIC_HARNESS_SEO_LOCAL_TARGETS="matomo.internal:8080"
 
   Entries are host or host:port, comma-separated, matched exactly. The
   allowlist is consulted only for the top-level instance URL; redirects and
@@ -564,14 +564,14 @@ TIER 1: MATOMO REPORTING API (one token, your own instance)
   when listed. See SECURITY.md.
 
 VERIFY CONFIGURATION:
-  "${{CLAUDE_PLUGIN_ROOT}}/scripts/claude-seo" run matomo_auth.py --check
-  "${{CLAUDE_PLUGIN_ROOT}}/scripts/claude-seo" run matomo_auth.py --tier
+  "${{CLAUDE_PLUGIN_ROOT}}/scripts/agentic-harness-seo" run matomo_auth.py --check
+  "${{CLAUDE_PLUGIN_ROOT}}/scripts/agentic-harness-seo" run matomo_auth.py --tier
 """)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Matomo credential management for Claude SEO"
+        description="Matomo credential management for Agentic Harness SEO"
     )
     parser.add_argument(
         "--check",
@@ -597,7 +597,7 @@ def main() -> int:
         "--local-target-hint",
         metavar="URL",
         help=(
-            "Print the CLAUDE_SEO_LOCAL_TARGETS line needed to reach URL when it "
+            "Print the AGENTIC_HARNESS_SEO_LOCAL_TARGETS line needed to reach URL when it "
             "resolves to a private address, and nothing otherwise. Used by the "
             "extension installers."
         ),

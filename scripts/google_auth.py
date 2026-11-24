@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Google API credential management for Claude SEO.
+Google API credential management for Agentic Harness SEO.
 
 Loads and validates credentials for Google Search Console, PageSpeed Insights,
 CrUX, Indexing API, and GA4. Supports service accounts, OAuth web credentials
@@ -223,9 +223,9 @@ def _load_gcloud_adc() -> Optional[dict]:
 
 
 def _prefers_gcloud() -> bool:
-    """CLAUDE_SEO_GOOGLE_AUTH=adc picks the gcloud sign-in even when a service
+    """AGENTIC_HARNESS_SEO_GOOGLE_AUTH=adc picks the gcloud sign-in even when a service
     account is configured (which may not have access to every property)."""
-    return os.environ.get("CLAUDE_SEO_GOOGLE_AUTH", "").strip().lower() in ("adc", "gcloud")
+    return os.environ.get("AGENTIC_HARNESS_SEO_GOOGLE_AUTH", "").strip().lower() in ("adc", "gcloud")
 
 
 def get_gcloud_credentials(scopes: list):
@@ -882,7 +882,7 @@ def check_credentials(service: str) -> dict:
         # Check OAuth token first
         token_data = _load_oauth_token()
         if _prefers_gcloud() and _load_gcloud_adc() is not None:
-            # Chosen with CLAUDE_SEO_GOOGLE_AUTH=adc: used first, so reported first.
+            # Chosen with AGENTIC_HARNESS_SEO_GOOGLE_AUTH=adc: used first, so reported first.
             result["available"] = True
             result["method"] = "gcloud_adc"
             result["account"] = _load_gcloud_adc().get("account")
@@ -1048,7 +1048,7 @@ Google SEO API Setup Instructions
 FASTEST, FOR PROPERTIES YOU OWN: use your own Google account
    gcloud auth application-default login \\
      --scopes=https://www.googleapis.com/auth/webmasters.readonly,https://www.googleapis.com/auth/cloud-platform
-   Then set CLAUDE_SEO_GOOGLE_AUTH=adc (needed only if a service account is
+   Then set AGENTIC_HARNESS_SEO_GOOGLE_AUTH=adc (needed only if a service account is
    also configured). Add an API key (step 3) for PageSpeed and CrUX.
 
 1. CREATE A GOOGLE CLOUD PROJECT
@@ -1102,7 +1102,7 @@ ENVIRONMENT VARIABLE ALTERNATIVES:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Google API credential management for Claude SEO"
+        description="Google API credential management for Agentic Harness SEO"
     )
     parser.add_argument(
         "--check",

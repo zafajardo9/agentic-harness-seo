@@ -30,10 +30,10 @@ function stripWrappingQuotes(value) {
 
 function pythonCandidates() {
   const candidates = [];
-  if (process.env.CLAUDE_SEO_PYTHON) {
+  if (process.env.AGENTIC_HARNESS_SEO_PYTHON) {
     candidates.push({
-      label: "CLAUDE_SEO_PYTHON",
-      exe: stripWrappingQuotes(process.env.CLAUDE_SEO_PYTHON),
+      label: "AGENTIC_HARNESS_SEO_PYTHON",
+      exe: stripWrappingQuotes(process.env.AGENTIC_HARNESS_SEO_PYTHON),
       args: [],
     });
   }
@@ -78,7 +78,7 @@ function main() {
   }
 
   console.error(
-    "Claude SEO hook could not find Python. Tried CLAUDE_SEO_PYTHON, py -3, python3, python.",
+    "Agentic Harness SEO hook could not find Python. Tried AGENTIC_HARNESS_SEO_PYTHON, py -3, python3, python.",
   );
   process.exit(1);
 }

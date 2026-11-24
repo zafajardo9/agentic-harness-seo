@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude SEO: Bing Webmaster + IndexNow extension installer.
+# Agentic Harness SEO: Bing Webmaster + IndexNow extension installer.
 #
 # Stores the Bing Webmaster Tools API key + IndexNow host key in
 # ~/.claude/settings.json for the seo-bing skill, which wraps the existing
@@ -18,7 +18,7 @@ main() {
     SETTINGS_JSON="${HOME}/.claude/settings.json"
 
     echo "════════════════════════════════════════"
-    echo "║ Claude SEO: Bing Webmaster + IndexNow ║"
+    echo "║ Agentic Harness SEO: Bing Webmaster + IndexNow ║"
     echo "════════════════════════════════════════"
 
     command -v python3 >/dev/null 2>&1 || { echo "✗ Python 3 required."; exit 1; }
@@ -40,21 +40,21 @@ main() {
         if [ -n "${_OWN_ROOT}" ] && [ -d "${_OWN_ROOT}/skills/seo" ] && [ -f "${_OWN_ROOT}/.claude-plugin/plugin.json" ]; then
             INSTALL_MODE="plugin"; PLUGIN_ROOT="${_OWN_ROOT}"
         else
-            _GLOB_MATCH=$(ls -d "${HOME}/.claude/plugins/cache/"*/claude-seo/*/skills/seo 2>/dev/null | tail -n1 || true)
+            _GLOB_MATCH=$(ls -d "${HOME}/.claude/plugins/cache/"*/agentic-harness-seo/*/skills/seo 2>/dev/null | tail -n1 || true)
             if [ -n "${_GLOB_MATCH}" ] && [ -d "${_GLOB_MATCH}" ]; then
                 INSTALL_MODE="plugin"; PLUGIN_ROOT="$(cd "${_GLOB_MATCH}/../.." >/dev/null 2>&1 && pwd)"
             fi
         fi
     fi
     if [ -z "${INSTALL_MODE}" ]; then
-        echo "✗ claude-seo base not installed (no plugin install and no ~/.claude/skills/seo)."
+        echo "✗ agentic-harness-seo base not installed (no plugin install and no ~/.claude/skills/seo)."
         exit 1
     fi
     if [ "${INSTALL_MODE}" = "plugin" ]; then
-        echo "✓ claude-seo plugin detected: storing keys only."
+        echo "✓ agentic-harness-seo plugin detected: storing keys only."
         if [ ! -f "${PLUGIN_ROOT}/skills/seo-bing/SKILL.md" ]; then
             echo "! This plugin version does not ship the seo-bing skill yet."
-            echo "  Update the claude-seo plugin, then /seo bing will load."
+            echo "  Update the agentic-harness-seo plugin, then /seo bing will load."
         fi
     fi
 
@@ -73,19 +73,19 @@ main() {
         # manual-install path. In a basic regular expression "$" is literal
         # unless it ends the expression, so the token needs no escaping.
         mkdir -p "${SKILL_DIR}/seo-bing"
-        sed -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo"#"$HOME/.claude/skills/seo/scripts/claude-seo"#g' \
+        sed -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo"#"$HOME/.claude/skills/seo/scripts/agentic-harness-seo"#g' \
             "${SOURCE_DIR}/skills/seo-bing/SKILL.md" > "${SKILL_DIR}/seo-bing/SKILL.md"
         echo "✓ Installed skill: ${SKILL_DIR}/seo-bing/SKILL.md"
     fi
 
     mkdir -p "$(dirname "${SETTINGS_JSON}")"
 
-    CLAUDE_SEO_SECRET="${BING_KEY}" CLAUDE_SEO_INDEXNOW_KEY="${INDEXNOW_KEY}" python3 - "${SETTINGS_JSON}" "${INDEXNOW_LOC}" <<'PY'
+    AGENTIC_HARNESS_SEO_SECRET="${BING_KEY}" AGENTIC_HARNESS_SEO_INDEXNOW_KEY="${INDEXNOW_KEY}" python3 - "${SETTINGS_JSON}" "${INDEXNOW_LOC}" <<'PY'
 import json, os, sys, tempfile
 path = sys.argv[1]
 idx_loc = sys.argv[2] if len(sys.argv) > 2 else ""
-bing = os.environ.get("CLAUDE_SEO_SECRET", "")
-idx_key = os.environ.get("CLAUDE_SEO_INDEXNOW_KEY", "")
+bing = os.environ.get("AGENTIC_HARNESS_SEO_SECRET", "")
+idx_key = os.environ.get("AGENTIC_HARNESS_SEO_INDEXNOW_KEY", "")
 data = {}
 if os.path.exists(path):
     try: data = json.load(open(path))

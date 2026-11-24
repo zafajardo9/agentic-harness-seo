@@ -14,7 +14,7 @@ Three credential types serve different APIs:
 
 1. Go to [console.cloud.google.com](https://console.cloud.google.com)
 2. Click **Select a project** > **New Project**
-3. Name it (e.g., "Claude SEO") and note the project ID
+3. Name it (e.g., "Agentic Harness SEO") and note the project ID
 4. Select the project after creation
 
 ## Step 2: Enable APIs
@@ -40,10 +40,10 @@ Navigate to **APIs & Services > Library** and enable:
 ## Step 4: Create a Service Account
 
 1. **IAM & Admin > Service Accounts > Create Service Account**
-2. Name: `claude-seo` (or similar)
+2. Name: `agentic-harness-seo` (or similar)
 3. Skip optional permissions steps
 4. Click on the created service account > **Keys > Add Key > Create new key > JSON**
-5. Download the JSON file and store it securely (e.g., `~/.config/claude-seo/service_account.json`)
+5. Download the JSON file and store it securely (e.g., `~/.config/agentic-harness-seo/service_account.json`)
 
 The JSON file has `"type": "service_account"`, a `project_id`, a `private_key` and a
 `client_email`. The `client_email` field is what you add to GSC and GA4.
@@ -69,15 +69,15 @@ The JSON file has `"type": "service_account"`, a `project_id`, a `private_key` a
 ## Step 7: Create Config File
 
 ```bash
-mkdir -p ~/.config/claude-seo
+mkdir -p ~/.config/agentic-harness-seo
 ```
 
 Save to `google-api.json` in the directory that `google_auth.py --check` prints
-(`~/.config/claude-seo/` by default, see Per-Project Profiles):
+(`~/.config/agentic-harness-seo/` by default, see Per-Project Profiles):
 
 ```json
 {
-  "service_account_path": "~/.config/claude-seo/service_account.json",
+  "service_account_path": "~/.config/agentic-harness-seo/service_account.json",
   "api_key": "<GOOGLE_API_KEY>",
   "default_property": "sc-domain:example.com",
   "ga4_property_id": "properties/123456789",
@@ -112,7 +112,7 @@ value (`--domain ""`) is always an error.
 ## Step 8: Verify Setup
 
 ```bash
-"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run google_auth.py --check
+"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run google_auth.py --check
 ```
 
 Expected output at Tier 2 (full):
@@ -131,14 +131,14 @@ Credential Tier: 2 -- Full (API key + Service Account + GA4)
 ## Per-Project Profiles
 
 To give a project its own Google account and properties, set
-`CLAUDE_SEO_PROFILE_DIR` in its `.claude/settings.local.json`:
+`AGENTIC_HARNESS_SEO_PROFILE_DIR` in its `.claude/settings.local.json`:
 
 ```json
-{"env": {"CLAUDE_SEO_PROFILE_DIR": "~/.config/claude-seo/profiles/project-xyz"}}
+{"env": {"AGENTIC_HARNESS_SEO_PROFILE_DIR": "~/.config/agentic-harness-seo/profiles/project-xyz"}}
 ```
 
 The scripts then read and write `google-api.json`, `oauth-token.json`, `backlinks-api.json` and
-`matomo.json` only there, with no fallback to `~/.config/claude-seo/`, so copy the shared `api_key`
+`matomo.json` only there, with no fallback to `~/.config/agentic-harness-seo/`, so copy the shared `api_key`
 or set `GOOGLE_API_KEY`. The path must be absolute or start with `~/`, and must not be `/` or the
 home directory. Keep it outside any git repository, because it holds API keys and the OAuth token.
 The scripts warn on stderr when it is inside a git work tree.
@@ -173,10 +173,10 @@ not requested: no script calls a Search Console write method.
 
 ```bash
 # Read-only sign-in (Search Console and GA4 reports)
-"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run google_auth.py --auth --creds /path/to/client_secret.json
+"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run google_auth.py --auth --creds /path/to/client_secret.json
 
 # Read-only plus the Indexing API (needed only by indexing_notify.py)
-"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run google_auth.py --auth --indexing --creds /path/to/client_secret.json
+"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run google_auth.py --auth --indexing --creds /path/to/client_secret.json
 ```
 
 A token saved by an earlier version keeps the scopes it was granted and keeps

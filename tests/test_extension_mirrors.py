@@ -41,8 +41,8 @@ IDENTICAL_SKILL_MIRRORS = [
 
 # The plugin-install detection every mirrored extension installer shares.
 PLUGIN_AWARE_INSTALLERS = ["bing-webmaster", "shopify", "posthog"]
-LAUNCHER_TOKEN = '"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo"'
-MANUAL_LAUNCHER = '"$HOME/.claude/skills/seo/scripts/claude-seo"'
+LAUNCHER_TOKEN = '"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo"'
+MANUAL_LAUNCHER = '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo"'
 
 # The image-gen skill differs on purpose: the core copy has no scripts and
 # points at the installed Banana MCP, while the extension copy ships
@@ -104,7 +104,7 @@ def test_bing_installers_work_for_plugin_installs():
         assert "plugins/cache/" in text
         assert "CLAUDE_PLUGIN_ROOT" in text
         assert "storing keys only" in text
-        assert '"$HOME/.claude/skills/seo/scripts/claude-seo"' in text
+        assert '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo"' in text
     assert 'cp "${SOURCE_DIR}/skills/seo-bing/SKILL.md"' not in sh
     assert "Copy-Item (Join-Path $SourceDir \"skills/seo-bing/SKILL.md\")" not in ps
     assert 'if [ "${INSTALL_MODE}" = "manual" ]; then' in sh
@@ -191,7 +191,7 @@ _NEEDS_BASH = pytest.mark.skipif(
 def test_plugin_install_copies_nothing(tmp_path, name):
     proc, home, work = _run_installer(tmp_path, name, manual=False)
     assert proc.returncode == 0, proc.stdout + proc.stderr
-    assert "claude-seo plugin detected" in proc.stdout
+    assert "agentic-harness-seo plugin detected" in proc.stdout
     assert "does not ship" not in proc.stdout
     assert not (home / ".claude").exists()
     assert not (work / ".shopify-env").exists()
@@ -251,7 +251,7 @@ def test_installer_refuses_when_claude_seo_is_absent(tmp_path, name):
         env={"HOME": str(home), "PATH": os.environ.get("PATH", "")}, timeout=60,
     )
     assert proc.returncode == 1
-    assert "claude-seo base not installed" in proc.stdout
+    assert "agentic-harness-seo base not installed" in proc.stdout
     assert not (home / ".claude").exists()
 
 

@@ -1,9 +1,8 @@
 """Static contract for the PowerShell installers' ~/.claude.json writes.
 
 None of these .ps1 files can be executed in CI (no PowerShell on the
-Linux/macOS runners that run the main suite; see
-docs/WORKFLOW-public-private.md and the windows-smoke workflow for the
-executed coverage). These tests assert the source text contains the
+Linux/macOS runners that run the main suite; see the windows-smoke workflow for
+the executed coverage). These tests assert the source text contains the
 temp-then-move write pattern and the -Depth 100 serialisation depth needed
 to round-trip an existing ~/.claude.json, for every PowerShell installer
 that merges into it.

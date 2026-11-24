@@ -96,22 +96,22 @@ success. Present these as reasoned practice, not measured uplift.
 
 ```bash
 # Local 0-100 Agent-UX heuristic (HTML semantics + Chromium accessibility tree)
-"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run agent_ux_check.py <URL> --json
+"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run agent_ux_check.py <URL> --json
 
 # Raw accessibility tree without scoring
-"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run render_page.py <URL> --mode auto --a11y-tree --json
+"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run render_page.py <URL> --mode auto --a11y-tree --json
 
 # Google's own pass/fail view (the X/N fraction)
-"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run lighthouse_agentic.py <URL> --json
+"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run lighthouse_agentic.py <URL> --json
 ```
 
 The Agent-UX score is a local heuristic. Never present it as the Lighthouse
 Agentic Browsing result, which is a fraction (X of N), not a 0-100 score.
 
-If a result has `sandbox: false` (or stderr shows a `claude-seo warning` about
+If a result has `sandbox: false` (or stderr shows a `agentic-harness-seo warning` about
 Chromium's sandbox), say once in the report that the page was rendered without
 the browser sandbox on this system and why. Never set
-`CLAUDE_SEO_CHROMIUM_NO_SANDBOX` or `CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX`
+`AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX` or `AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX`
 yourself; if a launch fails with the strict-mode error, report it and ask the user.
 
 ## Quick manual check

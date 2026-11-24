@@ -2,14 +2,14 @@
 
 ## Overview
 
-Claude SEO follows Anthropic's official Claude Code skill specification with a modular, multi-skill architecture.
+Agentic Harness SEO follows Anthropic's official Claude Code skill specification with a modular, multi-skill architecture.
 
 ## Directory Structure
 
 The plugin ships 29 sub-skills (22 core + 1 orchestrator + 1 framework integration + 5 extension mirrors) and 20 sub-agents (16 core + 1 framework integration + 3 extension mirrors).
 
 ```
-~/.claude/plugins/.../claude-seo/
+~/.claude/plugins/.../agentic-harness-seo/
 ├── skills/
 │   ├── seo/                    # Main orchestrator
 │   │   ├── SKILL.md
@@ -230,10 +230,10 @@ User Request (e.g., /seo page)
 
 ### Managed Python runtime
 
-Bundled tools are dispatched through `scripts/claude-seo` and
+Bundled tools are dispatched through `scripts/agentic-harness-seo` and
 `scripts/runtime.py`, never through a working-directory-relative Python command.
 The launcher resolves a Python in the supported range (3.11 to 3.14, set by
-`MIN_PYTHON` and `MAX_PYTHON` in `runtime.py`): `CLAUDE_SEO_PYTHON` if set,
+`MIN_PYTHON` and `MAX_PYTHON` in `runtime.py`): `AGENTIC_HARNESS_SEO_PYTHON` if set,
 then the default interpreter if it is in range, then the newest versioned one.
 The standard-library runtime provides three operations: `run`, `setup`, and
 read-only `doctor`.
@@ -242,11 +242,11 @@ The launcher lives in `scripts/` beside `runtime.py`, which it resolves as a
 sibling. A top-level `bin/` directory is not allowed: the claude.ai-hosted
 marketplace rejects such a plugin with `marketplace_sync_bin_directory_not_allowed`.
 Skills and agents therefore call the launcher by its plugin-relative path,
-`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run <script.py>`, which Claude Code
+`"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run <script.py>`, which Claude Code
 expands in skill body content, in `allowed-tools` Bash rules, and as an
 environment variable for hook processes. The quoting keeps the command correct
 when the plugin root contains spaces. Manual installers (`install.sh`,
-`install.ps1`) copy the launcher to `~/.claude/skills/seo/scripts/claude-seo`
+`install.ps1`) copy the launcher to `~/.claude/skills/seo/scripts/agentic-harness-seo`
 and rewrite that canonical token to the absolute path in every Markdown file
 they install, because a manual install has no plugin root.
 

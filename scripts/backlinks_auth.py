@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Backlink API credential management for Claude SEO.
+Backlink API credential management for Agentic Harness SEO.
 
 Loads and validates credentials for Moz Link Explorer API,
 Bing Webmaster Tools API, and Common Crawl web graphs.
@@ -52,7 +52,7 @@ except ImportError as _import_exc:
 from profile_paths import config_dir_fields, describe_config_dir, profile_dir_or_exit  # noqa: E402
 
 CONFIG_PATH = str(profile_dir_or_exit() / "backlinks-api.json")
-CACHE_DIR = os.path.expanduser("~/.cache/claude-seo/commoncrawl")
+CACHE_DIR = os.path.expanduser("~/.cache/agentic-harness-seo/commoncrawl")
 
 # Which services need which auth type
 SERVICE_AUTH = {
@@ -422,7 +422,7 @@ def print_setup_instructions():
 Backlink API Setup Instructions
 ================================
 
-Free backlink data sources for Claude SEO. No payment required for any of these.
+Free backlink data sources for Agentic Harness SEO. No payment required for any of these.
 
 TIER 0: ALWAYS AVAILABLE (no setup needed)
 ------------------------------------------
@@ -438,7 +438,7 @@ TIER 1: MOZ API (free signup, 2,500 rows/month)
      (Free tier continues after trial with 2,500 rows/month)
   3. A valid credit card is required at signup but will NOT be charged
   4. After signup, go to https://moz.com/products/api/keys
-  5. Copy your API credentials. Claude SEO accepts either:
+  5. Copy your API credentials. Agentic Harness SEO accepts either:
      - a token-style key (looks like: mozscape-xxxxxxxx)
      - free-tier accessId:secret credentials, raw or base64 encoded
 
@@ -517,7 +517,7 @@ VERIFY CONFIGURATION:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Backlink API credential management for Claude SEO"
+        description="Backlink API credential management for Agentic Harness SEO"
     )
     parser.add_argument(
         "--check",

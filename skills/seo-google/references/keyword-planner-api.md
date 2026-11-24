@@ -33,7 +33,7 @@ Predict clicks, impressions, and cost for keywords.
 
 ## Configuration
 
-Add to `google-api.json` in the config directory (default `~/.config/claude-seo/`, or `CLAUDE_SEO_PROFILE_DIR` when the project sets it):
+Add to `google-api.json` in the config directory (default `~/.config/agentic-harness-seo/`, or `AGENTIC_HARNESS_SEO_PROFILE_DIR` when the project sets it):
 
 ```json
 {

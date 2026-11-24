@@ -17,15 +17,15 @@ if (Test-Path (Join-Path $SkillDir "seo")) {
     if ((Test-Path (Join-Path $OwnRoot "skills/seo")) -and (Test-Path (Join-Path $OwnRoot ".claude-plugin/plugin.json"))) {
         $InstallMode = "plugin"; $PluginRoot = $OwnRoot
     } else {
-        $Cached = Get-ChildItem -Path (Join-Path $HOME ".claude/plugins/cache/*/claude-seo/*/skills/seo") -Directory -ErrorAction SilentlyContinue | Select-Object -Last 1
+        $Cached = Get-ChildItem -Path (Join-Path $HOME ".claude/plugins/cache/*/agentic-harness-seo/*/skills/seo") -Directory -ErrorAction SilentlyContinue | Select-Object -Last 1
         if ($Cached) { $InstallMode = "plugin"; $PluginRoot = Split-Path -Parent (Split-Path -Parent $Cached.FullName) }
     }
 }
-if (-not $InstallMode) { throw "claude-seo not installed (no plugin install and no ~/.claude/skills/seo)" }
+if (-not $InstallMode) { throw "agentic-harness-seo not installed (no plugin install and no ~/.claude/skills/seo)" }
 if ($InstallMode -eq "plugin") {
-    Write-Host "claude-seo plugin detected: storing keys only."
+    Write-Host "agentic-harness-seo plugin detected: storing keys only."
     if (-not (Test-Path (Join-Path $PluginRoot "skills/seo-bing/SKILL.md"))) {
-        Write-Host "! This plugin version does not ship the seo-bing skill yet. Update the claude-seo plugin, then /seo bing will load."
+        Write-Host "! This plugin version does not ship the seo-bing skill yet. Update the agentic-harness-seo plugin, then /seo bing will load."
     }
 }
 $BingKey = (Read-Host "Bing Webmaster Tools API key" -AsSecureString)
@@ -38,7 +38,7 @@ if ($InstallMode -eq "manual") {
     New-Item -ItemType Directory -Path $SkillTarget -Force | Out-Null
     # Same rewrite the main installer applies; Claude Code's Bash tool expands $HOME on Windows too.
     $Doc = [System.IO.File]::ReadAllText((Join-Path $SourceDir "skills/seo-bing/SKILL.md"))
-    $Doc = $Doc.Replace('"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo"', '"$HOME/.claude/skills/seo/scripts/claude-seo"')
+    $Doc = $Doc.Replace('"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo"', '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo"')
     [System.IO.File]::WriteAllText((Join-Path $SkillTarget "SKILL.md"), $Doc, (New-Object System.Text.UTF8Encoding $false))
     Write-Host "Installed skill: $SkillTarget"
 }
@@ -48,8 +48,8 @@ $py = @"
 import json, os, sys, tempfile
 path = sys.argv[1]
 idx_loc = sys.argv[2] if len(sys.argv) > 2 else ''
-bing = os.environ.get('CLAUDE_SEO_SECRET', '')
-idx_key = os.environ.get('CLAUDE_SEO_INDEXNOW_KEY', '')
+bing = os.environ.get('AGENTIC_HARNESS_SEO_SECRET', '')
+idx_key = os.environ.get('AGENTIC_HARNESS_SEO_INDEXNOW_KEY', '')
 data = {}
 if os.path.exists(path):
     try: data = json.load(open(path))
@@ -62,11 +62,11 @@ fd, tmp = tempfile.mkstemp(dir=os.path.dirname(path) or '.', prefix='.settings.'
 with os.fdopen(fd, 'w') as fh: json.dump(data, fh, indent=2)
 os.replace(tmp, path)
 "@
-$env:CLAUDE_SEO_SECRET = $BingPlain
-$env:CLAUDE_SEO_INDEXNOW_KEY = $IdxKey
+$env:AGENTIC_HARNESS_SEO_SECRET = $BingPlain
+$env:AGENTIC_HARNESS_SEO_INDEXNOW_KEY = $IdxKey
 try {
     $py | python - $SettingsJson $IdxLoc
     # A native command's non-zero exit does not throw, even with Stop.
     if ($LASTEXITCODE -ne 0) { throw "Nothing was saved (python exited $LASTEXITCODE). See the message above." }
-} finally { Remove-Item Env:CLAUDE_SEO_SECRET -ErrorAction SilentlyContinue; Remove-Item Env:CLAUDE_SEO_INDEXNOW_KEY -ErrorAction SilentlyContinue }
+} finally { Remove-Item Env:AGENTIC_HARNESS_SEO_SECRET -ErrorAction SilentlyContinue; Remove-Item Env:AGENTIC_HARNESS_SEO_INDEXNOW_KEY -ErrorAction SilentlyContinue }
 Write-Host "Done. Restart Claude Code so the new env values load, then run: /seo bing verify-indexnow --host example.com"

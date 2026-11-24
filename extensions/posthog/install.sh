@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude SEO: PostHog extension installer.
+# Agentic Harness SEO: PostHog extension installer.
 #
 # Plugin installs already ship the skill (skills/seo-posthog) and the agent
 # (agents/seo-posthog.md), so only the MCP server is registered there. Manual
@@ -13,7 +13,7 @@ main() {
     AGENTS_DIR="${HOME}/.claude/agents"
 
     echo "════════════════════════════════════════"
-    echo "║ Claude SEO - PostHog extension      ║"
+    echo "║ Agentic Harness SEO - PostHog extension      ║"
     echo "════════════════════════════════════════"
 
     SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 && pwd)"
@@ -33,22 +33,22 @@ main() {
         if [ -n "${_OWN_ROOT}" ] && [ -d "${_OWN_ROOT}/skills/seo" ] && [ -f "${_OWN_ROOT}/.claude-plugin/plugin.json" ]; then
             INSTALL_MODE="plugin"; PLUGIN_ROOT="${_OWN_ROOT}"
         else
-            _GLOB_MATCH=$(ls -d "${HOME}/.claude/plugins/cache/"*/claude-seo/*/skills/seo 2>/dev/null | tail -n1 || true)
+            _GLOB_MATCH=$(ls -d "${HOME}/.claude/plugins/cache/"*/agentic-harness-seo/*/skills/seo 2>/dev/null | tail -n1 || true)
             if [ -n "${_GLOB_MATCH}" ] && [ -d "${_GLOB_MATCH}" ]; then
                 INSTALL_MODE="plugin"; PLUGIN_ROOT="$(cd "${_GLOB_MATCH}/../.." >/dev/null 2>&1 && pwd)"
             fi
         fi
     fi
     if [ -z "${INSTALL_MODE}" ]; then
-        echo "✗ claude-seo base not installed (no plugin install and no ~/.claude/skills/seo)."
+        echo "✗ agentic-harness-seo base not installed (no plugin install and no ~/.claude/skills/seo)."
         exit 1
     fi
 
     if [ "${INSTALL_MODE}" = "plugin" ]; then
-        echo "✓ claude-seo plugin detected: registering the MCP server only."
+        echo "✓ agentic-harness-seo plugin detected: registering the MCP server only."
         if [ ! -f "${PLUGIN_ROOT}/skills/seo-posthog/SKILL.md" ] || [ ! -f "${PLUGIN_ROOT}/agents/seo-posthog.md" ]; then
             echo "! This plugin version does not ship the seo-posthog skill and agent yet."
-            echo "  Update the claude-seo plugin, then /seo posthog will load."
+            echo "  Update the agentic-harness-seo plugin, then /seo posthog will load."
         fi
     fi
 

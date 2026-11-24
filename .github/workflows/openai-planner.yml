@@ -1,0 +1,51 @@
+name: Build SEO planner packages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/openai-planner.yml
+      - .claude-plugin/plugin.json
+      - packaging/openai/**
+      - skills/seo-plan/**
+      - scripts/package_openai_plugin.py
+      - scripts/agentic-harness-seo
+      - scripts/runtime.py
+      - requirements.txt
+      - LICENSE
+      - NOTICE
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Build and test packages
+        run: |
+          ./scripts/agentic-harness-seo setup --skip-browser
+          ./scripts/agentic-harness-seo run package_openai_plugin.py dist/agentic-harness-seo-planner.zip
+          ./scripts/agentic-harness-seo run package_openai_plugin.py dist/seo-roadmap.zip --claude-skill
+          python -m zipfile -t dist/agentic-harness-seo-planner.zip
+          python -m zipfile -t dist/seo-roadmap.zip
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          path: dist/agentic-harness-seo-planner.zip
+          archive: false
+          if-no-files-found: error
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          path: dist/seo-roadmap.zip
+          archive: false
+          if-no-files-found: error

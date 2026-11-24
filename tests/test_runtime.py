@@ -77,7 +77,7 @@ def test_source_checkout_uses_repository_venv_without_plugin_environment(
     (root / ".git").mkdir()
     monkeypatch.delenv("CLAUDE_PLUGIN_DATA", raising=False)
     monkeypatch.delenv("CLAUDE_PLUGIN_ROOT", raising=False)
-    monkeypatch.delenv("CLAUDE_SEO_DATA_DIR", raising=False)
+    monkeypatch.delenv("AGENTIC_HARNESS_SEO_DATA_DIR", raising=False)
     data_dir, mode = runtime._data_dir(root)
     assert data_dir == root
     assert mode == "manual"
@@ -332,7 +332,7 @@ def test_run_propagates_child_signal(tmp_path: Path, monkeypatch: pytest.MonkeyP
 
 # Scripts run without an --extension flag are dispatched straight from the
 # core scripts/ directory, so they must be listed in ALLOWED_CORE_SCRIPTS or
-# `claude-seo run` refuses them at runtime, even though the SKILL.md/agent
+# `agentic-harness-seo run` refuses them at runtime, even though the SKILL.md/agent
 # instructions look correct. This regression was caught by hand for
 # keywordseverywhere_api.py (SKILL.md wired it up, ALLOWED_CORE_SCRIPTS did
 # not list it) -- this test makes sure the next one doesn't ship silently.
@@ -363,7 +363,7 @@ def test_every_skill_invoked_script_is_runtime_allowlisted() -> None:
                     missing.append(f"{rel}: {script}")
     assert not missing, (
         "scripts invoked from SKILL.md/agent instructions but missing from "
-        "ALLOWED_CORE_SCRIPTS in scripts/runtime.py (claude-seo run would "
+        "ALLOWED_CORE_SCRIPTS in scripts/runtime.py (agentic-harness-seo run would "
         "refuse them): " + "; ".join(missing)
     )
 

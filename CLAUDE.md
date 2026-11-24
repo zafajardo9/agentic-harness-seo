@@ -1,8 +1,8 @@
-# Claude SEO: Universal SEO Analysis Skill
+# Agentic Harness SEO: Universal SEO Analysis Skill
 
 ## Project Overview
 
-This repository contains **Claude SEO**, a Tier 4 Claude Code skill for comprehensive
+This repository contains **Agentic Harness SEO**, a Tier 4 Claude Code skill for comprehensive
 SEO analysis across all industries. It follows the Agent Skills open standard and the
 3-layer architecture (directive, orchestration, execution). 29 sub-skills (22 core +
 1 orchestrator + 1 framework integration + 5 extension mirrors), 20 sub-agents (16 core +
@@ -17,9 +17,9 @@ available as optional analytics extensions (GA4 alternative or complement).
 ## Architecture
 
 ```
-claude-seo/
+agentic-harness-seo/
   CLAUDE.md                          # Project instructions (this file)
-  CONTRIBUTORS.md                    # Community credits (Pro Hub Challenge)
+  NOTICE                             # Fork attribution and copyright lines
   AGENTS.md                          # Multi-platform agent instructions (Cursor, Antigravity)
   .claude-plugin/
     plugin.json                    # Plugin manifest (v2.6.2)
@@ -94,10 +94,11 @@ claude-seo/
     seo-flow.md                  # FLOW framework integration
   hooks/                           # Quality gate hooks
     hooks.json                   # PostToolUse schema validation
-  scripts/                         # 67 Python execution scripts
+  scripts/                         # 70 Python execution scripts
     google_auth.py               # Credential management (OAuth, SA, API key, 4-tier detection)
     google_properties.py         # Picks the GSC/GA4 property for the audited domain, fails closed on a mismatch
-    profile_paths.py             # Credential directory (CLAUDE_SEO_PROFILE_DIR, default ~/.config/claude-seo)
+    profile_paths.py             # Credential directory (AGENTIC_HARNESS_SEO_PROFILE_DIR, default ~/.config/agentic-harness-seo)
+    portable_install.py          # Installs the toolkit for harnesses that have no plugin marketplace
     backlinks_auth.py            # Backlink API credential management (Moz, Bing)
     moz_api.py                   # Moz Link Explorer API (DA/PA, spam, domains, anchors)
     bing_webmaster.py            # Bing Webmaster Tools API (registered-site links/comparison)
@@ -119,6 +120,8 @@ claude-seo/
     fetch_page.py                # Page fetcher with UA rotation
     parse_html.py                # HTML parser for SEO elements
     page_checks.py               # Deterministic single-page on-page checker (47 checks, JSON findings)
+    seo_mcp.py                   # SEO planning and page checks over MCP
+    package_openai_plugin.py     # Builds the OpenAI skills-only planning plugin ZIP
     transport_check.py           # TLS certificate, security header and HTTPS redirect checker
     capture_screenshot.py        # Playwright screenshots
     analyze_visual.py            # Visual analysis helper
@@ -161,7 +164,7 @@ claude-seo/
     sitemap_discovery.py         # Sitemap discovery (robots.txt, common paths)
     shopify_env.py               # .shopify-env reader and Crawler Access precheck
     shopify_crawl.py             # Signed sitemap-driven Shopify storefront crawl
-    runtime.py                   # Managed runtime behind the claude-seo launcher
+    runtime.py                   # Managed runtime behind the agentic-harness-seo launcher
   schema/                          # Schema.org JSON-LD templates
   extensions/                      # 11 optional add-ons (5 MCP, 6 non-MCP)
     dataforseo/                  # DataForSEO MCP install scripts
@@ -225,7 +228,7 @@ claude-seo/
 - Scripts must have docstrings, CLI interface, and JSON output
 - Follow kebab-case naming for all skill directories
 - Agents invoked via Agent tool, never via Bash
-- Bundled tools run through `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run`; plugin state uses `CLAUDE_PLUGIN_DATA`
+- Bundled tools run through `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run`; plugin state uses `CLAUDE_PLUGIN_DATA`
 - Manual Python dependencies install into `~/.claude/skills/seo/.venv/`
 - Test with `python3 -m pytest tests/` after changes (if applicable)
 
@@ -235,7 +238,7 @@ claude-seo/
 - **URL validation**: All scripts that connect to user-supplied URLs must use `scripts/url_safety.py` (`validate_url_strict()` plus the pinned safe request helpers). This blocks private IPs, loopback, metadata endpoints, redirect rebinding, and DNS rebinding.
 - **OAuth tokens**: Never store `client_secret` in the token file. Read it from the client_secret.json file at runtime.
 - **No hardcoded paths**: Use `os.path.dirname(os.path.abspath(__file__))` for relative paths, never a user-specific absolute path
-- **Config location**: `~/.config/claude-seo/google-api.json` and `~/.config/claude-seo/backlinks-api.json`; `CLAUDE_SEO_PROFILE_DIR` moves them, with `oauth-token.json` and `matomo.json`, into a per-project directory (user-space, not in repo)
+- **Config location**: `~/.config/agentic-harness-seo/google-api.json` and `~/.config/agentic-harness-seo/backlinks-api.json`; `AGENTIC_HARNESS_SEO_PROFILE_DIR` moves them, with `oauth-token.json` and `matomo.json`, into a per-project directory (user-space, not in repo)
 
 ## Report Generation Rules
 
@@ -252,13 +255,6 @@ claude-seo/
 - **Cross-skill enforcement**: After completing ANY analysis command (audit, page, technical, content, schema, geo, local, maps), offer: "Generate a PDF report? Use `/seo google report`"
 - **Google logo** appears on title page when using Google API data ("Powered by Google APIs")
 
-## Ecosystem
-
-Part of the Claude Code skill family:
-- [Claude Banana](https://github.com/AgriciDaniel/banana-claude) -- standalone image gen (bundled as extension here)
-- [Claude Blog](https://github.com/AgriciDaniel/claude-blog) -- companion blog engine, consumes SEO findings
-- [AI Marketing Claude](https://github.com/zubair-trabzada/ai-marketing-claude) -- community marketing suite (copy, emails, ads, funnels, CRO)
-
 ## Key Principles
 
 1. **Progressive Disclosure**: Metadata always loaded, instructions on activation, resources on demand
@@ -266,66 +262,26 @@ Part of the Claude Code skill family:
 3. **Parallel Execution**: Full audits spawn up to 17 subagents simultaneously
 4. **Extension System**: 11 extensions. DataForSEO, Firecrawl, Banana, Ahrefs, and PostHog connect an MCP server; SE Ranking, Profound, Bing Webmaster, Matomo, Unlighthouse, and Shopify do not
 
-## Repository Topology (public + private)
+## Upstream and this fork
 
-This project is mirrored across two GitHub remotes with shared historical
-ancestry. Reviewed back-ports, private-only research, and marketplace branding
-mean their release commits can have different SHAs. Neither repository is a
-GitHub fork of the other.
+The upstream project is `https://github.com/AgriciDaniel/claude-seo`, released
+under the MIT License. This repository,
+`https://github.com/zafajardo9/agentic-harness-seo`, is a fork maintained by
+zafajardo9. See NOTICE for the copyright lines that apply to each.
 
-| Remote | URL | Visibility | Role |
-|---|---|---|---|
-| `origin` | `https://github.com/AgriciDaniel/claude-seo` | **Public** | Published distribution. Users discover, clone, and install from here. `main` only reflects released history. |
-| `aimh` | `https://github.com/AI-Marketing-Hub/claude-seo` | **Private** | Working repo inside the AI Marketing Hub org. Daily development. v2 branch + post-release work lives here before promotion to public. |
+Practical rules for this fork:
 
-### Workflow
+- `origin` is this repository. There is no private mirror, so the earlier
+  two-remote promotion workflow does not apply here.
+- Upstream URLs are attribution, not configuration. Keep them where they credit
+  the original work; point everything functional (installers, marketplace
+  metadata, the Windows smoke workflow, security advisories) at this repository.
+- The FLOW references that `scripts/sync_flow.py` downloads come from the
+  upstream `AgriciDaniel/flow` repository and keep their own CC BY 4.0
+  attribution. Do not repoint them.
 
-Daily development:
-- Work on `v2` (or feature branches off `v2`) locally.
-- `git push aimh <branch>` to publish work-in-progress to the private repo
-  (Dependabot, Actions, and CI run there).
+## Release notes
 
-Promoting reviewed release changes:
-1. Use an isolated clean worktree from the target repository branch.
-2. Fast-forward only when ancestry proves it is safe. Otherwise cherry-pick
-   the exact reviewed commits with `-x` and resolve only documented divergence.
-3. Run the full validation suite and compare the private/public release trees.
-4. Create an annotated repository-specific tag after validation.
-5. Push private changes first. Push public changes only with explicit release
-   authorization, with the public tag available before the installer moves.
-6. Create the GitHub Release and release post on the public repository only.
-
-### Safety rules
-
-- **Never push to `origin/main` autonomously.** The public is release-only;
-  pushes are user-authorized per-release.
-- **`aimh` accepts day-to-day pushes.** No release-gate ceremony required
-  for the private remote.
-- **Every release is tagged on both repositories.** Each tag points to that
-  repository's reviewed release commit.
-- **Never force-sync the histories.** Preserve reviewed divergence and never
-  rewrite either remote without explicit per-operation authorization.
-
-### Verifying the topology
-
-```bash
-# Both remotes configured
-git remote -v        # expects: origin (public) + aimh (private)
-
-# Compare heads and then audit the documented divergence. Equal SHAs are not
-# expected after repository-specific back-ports.
-git ls-remote --heads aimh main
-git ls-remote --heads origin main
-```
-
-Full workflow reference: `docs/WORKFLOW-public-private.md`.
-
-## Release Blog Post
-
-After cutting a new release (git tag + `gh release create`), run:
-
-```
-/release-blog
-```
-
-This generates a blog post on https://claude-seo.md/blog/, handles cover image generation, SEO metadata, FAQ schema, internal linking, sitemap/llms.txt updates, Vercel deployment, and Google indexing.
+After cutting a new release (git tag + `gh release create --generate-notes`),
+GitHub builds the changelog from the labels configured in
+`.github/release.yml`. No blog or deployment step is part of this fork.

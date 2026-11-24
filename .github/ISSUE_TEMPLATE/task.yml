@@ -1,13 +1,29 @@
+# Internal development task for async (human or agent) collaboration.
+#
+# The Area and Priority dropdowns hold label-shaped values (`area:skill`,
+# `priority:high`) on purpose: GitHub renders dropdown choices as plain text,
+# so .github/workflows/issue-labels.yml reads them out of the body and applies
+# them as real labels. Keep those option strings in sync with that workflow.
 name: Task
 description: Development task for async collaboration
 title: "[Task] "
 labels: []
+
 body:
+  - type: markdown
+    attributes:
+      value: |
+        A scoped task that a contributor or agent can pick up without extra
+        back-and-forth. Fill in the acceptance criteria so "done" is testable.
+
   - type: textarea
     id: summary
     attributes:
       label: Summary
-      description: What needs to be done and why?
+      description: What needs to be done, and why?
+      placeholder: |
+        Add a --json output mode to drift_compare.py so drift results can be
+        diffed between runs.
     validations:
       required: true
 
@@ -15,6 +31,7 @@ body:
     id: area
     attributes:
       label: Area
+      description: Becomes the area:* label on the issue.
       options:
         - area:skill
         - area:script
@@ -28,6 +45,7 @@ body:
     id: priority
     attributes:
       label: Priority
+      description: Becomes the priority:* label on the issue.
       options:
         - priority:high
         - priority:med
@@ -36,12 +54,12 @@ body:
       required: true
 
   - type: textarea
-    id: context_for_claude
+    id: context_for_agent
     attributes:
-      label: Claude Code Context
+      label: Agent context
       description: >
-        Background that Claude Code should read before starting work.
-        List relevant files, known patterns, prior decisions, or constraints.
+        Background the implementing agent should read first. Works for Claude
+        Code, Cursor, Codex, and any other harness.
       placeholder: |
         - Related files: skills/seo-foo/SKILL.md, scripts/bar.py
         - Prior decision: ...
@@ -53,7 +71,7 @@ body:
     id: acceptance
     attributes:
       label: Acceptance Criteria
-      description: How do we know this is done?
+      description: How do we know this is done? Use a checklist.
       placeholder: |
         - [ ] ...
         - [ ] Tested with a real URL

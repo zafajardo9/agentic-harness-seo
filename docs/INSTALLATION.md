@@ -16,8 +16,8 @@ Optional:
 The recommended path. Inside Claude Code:
 
 ```
-/plugin marketplace add AgriciDaniel/claude-seo
-/plugin install claude-seo@agricidaniel-claude-seo
+/plugin marketplace add zafajardo9/agentic-harness-seo
+/plugin install agentic-harness-seo@zafajardo9-agentic-harness-seo
 /seo setup
 ```
 
@@ -28,14 +28,14 @@ to Claude's persistent plugin data. Use `/seo doctor` for a read-only check.
 ### Manual Install (Unix, macOS, Linux)
 
 ```bash
-git clone --depth 1 https://github.com/AgriciDaniel/claude-seo.git
-bash claude-seo/install.sh
+git clone --depth 1 https://github.com/zafajardo9/agentic-harness-seo.git
+bash agentic-harness-seo/install.sh
 ```
 
 Review-then-run alternative:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AgriciDaniel/claude-seo/main/install.sh > install.sh
+curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main/install.sh > install.sh
 cat install.sh        # review
 bash install.sh       # run when satisfied
 rm install.sh
@@ -44,8 +44,8 @@ rm install.sh
 ### Manual Install (Windows, PowerShell)
 
 ```powershell
-git clone --depth 1 https://github.com/AgriciDaniel/claude-seo.git
-powershell -ExecutionPolicy Bypass -File claude-seo\install.ps1
+git clone --depth 1 https://github.com/zafajardo9/agentic-harness-seo.git
+powershell -ExecutionPolicy Bypass -File agentic-harness-seo\install.ps1
 ```
 
 The Windows path uses `git clone` rather than `irm | iex` because Claude Code's own security guardrails flag piped remote-script execution. Inspect `install.ps1` before running.
@@ -55,8 +55,8 @@ The Windows path uses `git clone` rather than `irm | iex` because Claude Code's 
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/AgriciDaniel/claude-seo.git
-cd claude-seo
+git clone https://github.com/zafajardo9/agentic-harness-seo.git
+cd agentic-harness-seo
 ```
 
 2. **Run the installer**
@@ -72,7 +72,7 @@ used by every skill. It creates `~/.claude/skills/seo/.venv/` and never falls
 back to global or user package installation.
 
 ```bash
-~/.claude/skills/seo/scripts/claude-seo doctor
+~/.claude/skills/seo/scripts/agentic-harness-seo doctor
 ```
 
 If core setup failed, rerun the inspected installer. If only Chromium failed,
@@ -81,7 +81,7 @@ the installer reports a degraded result and raw-fetch analysis remains available
 Chromium runs with its sandbox wherever the system can start it. On Ubuntu
 23.10 and later, in most containers and as root it cannot, so pages are
 rendered without the sandbox and a warning says so (`"sandbox": false` in JSON
-results). Set `CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX=1` to fail instead. See
+results). Set `AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX=1` to fail instead. See
 [Troubleshooting](TROUBLESHOOTING.md) for how to enable the sandbox.
 
 ## Installation Paths
@@ -93,7 +93,7 @@ The installer copies files to:
 | Main skill | `~/.claude/skills/seo/` |
 | Sub-skills | `~/.claude/skills/seo-*/` |
 | Subagents | `~/.claude/agents/seo-*.md` |
-| Runtime launcher | `~/.claude/skills/seo/scripts/claude-seo` |
+| Runtime launcher | `~/.claude/skills/seo/scripts/agentic-harness-seo` |
 | Isolated Python | `~/.claude/skills/seo/.venv/` |
 
 ## Verify Installation
@@ -117,15 +117,15 @@ You should see a help message or prompt for a URL.
 If installed as a plugin:
 
 ```
-/plugin uninstall claude-seo@agricidaniel-claude-seo
-/plugin marketplace remove AgriciDaniel/claude-seo
+/plugin uninstall agentic-harness-seo@zafajardo9-agentic-harness-seo
+/plugin marketplace remove zafajardo9/agentic-harness-seo
 ```
 
 If installed manually, run the uninstaller from a fresh clone:
 
 ```bash
-git clone --depth 1 https://github.com/AgriciDaniel/claude-seo.git
-bash claude-seo/uninstall.sh
+git clone --depth 1 https://github.com/zafajardo9/agentic-harness-seo.git
+bash agentic-harness-seo/uninstall.sh
 ```
 
 `uninstall.sh` removes all installed sub-skills, sub-agents, and the plugin's MCP entries from `~/.claude/settings.json`. Do not maintain a hand-coded `rm` list. The shipped uninstaller is the canonical source.
@@ -138,10 +138,10 @@ Caution: Prefer downloading, inspecting, then running remote scripts; the pipe-t
 
 ```bash
 # Uninstall current version
-curl -fsSL https://raw.githubusercontent.com/AgriciDaniel/claude-seo/main/uninstall.sh | bash
+curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main/uninstall.sh | bash
 
 # Install new version
-curl -fsSL https://raw.githubusercontent.com/AgriciDaniel/claude-seo/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main/install.sh | bash
 ```
 
 ## Troubleshooting
@@ -161,7 +161,7 @@ If the file doesn't exist, re-run the installer.
 Run the managed setup again:
 
 ```bash
-~/.claude/skills/seo/scripts/claude-seo setup
+~/.claude/skills/seo/scripts/agentic-harness-seo setup
 ```
 
 ### Playwright screenshot errors
@@ -169,8 +169,8 @@ Run the managed setup again:
 Run the managed setup again and inspect the result:
 
 ```bash
-~/.claude/skills/seo/scripts/claude-seo setup
-~/.claude/skills/seo/scripts/claude-seo doctor
+~/.claude/skills/seo/scripts/agentic-harness-seo setup
+~/.claude/skills/seo/scripts/agentic-harness-seo doctor
 ```
 
 ### Permission errors on Unix

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude SEO: Unlighthouse extension installer.
+# Agentic Harness SEO: Unlighthouse extension installer.
 #
 # Wraps the existing scripts/unlighthouse_run.py into a discoverable
 # seo-unlighthouse skill. No API keys: Unlighthouse is fully local,
@@ -11,7 +11,7 @@ main() {
     SEO_SKILL_DIR="${SKILL_DIR}/seo"
 
     echo "════════════════════════════════════════"
-    echo "║   Claude SEO: Unlighthouse            ║"
+    echo "║   Agentic Harness SEO: Unlighthouse            ║"
     echo "════════════════════════════════════════"
 
     command -v python3 >/dev/null 2>&1 || { echo "✗ Python 3 required."; exit 1; }
@@ -30,10 +30,10 @@ main() {
         [ -d "${_PLUGIN_SEO_DIR}" ] && SEO_SKILL_DIR="${_PLUGIN_SEO_DIR}"
     fi
     if [ ! -d "${SEO_SKILL_DIR}" ]; then
-        _GLOB_MATCH=$(ls -d "${HOME}/.claude/plugins/cache/"*/claude-seo/*/skills/seo 2>/dev/null | tail -n1 || true)
+        _GLOB_MATCH=$(ls -d "${HOME}/.claude/plugins/cache/"*/agentic-harness-seo/*/skills/seo 2>/dev/null | tail -n1 || true)
         [ -n "${_GLOB_MATCH}" ] && [ -d "${_GLOB_MATCH}" ] && SEO_SKILL_DIR="${_GLOB_MATCH}"
     fi
-    [ ! -d "${SEO_SKILL_DIR}" ] && { echo "✗ claude-seo base not installed."; exit 1; }
+    [ ! -d "${SEO_SKILL_DIR}" ] && { echo "✗ agentic-harness-seo base not installed."; exit 1; }
 
     echo "→ Pre-warming unlighthouse..."
     npx --yes --package=unlighthouse@0.13.5 unlighthouse-ci --help >/dev/null 2>&1 || true

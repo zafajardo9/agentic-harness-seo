@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Renamed the product and its identifiers from `claude-seo` to
+  `agentic-harness-seo`: the plugin id, the marketplace entry, the launcher
+  (`scripts/agentic-harness-seo`), the Python package name, the config and
+  cache directories, and the `CLAUDE_SEO_*` environment variables, now
+  `AGENTIC_HARNESS_SEO_*`. Anything outside the repository that sets the old
+  variable names must be updated. The `/seo` command and the
+  `~/.claude/skills/seo` install path are unchanged.
+- This repository is now the `zafajardo9/agentic-harness-seo` fork of claude-seo,
+  maintained by zafajardo9. Installers, marketplace metadata, the Windows smoke
+  workflow, and security-advisory links point at this repository; the install
+  scripts clone `main` because this fork publishes no release tags yet. Upstream
+  attribution and the MIT copyright line are unchanged in `LICENSE`, with the
+  fork notice recorded in `NOTICE`.
+- Removed the upstream promotional surfaces from the user-facing output and
+  docs: the community footer the orchestrator appended after every deliverable,
+  the private-marketplace install block, the YouTube and community links, the
+  `FUNDING.yml` entry, and the sibling-project list. The published marketplace
+  now lists only `claude-seo`, so the upstream `seo-cockpit` companion is no
+  longer offered here.
+- Repository metadata under `.github/` reworked for readability. The issue
+  forms gained harness, version, and area fields plus input placeholders;
+  `dependabot.yml` groups routine Python and Actions bumps into one pull
+  request per ecosystem; `release.yml`, the workflows, and the pull request
+  template carry comments explaining how they are wired; and every CI job now
+  has a `timeout-minutes` and a concurrency group.
+- `v2.yml` passes the free-text `reason` input through the environment instead
+  of interpolating it into the summary shell step.
+- The Task issue form's `area:` and `priority:` dropdowns now become real
+  labels: a new `.github/workflows/issue-labels.yml` copies them onto the issue
+  and swaps them out when the form is edited.
+
 ## [2.6.2] - 2026-11-15
 
 ### Security

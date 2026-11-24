@@ -859,7 +859,7 @@ def _sandbox_mode_manager(page, mode, launches):
     [
         ("sandboxed", True, [True], ""),
         ("fallback", False, [True, False], "sandbox is unavailable on this system"),
-        ("opt_out", False, [False], "disabled by CLAUDE_SEO_CHROMIUM_NO_SANDBOX"),
+        ("opt_out", False, [False], "disabled by AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX"),
     ],
 )
 def test_cli_json_says_whether_chromium_was_sandboxed(
@@ -887,7 +887,7 @@ def test_cli_json_says_whether_chromium_was_sandboxed(
     assert all(capture["success"] for capture in captures)
     assert launches == per_capture * len(cs.VIEWPORTS)
     # One warning for the whole run, on stderr.
-    assert captured.err.count("claude-seo warning") == (1 if warning else 0)
+    assert captured.err.count("agentic-harness-seo warning") == (1 if warning else 0)
     assert warning in captured.err
 
 
@@ -933,7 +933,7 @@ def test_capture_in_strict_mode_reports_the_sandbox_failure(monkeypatch) -> None
     page = FakePage()
     result = _capture_checking_the_page(monkeypatch, page)
     assert result["success"] is False
-    assert "CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX" in result["error"]
-    assert "CLAUDE_SEO_CHROMIUM_NO_SANDBOX=1" in result["error"]
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX" in result["error"]
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX=1" in result["error"]
     assert result["sandbox"] is None  # no browser was launched
     assert page.calls == []

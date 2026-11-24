@@ -1,5 +1,19 @@
+# Chooser shown when someone clicks "New issue". Every entry here is rendered
+# as a card, so the wording is user-facing: keep the names short and the
+# `about` lines to a single sentence.
+
+# Force a choice of form instead of allowing an empty issue body.
 blank_issues_enabled: false
+
 contact_links:
   - name: Question or Discussion
-    url: https://github.com/AgriciDaniel/claude-seo/discussions
-    about: Ask questions and discuss ideas in GitHub Discussions
+    url: https://github.com/zafajardo9/agentic-harness-seo/discussions
+    about: Ask usage questions and float ideas in GitHub Discussions
+
+  - name: Report a security vulnerability
+    url: https://github.com/zafajardo9/agentic-harness-seo/security/advisories/new
+    about: Report vulnerabilities privately instead of opening a public issue
+
+  - name: Documentation
+    url: https://github.com/zafajardo9/agentic-harness-seo#readme
+    about: Install steps, command reference, and per-harness notes

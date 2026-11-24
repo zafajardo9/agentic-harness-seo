@@ -1,4 +1,4 @@
-# Claude SEO: Multi-Platform Agent Instructions
+# Agentic Harness SEO: Multi-Platform Agent Instructions
 
 > For **Cursor**, **Cursor Cloud Agents**, **Google Antigravity**, **Gemini CLI**,
 > **Grok Build**,
@@ -13,7 +13,7 @@ Every skill in `skills/*/SKILL.md` is authored to a portable subset of the
 Claude Code skill spec. Validate compatibility with your harness via:
 
 ```bash
-./scripts/claude-seo run portability_check.py
+./scripts/agentic-harness-seo run portability_check.py
 ```
 
 The check confirms each `SKILL.md` has the minimum frontmatter every harness
@@ -21,22 +21,53 @@ expects (`name`, `description`, optional `model`, optional `tools`) and warns
 on Claude-Code-specific features (`maxTurns`, multi-line tool list with
 descriptive comments) that other harnesses may ignore but do not reject.
 
+### Install for any harness
+
+Claude Code installs the native plugin from the marketplace. ChatGPT, Claude
+chat, and other MCP clients can connect to the [SEO MCP server](docs/SEO-CONNECTOR.md).
+For coding agents that load workspace instructions, `scripts/portable_install.py`
+writes the right file and installs the local toolkit:
+
+```bash
+python3 scripts/portable_install.py --project ~/my-site --harnesses all
+```
+
+It copies the toolkit to `~/.agentic-harness-seo`, rewrites the launcher token in
+the installed Markdown, adds a wrapper under `bin/`, and writes a managed block
+into `AGENTS.md` (Codex, Antigravity, Grok), `GEMINI.md` (Gemini CLI),
+`.cursor/rules/agentic-harness-seo.mdc` (Cursor), `.clinerules/` (Cline) or
+`CONVENTIONS.md` (Aider). The full matrix, including what each harness loses
+against Claude Code, is in `docs/HARNESSES.md`.
+
+### Resolving the launcher outside Claude Code
+
+Claude Code expands `${CLAUDE_PLUGIN_ROOT}`; other harnesses do not. Resolve the
+launcher in this order and use the same subcommands:
+
+1. `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo"` when the variable is set.
+2. `"$AGENTIC_HARNESS_SEO_ROOT/scripts/agentic-harness-seo"` when that variable is set.
+3. `"$HOME/.agentic-harness-seo/scripts/agentic-harness-seo"` for a portable install.
+4. `"./scripts/agentic-harness-seo"` when this repository is the workspace.
+
+Never invoke the bundled Python with a bare interpreter: the launcher owns the
+managed environment.
+
 ### Per-harness notes
 
-| Harness | How to load claude-seo |
-|---|---|
-| **Cursor** | Symlink or copy `skills/` and `agents/` into `.cursor/rules/`. Commands are invoked as text prompts; the harness reads `SKILL.md` body as system context. |
-| **Cursor Cloud Agents** | Push the repo; Cloud Agents read `AGENTS.md` automatically at session start. |
-| **Google Antigravity** | Point the workspace at this repo root; Antigravity reads `AGENTS.md` first, falls back to `skills/`. |
-| **Gemini CLI** | `gemini init` in this repo loads `AGENTS.md`. Skills are activated via `activate_skill <name>` in conversation. |
-| **Grok Build** | Open this repository in Grok Build. It reads `AGENTS.md` and Claude Code compatible plugins and skills without a separate layout. Use `grok inspect` to verify discovery. See the [official compatibility guide](https://docs.x.ai/build/features/skills-plugins-marketplaces). |
-| **OpenAI Codex CLI** | Reads `AGENTS.md` from project root. Bash tools work as documented; some Claude-specific tool names (Read/Write/Edit) are aliased to Codex equivalents transparently. |
-| **Cline** | Loads `AGENTS.md` from project root. Skills appear as system messages; subagent delegation falls back to in-context expansion. |
-| **Aider** | Reads `AGENTS.md` if present; otherwise falls back to README. Aider does not support sub-agent dispatch; the seo-* skills run inline. |
+| Harness | Instruction file | How it loads Agentic Harness SEO |
+|---|---|---|
+| **Cursor** | `.cursor/rules/agentic-harness-seo.mdc` | The portable install writes the rule; symlink `skills/` and `agents/` into `.cursor/rules/` for per-skill rules. Commands are text prompts |
+| **Cursor Cloud Agents** | `AGENTS.md` | Push the repo; Cloud Agents read `AGENTS.md` at session start |
+| **Google Antigravity** | `AGENTS.md` | Reads `AGENTS.md` first, falls back to `skills/` |
+| **Gemini CLI** | `GEMINI.md` | `gemini init` loads `GEMINI.md`; skills are activated in conversation |
+| **Grok Build** | `AGENTS.md` | Reads `AGENTS.md` and Claude-compatible skill layouts; `grok inspect` verifies discovery. See the [official compatibility guide](https://docs.x.ai/build/features/skills-plugins-marketplaces) |
+| **OpenAI Codex CLI** | `AGENTS.md` | Reads project-root `AGENTS.md`; Claude-specific tool names are aliased to Codex equivalents |
+| **Cline** | `.clinerules/agentic-harness-seo.md` | Loads `.clinerules/`; sub-agent delegation happens in one context |
+| **Aider** | `CONVENTIONS.md` or `AGENTS.md` | No sub-agent dispatch; the seo-* skills run inline |
 
 ### Tool-name compatibility
 
-Where claude-seo skills mention Claude Code tools (`Read`, `Write`, `Edit`,
+Where agentic-harness-seo skills mention Claude Code tools (`Read`, `Write`, `Edit`,
 `Bash`, `Glob`, `Grep`, `WebFetch`), each harness typically has an equivalent:
 
 | Claude Code | Codex | Cline | Aider | Cursor / Antigravity |
@@ -54,9 +85,9 @@ in case a recipe needs a specific call.
 
 ## Overview
 
-Claude SEO is a Tier 4 SEO analysis skill with 29 sub-skills (22 core + 1 orchestrator +
+Agentic Harness SEO is a Tier 4 SEO analysis skill with 29 sub-skills (22 core + 1 orchestrator +
 1 framework integration + 5 extension mirrors), 20 sub-agents (16 core + 1 framework
-integration + 3 extension mirrors), and 67 Python execution scripts.
+integration + 3 extension mirrors), and 70 Python execution scripts.
 
 ## Quick Reference
 
@@ -109,30 +140,30 @@ provide execution capabilities.
 **Running scripts directly** (Cursor doesn't have MCP):
 ```bash
 # Page fetching with SSRF protection
-./scripts/claude-seo run fetch_page.py https://example.com
+./scripts/agentic-harness-seo run fetch_page.py https://example.com
 
 # HTML parsing for SEO elements
-./scripts/claude-seo run parse_html.py --url https://example.com
+./scripts/agentic-harness-seo run parse_html.py --url https://example.com
 
 # PageSpeed Insights
-./scripts/claude-seo run pagespeed_check.py https://example.com --json
+./scripts/agentic-harness-seo run pagespeed_check.py https://example.com --json
 
 # Drift baseline
-./scripts/claude-seo run drift_baseline.py https://example.com
+./scripts/agentic-harness-seo run drift_baseline.py https://example.com
 
 # DataForSEO (requires credentials)
-DATAFORSEO_USERNAME=user DATAFORSEO_PASSWORD=pass ./scripts/claude-seo run dataforseo_merchant.py search "keyword"
+DATAFORSEO_USERNAME=user DATAFORSEO_PASSWORD=pass ./scripts/agentic-harness-seo run dataforseo_merchant.py search "keyword"
 ```
 
 **Cursor Cloud gotchas:**
 - SSL certificates may not resolve for some domains. Investigate the certificate issue rather than disabling verification.
-- Run bundled tools through `claude-seo`; never call the venv interpreter directly.
+- Run bundled tools through `agentic-harness-seo`; never call the venv interpreter directly.
 - Screenshots save to `/tmp/` not CWD. Check absolute paths.
 
 ## Using with Google Antigravity
 
 Antigravity discovers this project via `.claude-plugin/plugin.json`.
-Place the repo in `~/.gemini/antigravity/plugins/claude-seo/` or install via:
+Place the repo in `~/.gemini/antigravity/plugins/agentic-harness-seo/` or install via:
 
 ```bash
 bash install.sh
@@ -172,7 +203,7 @@ skills/                    # 29 sub-skills (auto-discovered)
   seo-shopify/            # Shopify Crawler Access signed crawl (extension)
   seo-posthog/            # PostHog analytics via MCP (extension)
 agents/                    # 20 subagents
-scripts/                   # 67 Python scripts, including the managed runtime
+scripts/                   # 70 Python scripts, including the managed runtime
 schema/                    # JSON-LD templates
 extensions/                # 11 extensions. 5 MCP: DataForSEO, Firecrawl, Banana, Ahrefs, PostHog. 6 non-MCP: SE Ranking, Profound, Bing Webmaster, Matomo, Unlighthouse, Shopify
 ```
@@ -182,10 +213,10 @@ extensions/                # 11 extensions. 5 MCP: DataForSEO, Firecrawl, Banana
 1. **Progressive Disclosure**: Read SKILL.md for routing, load references on demand
 2. **Industry Detection**: Auto-detect SaaS, e-commerce, local, publisher, agency
 3. **Security**: All scripts call `validate_url()` for SSRF protection
-4. **Config location**: `~/.config/claude-seo/` for API credentials, or the directory in `CLAUDE_SEO_PROFILE_DIR`
+4. **Config location**: `~/.config/agentic-harness-seo/` for API credentials, or the directory in `AGENTIC_HARNESS_SEO_PROFILE_DIR`
 
-## Credits
+## Attribution
 
-Created by [@AgriciDaniel](https://github.com/AgriciDaniel).
-v1.9.0 community contributions by Lutfiya Miller, Chris Muller, Florian Schmitz,
-Dan Colta, and Matej Marjanovic. See [CONTRIBUTORS.md](CONTRIBUTORS.md).
+Based on the upstream `claude-seo` project by [@AgriciDaniel](https://github.com/AgriciDaniel), MIT licensed.
+This fork is maintained by [@zafajardo9](https://github.com/zafajardo9). See
+[NOTICE](NOTICE) for the copyright lines.

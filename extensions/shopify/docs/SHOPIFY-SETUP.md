@@ -3,7 +3,7 @@
 ## What this gives you
 
 1. **An uncapped, sitemap-complete crawl** of a Shopify storefront via
-   `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run shopify_crawl.py` instead of
+   `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run shopify_crawl.py` instead of
    the 500-page link-following crawl in `seo-audit`.
 2. **An authorized crawler** in the storefront's eyes, because every request
    carries the store's Crawler Access signature (RFC 9421 message signature,
@@ -24,11 +24,11 @@ you or your client administer. Everything else keeps crawling unsigned.
 .\extensions\shopify\install.ps1
 ```
 
-No API keys. The `seo-shopify` skill ships with the claude-seo plugin, so on a
+No API keys. The `seo-shopify` skill ships with the agentic-harness-seo plugin, so on a
 plugin install the installer copies nothing; run it from the plugin or repository
 folder. On a manual install (`~/.claude/skills/seo`) it copies the skill next to
 the other skills with its launcher path rewritten. The scripts ship with
-claude-seo already. In both cases it offers to create `.shopify-env` in the
+agentic-harness-seo already. In both cases it offers to create `.shopify-env` in the
 current folder from the template, readable by you only (mode 0600), and never
 overwrites an existing file. `uninstall.sh` removes the copied skill of a manual
 install and leaves `.shopify-env` alone.
@@ -112,9 +112,9 @@ work tree without being ignored.
 ## 3. Check and crawl
 
 ```bash
-"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run shopify_env.py list
-"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run shopify_env.py check https://shop.example
-"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run shopify_crawl.py https://shop.example --out ./crawl
+"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run shopify_env.py list
+"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run shopify_env.py check https://shop.example
+"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run shopify_crawl.py https://shop.example --out ./crawl
 ```
 
 Or in Claude Code: `/seo shopify https://shop.example`.

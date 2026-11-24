@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Directory that holds claude-seo's credentials and properties.
+"""Directory that holds agentic-harness-seo's credentials and properties.
 
-CLAUDE_SEO_PROFILE_DIR points google_auth.py, backlinks_auth.py and
+AGENTIC_HARNESS_SEO_PROFILE_DIR points google_auth.py, backlinks_auth.py and
 matomo_auth.py at one project's google-api.json, oauth-token.json,
 backlinks-api.json and matomo.json. Unset or empty, they use
-~/.config/claude-seo. A set profile is never combined with the default
+~/.config/agentic-harness-seo. A set profile is never combined with the default
 directory. The DataForSEO budget files do not follow it: they stay global
 so that several projects cannot each spend the daily limit of one account.
 A set profile inside a git work tree prints a warning on stderr, because
@@ -23,7 +23,7 @@ import os
 import sys
 from pathlib import Path
 
-ENV_VAR = "CLAUDE_SEO_PROFILE_DIR"
+ENV_VAR = "AGENTIC_HARNESS_SEO_PROFILE_DIR"
 _NOT_ABSOLUTE = ENV_VAR + " must be an absolute path or start with ~/, got {raw!r}"
 
 
@@ -39,7 +39,7 @@ def profile_dir() -> Path:
     """
     raw = os.environ.get(ENV_VAR, "")
     if not raw:
-        return Path(os.path.expanduser("~")) / ".config" / "claude-seo"
+        return Path(os.path.expanduser("~")) / ".config" / "agentic-harness-seo"
     if raw.startswith("~") and raw[1:2] not in ("", "/", "\\"):
         raise ValueError(_NOT_ABSOLUTE.format(raw=raw))
     try:

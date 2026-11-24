@@ -31,7 +31,7 @@ def isolated(tmp_path, monkeypatch):
     monkeypatch.setattr(google_auth, "CONFIG_PATH", str(tmp_path / "google-api.json"))
     monkeypatch.setattr(google_auth, "TOKEN_PATH", str(tmp_path / "oauth-token.json"))
     monkeypatch.setenv("CLOUDSDK_CONFIG", str(tmp_path / "no-gcloud"))
-    for name in ("CLAUDE_SEO_GOOGLE_AUTH", "GOOGLE_APPLICATION_CREDENTIALS", "GOOGLE_API_KEY"):
+    for name in ("AGENTIC_HARNESS_SEO_GOOGLE_AUTH", "GOOGLE_APPLICATION_CREDENTIALS", "GOOGLE_API_KEY"):
         monkeypatch.delenv(name, raising=False)
     return tmp_path
 

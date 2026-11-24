@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Canonical URL safety module for claude-seo.
+Canonical URL safety module for agentic-harness-seo.
 
 Centralizes SSRF protection, DNS rebinding mitigation, and DNS-pinned HTTP
 fetching. Every script in this repository that accepts a user-supplied URL
@@ -42,7 +42,7 @@ safe_requests_session(url) -> context manager yielding requests.Session
     session (cookies, redirect chains, multiple requests to one host).
 
 validate_public_url_strict(url) -> tuple[str, str]
-    ``validate_url_strict`` without the ``CLAUDE_SEO_LOCAL_TARGETS``
+    ``validate_url_strict`` without the ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS``
     allowlist. Used for every URL that is not the operator's own top-level
     target: redirect hops sent through an HTTP proxy and every connection
     the browser egress guard (``browser_proxy.py``) opens.
@@ -63,7 +63,7 @@ URLSafetyError
 
 Local targets
 =============
-``CLAUDE_SEO_LOCAL_TARGETS`` is an opt-in, comma-separated allowlist of
+``AGENTIC_HARNESS_SEO_LOCAL_TARGETS`` is an opt-in, comma-separated allowlist of
 ``host`` or ``host:port`` entries (for example
 ``localhost:3000,127.0.0.1:8080,100.101.102.103``) that lets an operator
 audit a dev server, a staging host, or a machine reached over Tailscale.
@@ -80,7 +80,7 @@ Threading
 The DNS pinning helper is a critical section guarded by a non-blocking
 ``threading.Lock``. Two concurrent pinned fetches on the same process will
 raise rather than corrupt the global ``socket.getaddrinfo`` reference.
-claude-seo scripts are intentionally single-threaded; parallelism is
+agentic-harness-seo scripts are intentionally single-threaded; parallelism is
 delegated to the agent-process layer.
 
 Proxies and redirects
@@ -91,7 +91,7 @@ request that is about to be sent through a proxy, redirect hops included,
 is therefore validated first (see ``_ProxyGuardSession``). A request that
 goes direct is covered by the pin, as before.
 
-The proxy itself must be public. ``CLAUDE_SEO_TRUSTED_PROXIES`` is the
+The proxy itself must be public. ``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES`` is the
 opt-in for a sandbox or local proxy: a comma-separated list of ``host`` or
 ``host:port`` entries naming a proxy that may sit on loopback, RFC 1918 or
 RFC 6598. It trusts that proxy endpoint and nothing else: no audit target,
@@ -219,7 +219,7 @@ def _reject_authority_confusion(url: str, parsed) -> None:
 
     Backslashes, userinfo, and fragment/userinfo ambiguity have all been
     used to make one parser see a public host while another connects to a
-    private host. claude-seo never needs credentials in audit URLs, so
+    private host. agentic-harness-seo never needs credentials in audit URLs, so
     userinfo is refused outright.
     """
     authority = _raw_authority(url)
@@ -304,11 +304,11 @@ def is_safe_ip(ip_str: str) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# CLAUDE_SEO_LOCAL_TARGETS: an explicit, top-level-only allowlist
+# AGENTIC_HARNESS_SEO_LOCAL_TARGETS: an explicit, top-level-only allowlist
 # ---------------------------------------------------------------------------
 #
 # Auditing a site before it is deployed, or a staging host reached over
-# Tailscale, means pointing claude-seo at a non-public address. The default
+# Tailscale, means pointing agentic-harness-seo at a non-public address. The default
 # policy refuses that, correctly: this toolkit follows URLs found on pages it
 # crawls, so a blanket "allow private" switch is an SSRF hole with a friendly
 # name.
@@ -329,7 +329,7 @@ def is_safe_ip(ip_str: str) -> bool:
 #     link-local, 100.100.100.200 sits inside the Tailscale range this
 #     allowlist exists to permit, and fd00:ec2::254 is unique-local rather
 #     than link-local, so no single address predicate catches all three.
-_LOCAL_TARGETS_ENV = "CLAUDE_SEO_LOCAL_TARGETS"
+_LOCAL_TARGETS_ENV = "AGENTIC_HARNESS_SEO_LOCAL_TARGETS"
 
 
 # Hostnames and literals no allowlist entry can ever unblock.
@@ -434,7 +434,7 @@ def _parse_local_target(entry: str) -> Optional[tuple[str, Optional[int]]]:
 
 
 def _local_targets() -> tuple[tuple[str, Optional[int]], ...]:
-    """The parsed contents of ``CLAUDE_SEO_LOCAL_TARGETS``.
+    """The parsed contents of ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS``.
 
     Read on every call rather than cached: the variable is operator
     configuration, and a cached empty tuple from import time would make the
@@ -448,7 +448,7 @@ def _local_targets() -> tuple[tuple[str, Optional[int]], ...]:
 
 
 def _is_allowlisted_local_target(hostname: str, port: Optional[int]) -> bool:
-    """True when ``hostname``/``port`` is named in ``CLAUDE_SEO_LOCAL_TARGETS``.
+    """True when ``hostname``/``port`` is named in ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS``.
 
     ``hostname`` must already be normalized. Metadata endpoints are refused
     before the list is even read.
@@ -466,21 +466,21 @@ def _is_allowlisted_local_target(hostname: str, port: Optional[int]) -> bool:
 
 
 # Operator opt-in for a configured proxy on loopback or a private address
-# (``CLAUDE_SEO_TRUSTED_PROXIES``). Some sandboxes send every outbound request
+# (``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES``). Some sandboxes send every outbound request
 # through a CONNECT proxy on the sandbox itself, and nothing leaves any other
 # way: Anthropic-hosted Claude Code cloud sessions set ``HTTPS_PROXY`` to a
 # proxy on 127.0.0.1. There every safe_requests_* call is refused (#280), and
 # so is every browser command, whose egress guard chains to the same proxy.
 # The opt-in is narrow by construction:
 #
-#   * It names a proxy, never an audit target. ``CLAUDE_SEO_LOCAL_TARGETS``
+#   * It names a proxy, never an audit target. ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS``
 #     and this list never read each other. A listed address is still refused
 #     as a destination: as the first URL, as a redirect hop and as anything
 #     the browser asks for.
 #   * A host must be named. ``host:port`` matches that port only. There is no
 #     range, wildcard, scheme or credential: an entry that carries one is
 #     dropped, so a typo trusts nothing.
-#   * The ranges are those of ``CLAUDE_SEO_LOCAL_TARGETS`` (loopback, RFC 1918,
+#   * The ranges are those of ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS`` (loopback, RFC 1918,
 #     RFC 6598 and other non-public ranges, see ``_is_allowlistable_ip``). Link-local and the cloud metadata endpoints are refused
 #     even when listed, when the entry is checked and again when a listed
 #     name resolves inside the pinned scope.
@@ -490,7 +490,7 @@ def _is_allowlisted_local_target(hostname: str, port: Optional[int]) -> bool:
 #
 # One parser (``_parse_trusted_proxy``) and one policy function
 # (``_resolve_proxy_endpoint``) serve the raw HTTP path and the browser guard.
-_TRUSTED_PROXIES_ENV = "CLAUDE_SEO_TRUSTED_PROXIES"
+_TRUSTED_PROXIES_ENV = "AGENTIC_HARNESS_SEO_TRUSTED_PROXIES"
 
 # ``host``, ``host:port``, ``[v6]`` or ``[v6]:port``; a bare IPv6 literal is
 # matched separately. Anything else (a scheme, userinfo, a path, a CIDR
@@ -502,7 +502,7 @@ _BARE_IPV6_RE = re.compile(r"^[0-9A-Fa-f:.]+$")
 
 
 def _parse_trusted_proxy(entry: str) -> Optional[tuple[str, Optional[int]]]:
-    """Parse one ``CLAUDE_SEO_TRUSTED_PROXIES`` entry into ``(host, port|None)``.
+    """Parse one ``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES`` entry into ``(host, port|None)``.
 
     Stricter than :func:`_parse_local_target`, which it then delegates to:
     only a hostname or an IP literal with an optional port is an entry.
@@ -528,7 +528,7 @@ def _parse_trusted_proxy(entry: str) -> Optional[tuple[str, Optional[int]]]:
 
 
 def _trusted_proxies() -> tuple[tuple[str, Optional[int]], ...]:
-    """The parsed contents of ``CLAUDE_SEO_TRUSTED_PROXIES``, read on every call."""
+    """The parsed contents of ``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES``, read on every call."""
     raw = os.environ.get(_TRUSTED_PROXIES_ENV, "")
     if not raw.strip():
         return ()
@@ -537,7 +537,7 @@ def _trusted_proxies() -> tuple[tuple[str, Optional[int]], ...]:
 
 
 def _is_trusted_proxy(hostname: str, port: Optional[int]) -> bool:
-    """True when ``hostname``/``port`` is named in ``CLAUDE_SEO_TRUSTED_PROXIES``.
+    """True when ``hostname``/``port`` is named in ``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES``.
 
     ``hostname`` must already be normalized. Metadata endpoints, and literals
     outside the ranges an operator may opt into, are refused before the list
@@ -714,7 +714,7 @@ def validate_url_strict(url: str) -> tuple[str, str]:
 
 def validate_public_url_strict(url: str) -> tuple[str, str]:
     """
-    :func:`validate_url_strict` without ``CLAUDE_SEO_LOCAL_TARGETS``.
+    :func:`validate_url_strict` without ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS``.
 
     For every URL that is not the operator's own top-level target: a
     redirect hop that will be sent through an HTTP proxy, and every
@@ -760,7 +760,7 @@ def _validate_url_addresses(
     if port is None:
         raise URLSafetyError(f"Invalid port in URL authority: {url!r}")
 
-    # The CLAUDE_SEO_LOCAL_TARGETS allowlist is read here, which is what keeps
+    # The AGENTIC_HARNESS_SEO_LOCAL_TARGETS allowlist is read here, which is what keeps
     # it top-level only. The request chain reaches it again in one place, the
     # pin's port check for this same host (``_local_pin_allows_port``).
     allowlisted = local_targets and _is_allowlisted_local_target(hostname, port)
@@ -813,7 +813,7 @@ def _validate_url_addresses(
             accepted.append(ip_str)
             continue
         if allowlisted and _is_allowlistable_ip(ip_str):
-            accepted.append(ip_str)  # Named in CLAUDE_SEO_LOCAL_TARGETS.
+            accepted.append(ip_str)  # Named in AGENTIC_HARNESS_SEO_LOCAL_TARGETS.
             continue
         if has_a_record and _is_dns64_synthesized(ip_str):
             continue  # Passed over, never dialled: not an accepted address.
@@ -972,7 +972,7 @@ class _ExemptProxies(frozenset):
 
     A plain set of hostnames, as :func:`_pin_dns` has always taken, plus
     ``trusted``: the ``(hostname, port)`` endpoints that were admitted through
-    ``CLAUDE_SEO_TRUSTED_PROXIES``. Inside the pin an exempt host may resolve
+    ``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES``. Inside the pin an exempt host may resolve
     to a non-public address only for one of those endpoints, so the exemption
     reaches the proxy's own port and nothing else on that address.
     """
@@ -1017,7 +1017,7 @@ def _resolve_proxy_endpoint(
     the ones this check saw, IPv4 first, so a caller that opens the connection
     itself (the browser guard) dials one of them instead of resolving again.
 
-    A proxy named in ``CLAUDE_SEO_TRUSTED_PROXIES`` (``trusted`` is then
+    A proxy named in ``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES`` (``trusted`` is then
     true) may sit on loopback, RFC 1918 or RFC 6598, and a listed name must
     resolve only into addresses an entry can reach: one link-local or
     metadata record refuses the whole name. Every other proxy goes through
@@ -1077,10 +1077,10 @@ def upstream_http_proxy(url: str) -> Optional[tuple[str, int, Optional[str]]]:
     Only ``http://`` proxies are supported there; any other scheme raises
     ``URLSafetyError`` so the caller reports a clear error instead of
     connecting direct, whether or not the proxy is listed in
-    ``CLAUDE_SEO_TRUSTED_PROXIES``.
+    ``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES``.
 
     The proxy goes through :func:`_resolve_proxy_endpoint`, the policy the
-    raw HTTP path uses: public, or listed in ``CLAUDE_SEO_TRUSTED_PROXIES``
+    raw HTTP path uses: public, or listed in ``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES``
     with its port and inside the opt-in ranges. The returned address is one
     that check saw, so the caller never resolves the proxy name again.
     """
@@ -1113,7 +1113,7 @@ def _local_pin_allows_port(hostname: str, validated_port: int, requested_port) -
 
     The validated port always may. Any other port on the pinned host (a
     redirect hop, a second request on a session) is a new target and goes
-    through ``CLAUDE_SEO_LOCAL_TARGETS`` again: a ``host:port`` entry reaches
+    through ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS`` again: a ``host:port`` entry reaches
     that port only, while a bare ``host`` entry keeps matching every port.
     A port that cannot be read as a number is refused.
     """
@@ -1133,7 +1133,7 @@ def _local_pin_allows_port(hostname: str, validated_port: int, requested_port) -
 
 
 # A single non-blocking lock guards the global getaddrinfo monkey-patch.
-# This is a deliberate choice: claude-seo scripts run one URL fetch at a
+# This is a deliberate choice: agentic-harness-seo scripts run one URL fetch at a
 # time, and we'd rather raise loudly than silently corrupt resolver state
 # if a caller ever introduces threading.
 _dns_patch_lock = threading.Lock()
@@ -1156,7 +1156,7 @@ def _pin_dns(
 
     A public ``pinned_ip`` answers for every port on the named host, so an
     http to https redirect keeps the pin. A non-public ``pinned_ip`` (a
-    ``CLAUDE_SEO_LOCAL_TARGETS`` target) answers for ``port`` only, plus any
+    ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS`` target) answers for ``port`` only, plus any
     other port the allowlist names for that host; see
     :func:`_local_pin_allows_port`.
 
@@ -1172,7 +1172,7 @@ def _pin_dns(
     put that host through :func:`_resolve_proxy_endpoint`. Its answers are
     checked again here on every lookup: public addresses pass, and a
     non-public one passes only for a ``(host, port)`` endpoint that
-    ``CLAUDE_SEO_TRUSTED_PROXIES`` admitted (``exempt_hosts.trusted``, see
+    ``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES`` admitted (``exempt_hosts.trusted``, see
     :class:`_ExemptProxies`). A plain set of hostnames therefore exempts
     public proxies only. Behind a proxy the target
     is resolved by the proxy and never reaches this function, so the guard
@@ -1190,13 +1190,13 @@ def _pin_dns(
     if not _dns_patch_lock.acquire(blocking=False):
         raise URLSafetyError(
             "DNS-pinned fetch already in progress on another thread; "
-            "claude-seo url_safety is not thread-safe by design."
+            "agentic-harness-seo url_safety is not thread-safe by design."
         )
 
     original_getaddrinfo = socket.getaddrinfo
     target = hostname.lower()
     # A pinned address that is not public was admitted through
-    # CLAUDE_SEO_LOCAL_TARGETS, where ``host:port`` allows that port only.
+    # AGENTIC_HARNESS_SEO_LOCAL_TARGETS, where ``host:port`` allows that port only.
     # Such a pin must not answer for the host's other ports, or a redirect
     # from the allowed dev server reaches every service on that address.
     port_bound = not is_safe_ip(pinned_ip)
@@ -1236,7 +1236,7 @@ def _pin_dns(
             result = original_getaddrinfo(host, requested_port, *args, **kwargs)
             # Every answer is checked, on every lookup. A public address
             # passes, as it always has. A non-public one passes only for an
-            # endpoint admitted through CLAUDE_SEO_TRUSTED_PROXIES: that host
+            # endpoint admitted through AGENTIC_HARNESS_SEO_TRUSTED_PROXIES: that host
             # on that port, still listed, and inside the opt-in ranges. So a
             # proxy name that now resolves elsewhere (rebinding) is refused,
             # and so is any other port on a trusted proxy's address, which is
@@ -1285,7 +1285,7 @@ def _pin_dns(
         _dns_patch_lock.release()
 
 
-# The browser-like default User-Agent for every raw-HTTP fetch in claude-seo.
+# The browser-like default User-Agent for every raw-HTTP fetch in agentic-harness-seo.
 # ``fetch_page.py`` has carried these defaults since v1.2.1 (issue #9); they
 # live here now because ``url_safety`` is the lower layer, so this module is
 # the one place to change them. ``fetch_page.py`` imports them back.
@@ -1607,7 +1607,7 @@ class _ProxyGuardSession(requests.Session):
     limit and the redirect body cap are untouched.
 
     A request that goes direct is left to the pin, with one exception: a hop
-    whose host is named in ``CLAUDE_SEO_TRUSTED_PROXIES`` is validated here
+    whose host is named in ``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES`` is validated here
     too. The pin lets that host resolve to its non-public address on the
     proxy's port, which is meant for the tunnel, not for a redirect that
     ``NO_PROXY`` sends straight to the proxy's own address. The first,
@@ -1729,7 +1729,7 @@ def safe_requests_session(url: str, *, public_only: bool = False) -> Iterator[re
     within the ``with`` block without re-resolving.
 
     ``public_only`` is for a URL the operator did not choose (one taken from
-    a page, such as its canonical): ``CLAUDE_SEO_LOCAL_TARGETS`` is never
+    a page, such as its canonical): ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS`` is never
     read, so every address must be public.
     """
     validate = validate_public_url_strict if public_only else validate_url_strict
@@ -1880,7 +1880,7 @@ def _cli() -> None:
     import sys
 
     parser = argparse.ArgumentParser(
-        description="Validate a URL against claude-seo's SSRF policy."
+        description="Validate a URL against agentic-harness-seo's SSRF policy."
     )
     parser.add_argument("url", help="URL to validate")
     parser.add_argument(

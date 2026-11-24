@@ -1,12 +1,12 @@
 # PostHog extension setup
 
-This extension lets claude-seo use the PostHog MCP server as an analytics source,
+This extension lets agentic-harness-seo use the PostHog MCP server as an analytics source,
 the same way the Matomo extension uses the Matomo Reporting API. It stores no
 credentials: authentication belongs to the MCP server.
 
 > **Use read-only access.** The PostHog MCP `exec` tool can read data and also
 > create, update and delete PostHog objects (insights, dashboards, feature
-> flags and more). claude-seo only ever needs to read, and its read-only rule is
+> flags and more). agentic-harness-seo only ever needs to read, and its read-only rule is
 > an instruction to the agent, not a technical limit. Authenticate the MCP
 > server with a read-only scoped personal API key, or sign in as a member whose
 > access to the project is read-only, so a write cannot succeed.
@@ -19,7 +19,7 @@ credentials: authentication belongs to the MCP server.
 
 On Windows, run `.\extensions\posthog\install.ps1` in PowerShell.
 
-The `seo-posthog` skill and agent ship with the claude-seo plugin, so on a
+The `seo-posthog` skill and agent ship with the agentic-harness-seo plugin, so on a
 plugin install the installer copies nothing; run it from the plugin or repository
 folder. On a manual install (`~/.claude/skills/seo`) it copies the skill to
 `~/.claude/skills/seo-posthog/` and the agent to `~/.claude/agents/seo-posthog.md`.

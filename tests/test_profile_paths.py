@@ -1,4 +1,4 @@
-"""CLAUDE_SEO_PROFILE_DIR points the credential scripts at one project's files.
+"""AGENTIC_HARNESS_SEO_PROFILE_DIR points the credential scripts at one project's files.
 
 The path constants are set at import, so the import-level tests run in a
 subprocess, as tests/test_dataforseo_costs.py does. No test touches the network.
@@ -34,17 +34,17 @@ def test_unset_or_empty_variable_selects_the_default_directory(
     home: Path, monkeypatch: pytest.MonkeyPatch, value: str | None
 ) -> None:
     if value is None:
-        monkeypatch.delenv("CLAUDE_SEO_PROFILE_DIR", raising=False)
+        monkeypatch.delenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", raising=False)
     else:
-        monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", value)
-    assert profile_paths.profile_dir() == home / ".config" / "claude-seo"
+        monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", value)
+    assert profile_paths.profile_dir() == home / ".config" / "agentic-harness-seo"
 
 
 @pytest.mark.parametrize("value", ["~/profiles/a", "~/profiles/a/"])
 def test_tilde_expands_under_the_home_directory(
     home: Path, monkeypatch: pytest.MonkeyPatch, value: str
 ) -> None:
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", value)
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", value)
     assert profile_paths.profile_dir() == (home / "profiles" / "a").resolve()
 
 
@@ -52,16 +52,16 @@ def test_tilde_expands_under_the_home_directory(
 def test_relative_path_is_rejected(
     home: Path, monkeypatch: pytest.MonkeyPatch, value: str
 ) -> None:
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", value)
-    with pytest.raises(ValueError, match="CLAUDE_SEO_PROFILE_DIR") as exc:
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", value)
+    with pytest.raises(ValueError, match="AGENTIC_HARNESS_SEO_PROFILE_DIR") as exc:
         profile_paths.profile_dir()
     assert repr(value) in str(exc.value)
 
 
 def test_filesystem_root_is_rejected(home: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     root = Path.cwd().anchor
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", root)
-    with pytest.raises(ValueError, match="CLAUDE_SEO_PROFILE_DIR") as exc:
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", root)
+    with pytest.raises(ValueError, match="AGENTIC_HARNESS_SEO_PROFILE_DIR") as exc:
         profile_paths.profile_dir()
     assert repr(root) in str(exc.value)
 
@@ -70,8 +70,8 @@ def test_filesystem_root_is_rejected(home: Path, monkeypatch: pytest.MonkeyPatch
 def test_home_directory_is_rejected(
     home: Path, monkeypatch: pytest.MonkeyPatch, value: str
 ) -> None:
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", value)
-    with pytest.raises(ValueError, match="CLAUDE_SEO_PROFILE_DIR"):
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", value)
+    with pytest.raises(ValueError, match="AGENTIC_HARNESS_SEO_PROFILE_DIR"):
         profile_paths.profile_dir()
 
 
@@ -83,20 +83,20 @@ def test_symlink_to_the_home_directory_is_rejected(
         link.symlink_to(home, target_is_directory=True)
     except OSError:
         pytest.skip("this filesystem cannot create symlinks")
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", str(link))
-    with pytest.raises(ValueError, match="CLAUDE_SEO_PROFILE_DIR"):
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", str(link))
+    with pytest.raises(ValueError, match="AGENTIC_HARNESS_SEO_PROFILE_DIR"):
         profile_paths.profile_dir()
 
 
 def test_or_exit_turns_a_rejected_value_into_exit_code_1(
     home: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", "profiles/a")
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", "profiles/a")
     with pytest.raises(SystemExit) as exc:
         profile_paths.profile_dir_or_exit()
     assert exc.value.code == 1
     err = capsys.readouterr().err
-    assert "CLAUDE_SEO_PROFILE_DIR" in err
+    assert "AGENTIC_HARNESS_SEO_PROFILE_DIR" in err
     assert "'profiles/a'" in err
 
 
@@ -112,10 +112,10 @@ def test_profile_inside_a_git_work_tree_warns(
     else:
         # A linked worktree or a submodule has a .git file, not a directory.
         (repo / ".git").write_text("gitdir: /elsewhere/.git/worktrees/repo\n")
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", str(repo / ".claude" / "seo-profile"))
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", str(repo / ".claude" / "seo-profile"))
     profile_paths.profile_dir_or_exit()
     err = capsys.readouterr().err
-    assert "Warning: CLAUDE_SEO_PROFILE_DIR" in err
+    assert "Warning: AGENTIC_HARNESS_SEO_PROFILE_DIR" in err
     assert f"inside the git work tree {repo.resolve()}" in err
 
 
@@ -123,7 +123,7 @@ def test_profile_outside_a_git_work_tree_does_not_warn(
     home: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", str(tmp_path / "profiles" / "a"))
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", str(tmp_path / "profiles" / "a"))
     profile_paths.profile_dir_or_exit()
     assert capsys.readouterr().err == ""
 
@@ -132,7 +132,7 @@ def test_default_directory_inside_a_git_work_tree_does_not_warn(
     home: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
     (home / ".git").mkdir()
-    monkeypatch.delenv("CLAUDE_SEO_PROFILE_DIR", raising=False)
+    monkeypatch.delenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", raising=False)
     profile_paths.profile_dir_or_exit()
     assert capsys.readouterr().err == ""
 
@@ -148,7 +148,7 @@ def test_git_work_tree_warning_is_printed_once_per_process(tmp_path: Path) -> No
 
 def test_cli_prints_the_directory_as_json(tmp_path: Path) -> None:
     profile = tmp_path / "profile"
-    env = {**os.environ, "CLAUDE_SEO_PROFILE_DIR": str(profile)}
+    env = {**os.environ, "AGENTIC_HARNESS_SEO_PROFILE_DIR": str(profile)}
     proc = subprocess.run(
         [sys.executable, str(SCRIPTS / "profile_paths.py")],
         capture_output=True, text=True, env=env,
@@ -164,7 +164,7 @@ _CONSTANTS = {
 }
 
 _CREDENTIAL_ENV_PREFIXES = (
-    "CLAUDE_SEO_", "GOOGLE_", "GSC_", "GA4_", "MOZ_", "BING_",
+    "AGENTIC_HARNESS_SEO_", "GOOGLE_", "GSC_", "GA4_", "MOZ_", "BING_",
     "KEYWORDSEVERYWHERE_", "MATOMO_",
 )
 
@@ -179,7 +179,7 @@ def _isolated_env(tmp_path: Path, profile: str | None) -> dict[str, str]:
     env["USERPROFILE"] = str(home)
     env["CLOUDSDK_CONFIG"] = str(tmp_path / "gcloud")
     if profile is not None:
-        env["CLAUDE_SEO_PROFILE_DIR"] = profile
+        env["AGENTIC_HARNESS_SEO_PROFILE_DIR"] = profile
     return env
 
 
@@ -214,14 +214,14 @@ def test_unset_variable_keeps_todays_paths(tmp_path: Path, module: str) -> None:
     constants = _constants(module, _isolated_env(tmp_path, None))
     home = tmp_path / "home"
     assert {name: os.path.normpath(path) for name, path in constants.items()} == {
-        name: os.path.normpath(os.path.join(home, ".config", "claude-seo", filename))
+        name: os.path.normpath(os.path.join(home, ".config", "agentic-harness-seo", filename))
         for name, filename in _CONSTANTS[module].items()
     }
 
 
 @pytest.mark.parametrize("module", sorted(_CONSTANTS))
 def test_default_directory_set_explicitly_matches_unset(tmp_path: Path, module: str) -> None:
-    explicit = _constants(module, _isolated_env(tmp_path, "~/.config/claude-seo"))
+    explicit = _constants(module, _isolated_env(tmp_path, "~/.config/agentic-harness-seo"))
     unset = _constants(module, _isolated_env(tmp_path, None))
     assert {n: Path(p).resolve() for n, p in explicit.items()} == {
         n: Path(p).resolve() for n, p in unset.items()
@@ -232,7 +232,7 @@ def test_default_directory_set_explicitly_matches_unset(tmp_path: Path, module: 
 def test_rejected_value_stops_the_import_without_a_traceback(tmp_path: Path, module: str) -> None:
     proc = _python(f"import {module}", _isolated_env(tmp_path, "profiles/project-xyz"))
     assert proc.returncode == 1
-    assert "CLAUDE_SEO_PROFILE_DIR" in proc.stderr
+    assert "AGENTIC_HARNESS_SEO_PROFILE_DIR" in proc.stderr
     assert "'profiles/project-xyz'" in proc.stderr
     assert "Traceback" not in proc.stderr
 
@@ -243,7 +243,7 @@ def test_dataforseo_budget_ignores_the_profile(tmp_path: Path) -> None:
         _isolated_env(tmp_path, str(tmp_path / "profile")),
     )
     assert proc.returncode == 0, proc.stderr
-    assert proc.stdout.strip() == str(tmp_path / "home" / ".config" / "claude-seo")
+    assert proc.stdout.strip() == str(tmp_path / "home" / ".config" / "agentic-harness-seo")
 
 
 def test_keyword_planner_reads_the_token_from_google_auth(
@@ -347,7 +347,7 @@ def test_check_text_marks_a_missing_profile_directory(tmp_path: Path, script: st
 @pytest.mark.parametrize(
     "value",
     [
-        "~.config/claude-seo/profiles/x",
+        "~.config/agentic-harness-seo/profiles/x",
         "~no-such-user-xyz/profiles/x",
         "~root/p",
         "~.config\\x",
@@ -356,8 +356,8 @@ def test_check_text_marks_a_missing_profile_directory(tmp_path: Path, script: st
 def test_tilde_typo_is_rejected_with_the_variable_name(
     home: Path, monkeypatch: pytest.MonkeyPatch, value: str
 ) -> None:
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", value)
-    with pytest.raises(ValueError, match="CLAUDE_SEO_PROFILE_DIR") as exc:
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", value)
+    with pytest.raises(ValueError, match="AGENTIC_HARNESS_SEO_PROFILE_DIR") as exc:
         profile_paths.profile_dir()
     assert repr(value) in str(exc.value)
 
@@ -368,8 +368,8 @@ def test_home_directory_in_different_case_is_rejected(
     other_case = Path(str(home).swapcase())
     if not other_case.exists():
         pytest.skip("this filesystem is case-sensitive")
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", str(other_case))
-    with pytest.raises(ValueError, match="CLAUDE_SEO_PROFILE_DIR") as exc:
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", str(other_case))
+    with pytest.raises(ValueError, match="AGENTIC_HARNESS_SEO_PROFILE_DIR") as exc:
         profile_paths.profile_dir()
     assert repr(str(other_case)) in str(exc.value)
 
@@ -394,7 +394,7 @@ def test_missing_home_does_not_break_a_valid_profile(
     monkeypatch.setenv("USERPROFILE", str(tmp_path / "no-such-home"))
     profile = tmp_path / "profile"
     profile.mkdir()
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", str(profile))
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", str(profile))
     assert profile_paths.profile_dir() == profile.resolve()
 
 
@@ -404,9 +404,9 @@ def test_unset_variable_does_not_need_path_home(
     def no_home(cls: type[Path]) -> Path:
         raise RuntimeError("Could not determine home directory.")
 
-    monkeypatch.delenv("CLAUDE_SEO_PROFILE_DIR", raising=False)
+    monkeypatch.delenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", raising=False)
     monkeypatch.setattr(Path, "home", classmethod(no_home))
-    assert profile_paths.profile_dir() == home / ".config" / "claude-seo"
+    assert profile_paths.profile_dir() == home / ".config" / "agentic-harness-seo"
 
 
 def test_keyword_planner_error_names_the_config_in_use(
@@ -443,7 +443,7 @@ def test_set_profile_ignores_the_default_directory(
     tmp_path: Path, module: str, filename: str, key: str
 ) -> None:
     env = _isolated_env(tmp_path, str(tmp_path / "missing-profile"))
-    default = tmp_path / "home" / ".config" / "claude-seo"
+    default = tmp_path / "home" / ".config" / "agentic-harness-seo"
     default.mkdir(parents=True)
     (default / filename).write_text(json.dumps({key: "from-default-dir"}))
     proc = _python(f"import json, {module}; print(json.dumps({module}.load_config()))", env)
@@ -459,7 +459,7 @@ def test_profile_under_an_unsearchable_parent_is_accepted(
     locked.mkdir()
     locked.chmod(0)
     try:
-        monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", str(locked / "profile"))
+        monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", str(locked / "profile"))
         assert profile_paths.profile_dir() == (locked / "profile").resolve()
     finally:
         locked.chmod(0o700)
@@ -473,7 +473,7 @@ def test_missing_passwd_entry_does_not_break_a_valid_profile(
 
     profile = tmp_path / "profile"
     monkeypatch.setattr(Path, "home", classmethod(no_passwd_entry))
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", str(profile))
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", str(profile))
     assert profile_paths.profile_dir() == profile.resolve()
 
 
@@ -485,8 +485,8 @@ def test_unresolvable_path_is_rejected_with_the_variable_name(
 
     value = str(tmp_path / "profile")
     monkeypatch.setattr(Path, "resolve", loop)
-    monkeypatch.setenv("CLAUDE_SEO_PROFILE_DIR", value)
-    with pytest.raises(ValueError, match="CLAUDE_SEO_PROFILE_DIR") as exc:
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_PROFILE_DIR", value)
+    with pytest.raises(ValueError, match="AGENTIC_HARNESS_SEO_PROFILE_DIR") as exc:
         profile_paths.profile_dir()
     assert repr(value) in str(exc.value)
 

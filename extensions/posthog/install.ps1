@@ -1,4 +1,4 @@
-# Claude SEO: PostHog extension installer (Windows).
+# Agentic Harness SEO: PostHog extension installer (Windows).
 #
 # Plugin installs already ship the skill (skills/seo-posthog) and the agent
 # (agents/seo-posthog.md), so only the MCP server is registered there. Manual
@@ -20,15 +20,15 @@ if (Test-Path (Join-Path $SkillDir "seo")) {
     if ((Test-Path (Join-Path $OwnRoot "skills/seo")) -and (Test-Path (Join-Path $OwnRoot ".claude-plugin/plugin.json"))) {
         $InstallMode = "plugin"; $PluginRoot = $OwnRoot
     } else {
-        $Cached = Get-ChildItem -Path (Join-Path $HOME ".claude/plugins/cache/*/claude-seo/*/skills/seo") -Directory -ErrorAction SilentlyContinue | Select-Object -Last 1
+        $Cached = Get-ChildItem -Path (Join-Path $HOME ".claude/plugins/cache/*/agentic-harness-seo/*/skills/seo") -Directory -ErrorAction SilentlyContinue | Select-Object -Last 1
         if ($Cached) { $InstallMode = "plugin"; $PluginRoot = Split-Path -Parent (Split-Path -Parent $Cached.FullName) }
     }
 }
-if (-not $InstallMode) { throw "claude-seo base not installed (no plugin install and no ~/.claude/skills/seo)." }
+if (-not $InstallMode) { throw "agentic-harness-seo base not installed (no plugin install and no ~/.claude/skills/seo)." }
 if ($InstallMode -eq "plugin") {
-    Write-Host "claude-seo plugin detected: registering the MCP server only."
+    Write-Host "agentic-harness-seo plugin detected: registering the MCP server only."
     if (-not ((Test-Path (Join-Path $PluginRoot "skills/seo-posthog/SKILL.md")) -and (Test-Path (Join-Path $PluginRoot "agents/seo-posthog.md")))) {
-        Write-Host "! This plugin version does not ship the seo-posthog skill and agent yet. Update the claude-seo plugin, then /seo posthog will load."
+        Write-Host "! This plugin version does not ship the seo-posthog skill and agent yet. Update the agentic-harness-seo plugin, then /seo posthog will load."
     }
 }
 if ($InstallMode -eq "manual") {

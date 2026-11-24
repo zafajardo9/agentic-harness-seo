@@ -142,7 +142,7 @@ def fetch_page(
             inside a connect, a header read or a redirect's own body is
             still limited by ``timeout`` per socket read, not by this.
         public_only: For a URL taken from a page rather than chosen by the
-            operator: ``CLAUDE_SEO_LOCAL_TARGETS`` is ignored, so only public
+            operator: ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS`` is ignored, so only public
             addresses are fetched.
 
     Returns:

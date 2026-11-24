@@ -1,5 +1,5 @@
 #!/usr/bin/env pwsh
-# claude-seo manual-install uninstaller (Windows)
+# agentic-harness-seo manual-install uninstaller (Windows)
 #
 # Removes the orchestrator skill (~/.claude/skills/seo), all sub-skills
 # (~/.claude/skills/seo-*), and all sub-agents (~/.claude/agents/seo-*.md).
@@ -9,8 +9,8 @@
 # uninstaller.
 #
 # Plugin-install users should use Claude Code's own command instead:
-#   /plugin uninstall claude-seo@agricidaniel-claude-seo
-#   /plugin marketplace remove AgriciDaniel/claude-seo
+#   /plugin uninstall agentic-harness-seo@zafajardo9-agentic-harness-seo
+#   /plugin marketplace remove zafajardo9/agentic-harness-seo
 
 $ErrorActionPreference = "Stop"
 
@@ -22,7 +22,7 @@ function Main {
     $SkillDir = Join-Path (Join-Path $env:USERPROFILE ".claude") "skills"
     $AgentDir = Join-Path (Join-Path $env:USERPROFILE ".claude") "agents"
 
-    Write-Color Cyan "=== Uninstalling claude-seo ==="
+    Write-Color Cyan "=== Uninstalling agentic-harness-seo ==="
     Write-Host ""
 
     $removedSkills = 0
@@ -56,12 +56,12 @@ function Main {
 
     Write-Host ""
     if ($removedSkills -eq 0 -and $removedAgents -eq 0) {
-        Write-Color Yellow "Nothing to remove. Claude SEO does not appear to be installed."
+        Write-Color Yellow "Nothing to remove. Agentic Harness SEO does not appear to be installed."
         Write-Color Yellow "If you installed via /plugin install, run /plugin uninstall instead."
         return
     }
 
-    Write-Color Cyan "=== claude-seo uninstalled ($removedSkills skill dirs, $removedAgents agent files) ==="
+    Write-Color Cyan "=== agentic-harness-seo uninstalled ($removedSkills skill dirs, $removedAgents agent files) ==="
     Write-Host ""
     Write-Color Yellow "Restart Claude Code to complete removal."
 }

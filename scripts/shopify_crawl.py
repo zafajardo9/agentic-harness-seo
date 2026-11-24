@@ -74,7 +74,7 @@ if _SCRIPTS_DIR not in sys.path:
 import shopify_env  # noqa: E402
 from url_safety import URLSafetyError, safe_requests_session, validate_url_strict  # noqa: E402
 
-USER_AGENT = "ClaudeSEO-ShopifyCrawler (+https://github.com/AgriciDaniel/claude-seo)"
+USER_AGENT = "ClaudeSEO-ShopifyCrawler (+https://github.com/zafajardo9/agentic-harness-seo)"
 BASE_HEADERS = {
     "User-Agent": USER_AGENT,
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",

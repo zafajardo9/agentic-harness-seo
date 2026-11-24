@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude SEO: Ahrefs extension installer.
+# Agentic Harness SEO: Ahrefs extension installer.
 #
 # Wires the official @ahrefs/mcp server into ~/.claude.json and
 # copies the seo-ahrefs mirror skill into ~/.claude/skills/.
@@ -15,7 +15,7 @@ main() {
     MCP_CONFIG_JSON="${HOME}/.claude.json"
 
     echo "════════════════════════════════════════"
-    echo "║   Claude SEO: Ahrefs extension       ║"
+    echo "║   Agentic Harness SEO: Ahrefs extension       ║"
     echo "════════════════════════════════════════"
 
     command -v python3 >/dev/null 2>&1 || {
@@ -26,8 +26,8 @@ main() {
     }
 
     if [ ! -d "${SKILL_DIR}/seo" ]; then
-        echo "✗ claude-seo base plugin not installed."
-        echo "  Install it first: curl -fsSL https://raw.githubusercontent.com/AgriciDaniel/claude-seo/main/install.sh | bash"
+        echo "✗ agentic-harness-seo base plugin not installed."
+        echo "  Install it first: curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main/install.sh | bash"
         exit 1
     fi
 
@@ -51,7 +51,7 @@ main() {
 
     # Merge MCP config into ~/.claude.json atomically.
     mkdir -p "$(dirname "${MCP_CONFIG_JSON}")"
-    CLAUDE_SEO_SECRET="${AHREFS_TOKEN}" python3 - "${MCP_CONFIG_JSON}" <<'PY'
+    AGENTIC_HARNESS_SEO_SECRET="${AHREFS_TOKEN}" python3 - "${MCP_CONFIG_JSON}" <<'PY'
 import json
 import os
 import sys
@@ -59,7 +59,7 @@ import tempfile
 
 # The token arrives in the environment, not argv: argv is visible to other
 # local users through ps, the environment is not.
-path, token = sys.argv[1], os.environ["CLAUDE_SEO_SECRET"]
+path, token = sys.argv[1], os.environ["AGENTIC_HARNESS_SEO_SECRET"]
 data = {}
 if os.path.exists(path):
     try:

@@ -1,28 +1,66 @@
 name: Feature Request
-description: Suggest a new feature or improvement for Claude SEO
+description: Suggest a new feature or improvement for Agentic Harness SEO
 title: "[Feature]: "
 labels: ["enhancement"]
+
 body:
   - type: markdown
     attributes:
       value: |
-        Have a great idea? We'd love to hear it! For general discussion, consider using [GitHub Discussions](https://github.com/AgriciDaniel/claude-seo/discussions) instead.
+        Have an idea? Describe the problem first, then the shape of the
+        solution — that makes the trade-off reviewable.
+
+        For open-ended ideas, use
+        [GitHub Discussions](https://github.com/zafajardo9/agentic-harness-seo/discussions).
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Pre-flight
+      options:
+        - label: I searched existing issues and discussions for this request
+          required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of the toolkit would this touch?
+      options:
+        - Skill (skills/*/SKILL.md)
+        - Agent (agents/*.md)
+        - Script (scripts/*.py)
+        - Documentation
+        - Harness integration / portability
+        - Extension
+        - Not sure
+    validations:
+      required: true
+
   - type: textarea
     id: problem
     attributes:
       label: Problem statement
-      description: What problem does this feature solve?
+      description: What can't you do today, or what is painful about current behavior?
     validations:
       required: true
+
   - type: textarea
     id: solution
     attributes:
       label: Proposed solution
-      description: Describe how you'd like it to work
+      description: How should it work? A command sketch or example output helps.
     validations:
       required: true
+
   - type: textarea
     id: alternatives
     attributes:
       label: Alternatives considered
-      description: Any alternative solutions or features you've considered?
+      description: Other approaches you weighed, and why they fall short
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Links, prior art, or constraints worth knowing

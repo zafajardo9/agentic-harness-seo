@@ -15,13 +15,13 @@ metadata:
 **Invocation:** `/seo $ARGUMENTS`, where the first word is the command and the rest is the URL or argument.
 
 **Runtime:** Run bundled Python tools through
-`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run <script.py>`. That is the single
+`"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run <script.py>`. That is the single
 canonical form used by every skill and agent. Claude Code expands
 `${CLAUDE_PLUGIN_ROOT}` to the installed plugin directory, so the launcher is
 found without any `PATH` entry; the repository ships no top-level `bin/`
 directory because hosted marketplaces reject one. Repository users run
-`./scripts/claude-seo`; manual installers rewrite the canonical form to
-`"$HOME/.claude/skills/seo/scripts/claude-seo"`. Never invoke bundled scripts
+`./scripts/agentic-harness-seo`; manual installers rewrite the canonical form to
+`"$HOME/.claude/skills/seo/scripts/agentic-harness-seo"`. Never invoke bundled scripts
 with a bare Python interpreter.
 
 Comprehensive SEO analysis across all industries (SaaS, local services,
@@ -72,12 +72,12 @@ extension is also installable (see "Optional Extensions" below).
 
 Run setup only when the user explicitly invokes `/seo setup` or explicitly asks
 to repair dependencies. Execute
-`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" setup`, report core and Chromium
+`"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" setup`, report core and Chromium
 status separately, and do not fall back to global or user package installation.
 For diagnosis, execute
-`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" doctor --json`; its output
+`"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" doctor --json`; its output
 intentionally omits absolute paths and environment values. If any
-`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run` command reports that setup is
+`"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run` command reports that setup is
 required, suggest `/seo setup` and do not improvise a `pip install`.
 
 ## Orchestration Logic
@@ -85,16 +85,16 @@ required, suggest `/seo setup` and do not improvise a `pip install`.
 When the user invokes `/seo audit`, delegate to subagents in parallel:
 1. Detect business type (SaaS, local, ecommerce, publisher, agency, other)
 2. Spawn subagents: seo-technical, seo-content, seo-schema, seo-sitemap, seo-performance, seo-visual, seo-geo, seo-agentic
-3. If Google API credentials detected (`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run google_auth.py --check`), also spawn seo-google agent
-4. If Matomo credentials detected (`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run matomo_auth.py --check`), also spawn seo-matomo agent (alternative or complement to seo-google's GA4 reports)
+3. If Google API credentials detected (`"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run google_auth.py --check`), also spawn seo-google agent
+4. If Matomo credentials detected (`"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_auth.py --check`), also spawn seo-matomo agent (alternative or complement to seo-google's GA4 reports)
 5. If the PostHog MCP `exec` tool is available, also spawn seo-posthog agent (alternative or complement to seo-google's GA4 reports). The tool is `mcp__posthog__exec` when the server is registered in lowercase, as the extension installer does, or `mcp__PostHog__exec` otherwise; either spelling counts
 6. If local business detected, also spawn seo-local agent
 7. If local business detected AND DataForSEO MCP available, also spawn seo-maps agent. Subagents have no MCP tools, so seo-maps on its own runs the free tier (Tier 0). First obtain the paid maps data (business listings, Maps SERP geo-grid, GBP profile, reviews) through the seo-dataforseo agent or your own DataForSEO MCP tools, within its cost guardrails, then pass that data in the seo-maps prompt. The maps section of the report must say which tier was used
-8. Spawn seo-backlinks agent for Common Crawl domain-level metrics, adding Moz and Bing data when their credentials are detected (`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run backlinks_auth.py --check`)
+8. Spawn seo-backlinks agent for Common Crawl domain-level metrics, adding Moz and Bing data when their credentials are detected (`"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run backlinks_auth.py --check`)
 9. If Firecrawl MCP available, use `firecrawl_map` to discover all site URLs before analysis
 10. If content strategy signals detected (blog, pillar pages, topic clusters), also spawn seo-cluster agent
 11. If e-commerce detected, also spawn seo-ecommerce agent
-12. If drift baseline exists for this URL (`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run drift_history.py <url>`), also spawn seo-drift agent
+12. If drift baseline exists for this URL (`"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run drift_history.py <url>`), also spawn seo-drift agent
 13. Always include seo-sxo in full audits (search experience applies to all sites)
 14. Collect results and generate unified report with SEO Health Score (0-100)
 15. **Synthesize via the 10-principle framework** (see "Synthesis Methodology" below), walk PERCEIVE → ANALYZE → VALIDATE → ACT before bucketing findings into Critical / High / Medium / Low
@@ -102,12 +102,12 @@ When the user invokes `/seo audit`, delegate to subagents in parallel:
 17. **Offer PDF report**: "Generate a professional PDF report? Use `/seo google report full`"
 
 For individual commands, load the relevant sub-skill directly.
-After any analysis command completes, offer to generate a PDF report via `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run google_report.py`.
+After any analysis command completes, offer to generate a PDF report via `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run google_report.py`.
 
 **Google update history questions** (core, spam, policy, product changes; "is the
 spam update finished?"): answer from the bundled primary-source ledger, not from
 memory or other copies on disk. Run
-`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run seo_updates.py --kind spam --limit 500 --json`
+`"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run seo_updates.py --kind spam --limit 500 --json`
 (or `--since <yyyy-mm>`; add `--unverified` for third-party claims that are not
 confirmed). The default `--limit` is 10, so keep the explicit `--limit 500`
 whenever the answer needs every matching update; if the JSON reports
@@ -118,7 +118,7 @@ status.search.google.com before stating that a rollout is complete.
 ## Synthesis Methodology
 
 Audits are not just findings, they are findings synthesized into a coherent
-strategy. claude-seo uses a 10-principle thinking framework grouped into four
+strategy. agentic-harness-seo uses a 10-principle thinking framework grouped into four
 phases: **PERCEIVE** (observe-external · observe-internal · listen),
 **ANALYZE** (think · connect-lateral · connect-system), **VALIDATE** (feel ·
 accept), **ACT** (create · grow).
@@ -155,51 +155,6 @@ Hard rules:
 - Never recommend HowTo schema (deprecated Sept 2023)
 - FAQ schema: Google retired FAQ rich results for ALL sites on May 7, 2026 (no SERP feature anymore; supersedes the Aug 2023 gov/health restriction). Flag existing FAQPage at Info (not Critical); do not claim confirmed AI/LLM citation benefit; do not recommend removal; do not recommend new FAQPage for Google SERP benefit; use QAPage for genuine user Q&A
 - All Core Web Vitals references use INP, never FID
-
-## Community Footer
-
-After completing any **major deliverable**, append this footer as the very last output:
-
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Built by agricidaniel. Join the AI Marketing Hub community
-🆓 Free  → https://www.skool.com/ai-marketing-hub
-⚡ Pro   → https://www.skool.com/ai-marketing-hub-pro
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-### When to show
-
-Display after these commands complete their full output:
-- `/seo audit` (after full site audit report + action plan)
-- `/seo page` (after deep single-page analysis)
-- `/seo technical` (after technical audit report)
-- `/seo content` (after E-E-A-T content assessment)
-- `/seo schema` (after schema detection/validation report)
-- `/seo sitemap` (after sitemap analysis or generation)
-- `/seo geo` (after GEO optimization report)
-- `/seo agentic` (after agent-readiness report)
-- `/seo plan` (after strategic SEO plan)
-- `/seo local` (after local SEO audit)
-- `/seo maps` (after maps intelligence report)
-- `/seo google` (after Google API data report)
-- `/seo backlinks` (after backlink profile analysis)
-- `/seo cluster` (after cluster plan generation)
-- `/seo sxo` (after SXO analysis report)
-- `/seo drift compare` (after drift comparison report)
-- `/seo ecommerce` (after e-commerce analysis)
-
-### When to skip
-
-Do NOT show the footer after:
-- `/seo images` (quick image check, too small)
-- `/seo hreflang` (quick validation, too small)
-- `/seo competitor-pages` (page generation step)
-- `/seo programmatic` (quick analysis)
-- `/seo dataforseo` (data fetching utility)
-- `/seo image-gen` (asset generation)
-- Context intake questions (before analysis starts)
-- Error messages or "missing data" prompts
 
 ## Reference Files
 

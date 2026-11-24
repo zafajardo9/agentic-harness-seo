@@ -1,4 +1,4 @@
-# Claude SEO - Python Dependencies
+# Agentic Harness SEO - Python Dependencies
 # Bounded version pinning with security-conscious minimums
 # Last updated: November 10, 2026 (urllib3 2.8.0 security floor, Dependabot floor bumps)
 
@@ -30,3 +30,6 @@ google-auth-httplib2>=0.4.2,<1.0.0           # Compatibility floor for current g
 PySocks>=1.7.1,<2.0.0                        # httplib2 needs it to honour HTTPS_PROXY
 google-analytics-data>=0.18.0,<1.0.0         # No known CVEs
 google-ads>=33.0.0,<40.0.0                   # Direct import in keyword_planner.py
+
+# ChatGPT, Claude, and local MCP clients
+mcp>=1.30.0,<2.0.0

@@ -1,3 +1,7 @@
+# Installs the released package on a real Windows runner, exercises the runtime,
+# then uninstalls it again, once under PowerShell 7 (`pwsh`) and once under
+# Windows PowerShell 5.1. Triggered when the installer, runtime, or extension
+# scripts change, and on workflow_dispatch for a release smoke check.
 name: Windows manual installer smoke
 
 on:
@@ -7,7 +11,7 @@ on:
       - ".github/workflows/windows-smoke.yml"
       - "install.ps1"
       - "uninstall.ps1"
-      - "scripts/claude-seo"
+      - "scripts/agentic-harness-seo"
       - "requirements.txt"
       - "scripts/runtime.py"
       - "scripts/seo_updates.py"
@@ -19,11 +23,16 @@ on:
       target_ref:
         description: "Released tag or main branch to install"
         required: true
-        default: "v2.6.2"
+        default: "main"
         type: string
 
 permissions:
   contents: read
+
+# Only one smoke run per ref is meaningful; a new push supersedes the old run.
+concurrency:
+  group: windows-smoke-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate-ref:
@@ -32,6 +41,7 @@ jobs:
       github.event_name == 'workflow_dispatch' ||
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       ref: ${{ steps.ref.outputs.ref }}
     steps:
@@ -41,7 +51,7 @@ jobs:
           # Manual runs install a released tag or main. Pull requests from this
           # repository install their own head branch, so the installer under
           # test is the one in the PR rather than the previous release.
-          TARGET_REF: ${{ inputs.target_ref || github.head_ref || 'v2.6.2' }}
+          TARGET_REF: ${{ inputs.target_ref || github.head_ref || 'main' }}
           EVENT_NAME: ${{ github.event_name }}
         shell: bash
         run: |
@@ -51,7 +61,7 @@ jobs:
             exit 1
           fi
           git ls-remote --exit-code --refs \
-            https://github.com/AgriciDaniel/claude-seo.git \
+            https://github.com/zafajardo9/agentic-harness-seo.git \
             "refs/heads/$TARGET_REF" "refs/tags/$TARGET_REF" >/dev/null
           printf 'ref=%s\n' "$TARGET_REF" >> "$GITHUB_OUTPUT"
 
@@ -62,6 +72,7 @@ jobs:
       github.event_name == 'workflow_dispatch' ||
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: windows-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -91,18 +102,18 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Pin the installer to setup-python through CLAUDE_SEO_PYTHON
+      - name: Pin the installer to setup-python through AGENTIC_HARNESS_SEO_PYTHON
         shell: pwsh
         env:
           PYTHON_PATH: ${{ steps.py.outputs.python-path }}
         run: |
-          "CLAUDE_SEO_PYTHON=$env:PYTHON_PATH" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "AGENTIC_HARNESS_SEO_PYTHON=$env:PYTHON_PATH" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: Prepare isolated user profile
         shell: pwsh
         run: |
-          $profileRoot = Join-Path $env:RUNNER_TEMP "claude-seo-smoke-profile"
-          $tempRoot = Join-Path $env:RUNNER_TEMP "claude-seo-smoke-temp"
+          $profileRoot = Join-Path $env:RUNNER_TEMP "agentic-harness-seo-smoke-profile"
+          $tempRoot = Join-Path $env:RUNNER_TEMP "agentic-harness-seo-smoke-temp"
           Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $profileRoot, $tempRoot
           New-Item -ItemType Directory -Force -Path $profileRoot, $tempRoot | Out-Null
           "USERPROFILE=$profileRoot" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
@@ -113,7 +124,7 @@ jobs:
       - name: Install released manual package
         shell: pwsh
         env:
-          CLAUDE_SEO_TAG: ${{ needs.validate-ref.outputs.ref }}
+          AGENTIC_HARNESS_SEO_TAG: ${{ needs.validate-ref.outputs.ref }}
         run: |
           $ErrorActionPreference = "Stop"
           ./install.ps1
@@ -145,9 +156,9 @@ jobs:
           $version = (($cfg | Where-Object { $_ -match '^version\s*=' }) -split '=', 2)[1].Trim()
           if ($version -notmatch '^3\.(1[1-4])\.') { throw "Installer chose unsupported Python $version" }
           # pyvenv.cfg records the realpath, so compare against the override's realpath.
-          $override = if ($env:CLAUDE_SEO_PYTHON) { & $env:CLAUDE_SEO_PYTHON -c "import os, sys; print(os.path.realpath(sys.executable))" }
+          $override = if ($env:AGENTIC_HARNESS_SEO_PYTHON) { & $env:AGENTIC_HARNESS_SEO_PYTHON -c "import os, sys; print(os.path.realpath(sys.executable))" }
           if ($override -and ($python -ne $override.Trim())) {
-            throw "Installer ignored CLAUDE_SEO_PYTHON ($python)"
+            throw "Installer ignored AGENTIC_HARNESS_SEO_PYTHON ($python)"
           }
           Write-Host "Installer chose Python $version at $python"
           $doctor = & $python $runtime doctor --json
@@ -167,7 +178,7 @@ jobs:
           $expectedSkillDirs = @(Get-ChildItem -Path $skills -Directory -Filter "seo" -ErrorAction SilentlyContinue).Count + @(Get-ChildItem -Path $skills -Directory -Filter "seo-*" -ErrorAction SilentlyContinue).Count
           $expectedAgentFiles = @(Get-ChildItem -Path $agents -File -Filter "seo-*.md" -ErrorAction SilentlyContinue).Count
           $uninstallOutput = & ./uninstall.ps1 6>&1 | Out-String
-          $expectedSummary = "claude-seo uninstalled ($expectedSkillDirs skill dirs, $expectedAgentFiles agent files)"
+          $expectedSummary = "agentic-harness-seo uninstalled ($expectedSkillDirs skill dirs, $expectedAgentFiles agent files)"
           if ($uninstallOutput -notmatch [regex]::Escape($expectedSummary)) {
             throw "Uninstaller summary did not report all removed entries. Output: $uninstallOutput"
           }
@@ -184,7 +195,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path (Join-Path $skills "seo-local"), (Join-Path $skills "seo-maps") | Out-Null
           New-Item -ItemType File -Force -Path (Join-Path $agents "seo-local.md"), (Join-Path $agents "seo-maps.md") | Out-Null
           $partialOutput = & ./uninstall.ps1 6>&1 | Out-String
-          $partialSummary = "claude-seo uninstalled (2 skill dirs, 2 agent files)"
+          $partialSummary = "agentic-harness-seo uninstalled (2 skill dirs, 2 agent files)"
           if ($partialOutput -notmatch [regex]::Escape($partialSummary)) {
             throw "Partial-install summary was incorrect. Output: $partialOutput"
           }
@@ -201,8 +212,8 @@ jobs:
         shell: pwsh
         run: |
           $paths = @(
-            (Join-Path $env:RUNNER_TEMP "claude-seo-smoke-profile"),
-            (Join-Path $env:RUNNER_TEMP "claude-seo-smoke-temp")
+            (Join-Path $env:RUNNER_TEMP "agentic-harness-seo-smoke-profile"),
+            (Join-Path $env:RUNNER_TEMP "agentic-harness-seo-smoke-temp")
           )
           Remove-Item -Recurse -Force -ErrorAction SilentlyContinue -Path $paths
 
@@ -213,6 +224,7 @@ jobs:
       github.event_name == 'workflow_dispatch' ||
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: windows-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -237,7 +249,7 @@ jobs:
           Write-Host "All extension PowerShell scripts parse."
 
       - name: Set up Python 3.11
-        # No CLAUDE_SEO_PYTHON here: the image's 'py -3' may be newer than the
+        # No AGENTIC_HARNESS_SEO_PYTHON here: the image's 'py -3' may be newer than the
         # supported range, and the installer must fall back on its own.
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
@@ -259,8 +271,8 @@ jobs:
       - name: Prepare isolated user profile
         shell: powershell
         run: |
-          $profileRoot = Join-Path $env:RUNNER_TEMP "claude-seo-smoke-profile"
-          $tempRoot = Join-Path $env:RUNNER_TEMP "claude-seo-smoke-temp"
+          $profileRoot = Join-Path $env:RUNNER_TEMP "agentic-harness-seo-smoke-profile"
+          $tempRoot = Join-Path $env:RUNNER_TEMP "agentic-harness-seo-smoke-temp"
           Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $profileRoot, $tempRoot
           New-Item -ItemType Directory -Force -Path $profileRoot, $tempRoot | Out-Null
           "USERPROFILE=$profileRoot" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
@@ -271,7 +283,7 @@ jobs:
       - name: Install released manual package
         shell: powershell
         env:
-          CLAUDE_SEO_TAG: ${{ needs.validate-ref.outputs.ref }}
+          AGENTIC_HARNESS_SEO_TAG: ${{ needs.validate-ref.outputs.ref }}
         run: |
           $ErrorActionPreference = "Stop"
           ./install.ps1
@@ -303,9 +315,9 @@ jobs:
           $version = (($cfg | Where-Object { $_ -match '^version\s*=' }) -split '=', 2)[1].Trim()
           if ($version -notmatch '^3\.(1[1-4])\.') { throw "Installer chose unsupported Python $version" }
           # pyvenv.cfg records the realpath, so compare against the override's realpath.
-          $override = if ($env:CLAUDE_SEO_PYTHON) { & $env:CLAUDE_SEO_PYTHON -c "import os, sys; print(os.path.realpath(sys.executable))" }
+          $override = if ($env:AGENTIC_HARNESS_SEO_PYTHON) { & $env:AGENTIC_HARNESS_SEO_PYTHON -c "import os, sys; print(os.path.realpath(sys.executable))" }
           if ($override -and ($python -ne $override.Trim())) {
-            throw "Installer ignored CLAUDE_SEO_PYTHON ($python)"
+            throw "Installer ignored AGENTIC_HARNESS_SEO_PYTHON ($python)"
           }
           Write-Host "Installer chose Python $version at $python"
           $doctor = & $python $runtime doctor --json
@@ -325,7 +337,7 @@ jobs:
           $expectedSkillDirs = @(Get-ChildItem -Path $skills -Directory -Filter "seo" -ErrorAction SilentlyContinue).Count + @(Get-ChildItem -Path $skills -Directory -Filter "seo-*" -ErrorAction SilentlyContinue).Count
           $expectedAgentFiles = @(Get-ChildItem -Path $agents -File -Filter "seo-*.md" -ErrorAction SilentlyContinue).Count
           $uninstallOutput = & ./uninstall.ps1 6>&1 | Out-String
-          $expectedSummary = "claude-seo uninstalled ($expectedSkillDirs skill dirs, $expectedAgentFiles agent files)"
+          $expectedSummary = "agentic-harness-seo uninstalled ($expectedSkillDirs skill dirs, $expectedAgentFiles agent files)"
           if ($uninstallOutput -notmatch [regex]::Escape($expectedSummary)) {
             throw "Uninstaller summary did not report all removed entries. Output: $uninstallOutput"
           }
@@ -342,7 +354,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path (Join-Path $skills "seo-local"), (Join-Path $skills "seo-maps") | Out-Null
           New-Item -ItemType File -Force -Path (Join-Path $agents "seo-local.md"), (Join-Path $agents "seo-maps.md") | Out-Null
           $partialOutput = & ./uninstall.ps1 6>&1 | Out-String
-          $partialSummary = "claude-seo uninstalled (2 skill dirs, 2 agent files)"
+          $partialSummary = "agentic-harness-seo uninstalled (2 skill dirs, 2 agent files)"
           if ($partialOutput -notmatch [regex]::Escape($partialSummary)) {
             throw "Partial-install summary was incorrect. Output: $partialOutput"
           }
@@ -359,7 +371,7 @@ jobs:
         shell: powershell
         run: |
           $paths = @(
-            (Join-Path $env:RUNNER_TEMP "claude-seo-smoke-profile"),
-            (Join-Path $env:RUNNER_TEMP "claude-seo-smoke-temp")
+            (Join-Path $env:RUNNER_TEMP "agentic-harness-seo-smoke-profile"),
+            (Join-Path $env:RUNNER_TEMP "agentic-harness-seo-smoke-temp")
           )
           Remove-Item -Recurse -Force -ErrorAction SilentlyContinue -Path $paths

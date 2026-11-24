@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# claude-seo manual-install uninstaller (Unix / macOS / Linux)
+# agentic-harness-seo manual-install uninstaller (Unix / macOS / Linux)
 #
 # Removes the orchestrator skill (~/.claude/skills/seo), all sub-skills
 # (~/.claude/skills/seo-*), and all sub-agents (~/.claude/agents/seo-*.md).
@@ -9,15 +9,15 @@
 # uninstaller.
 #
 # Plugin-install users should use Claude Code's own command instead:
-#   /plugin uninstall claude-seo@agricidaniel-claude-seo
-#   /plugin marketplace remove AgriciDaniel/claude-seo
+#   /plugin uninstall agentic-harness-seo@zafajardo9-agentic-harness-seo
+#   /plugin marketplace remove zafajardo9/agentic-harness-seo
 set -euo pipefail
 
 SKILL_DIR="${HOME}/.claude/skills"
 AGENT_DIR="${HOME}/.claude/agents"
 
 main() {
-    echo "→ Uninstalling Claude SEO..."
+    echo "→ Uninstalling Agentic Harness SEO..."
 
     local removed_skills=0
     local removed_agents=0
@@ -53,12 +53,12 @@ main() {
     shopt -u nullglob
 
     if [ "${removed_skills}" -eq 0 ] && [ "${removed_agents}" -eq 0 ]; then
-        echo "  Nothing to remove. Claude SEO does not appear to be installed."
+        echo "  Nothing to remove. Agentic Harness SEO does not appear to be installed."
         echo "  If you installed via /plugin install, run /plugin uninstall instead."
         return 0
     fi
 
-    echo "✓ Claude SEO uninstalled (${removed_skills} skill dirs, ${removed_agents} agent files)."
+    echo "✓ Agentic Harness SEO uninstalled (${removed_skills} skill dirs, ${removed_agents} agent files)."
 }
 
 main "$@"

@@ -155,38 +155,28 @@ def test_pyproject_version_matches_plugin_json():
     )
 
 
-def test_install_scripts_default_tag_matches_plugin_version():
-    """install.sh and install.ps1 default REPO_TAG must equal v{plugin version}.
-
-    Background: install.sh and install.ps1 default tag was v1.9.0 while
-    plugin.json shipped at 1.9.8 (4 missed bumps across v1.9.5/.6/.7/.8).
-    Manual-install users via curl | bash got 8 versions stale. This guard
-    forces the default tag to track plugin.json on every release.
-    """
+def test_install_scripts_default_ref_matches():
+    """Both installers support untagged main or the current release tag."""
     plugin = json.loads(PLUGIN_JSON.read_text(encoding="utf-8"))
     expected_tag = f"v{plugin['version']}"
 
     sh_text = (REPO_ROOT / "install.sh").read_text(encoding="utf-8")
     sh_match = re.search(
-        r'REPO_TAG="\$\{CLAUDE_SEO_TAG:-([^}]+)\}"', sh_text
+        r'REPO_TAG="\$\{AGENTIC_HARNESS_SEO_TAG:-([^}]+)\}"', sh_text
     )
     assert sh_match, "install.sh has no recognizable REPO_TAG default"
     sh_tag = sh_match.group(1)
-    assert sh_tag == expected_tag, (
-        f"install.sh default tag is {sh_tag} but plugin.json is at "
-        f"version {plugin['version']} (expected {expected_tag}). "
-        f"Bump install.sh's CLAUDE_SEO_TAG default on every release."
-    )
+    assert sh_tag in {"main", expected_tag}
 
     ps_text = (REPO_ROOT / "install.ps1").read_text(encoding="utf-8")
-    ps_match = re.search(r"else\s*\{\s*'([^']+)'\s*\}", ps_text)
+    ps_match = re.search(
+        r"\$RepoTag = if \(\$env:AGENTIC_HARNESS_SEO_TAG\) "
+        r"\{[^}]+\} else \{ '([^']+)' \}",
+        ps_text,
+    )
     assert ps_match, "install.ps1 has no recognizable RepoTag default"
     ps_tag = ps_match.group(1)
-    assert ps_tag == expected_tag, (
-        f"install.ps1 default tag is {ps_tag} but plugin.json is at "
-        f"version {plugin['version']} (expected {expected_tag}). "
-        f"Bump install.ps1's RepoTag default on every release."
-    )
+    assert ps_tag == sh_tag
 
 
 def _extract_section(text: str, heading: str) -> str:
@@ -471,7 +461,7 @@ def test_claude_md_script_inventory_lists_every_tracked_script():
 def test_no_nested_plugin_manifest_inside_the_plugin_root():
     """Claude Desktop skips a plugin whose folder holds another plugin.json (#344).
 
-    The claude-seo marketplace entry uses ``source: "./"``, so the whole
+    The agentic-harness-seo marketplace entry uses ``source: "./"``, so the whole
     repository is the plugin folder. Only the root manifest may exist.
     """
     root_manifest = (REPO_ROOT / ".claude-plugin" / "plugin.json").resolve()
@@ -485,16 +475,12 @@ def test_no_nested_plugin_manifest_inside_the_plugin_root():
     assert not nested, f"nested plugin manifests break Claude Desktop installs: {nested}"
 
 
-def test_seo_cockpit_installs_from_a_pinned_branch():
-    """seo-cockpit is served from the seo-cockpit branch, pinned to a commit."""
+def test_marketplace_lists_only_this_fork():
+    """This fork publishes one plugin, served from the repository root.
+
+    Upstream also listed a seo-cockpit companion from a separate branch. That
+    branch lives in the upstream repository, so the entry is not carried here.
+    """
     mp = json.loads(MARKETPLACE_JSON.read_text(encoding="utf-8"))
-    entries = {e["name"]: e for e in mp["plugins"]}
-    assert mp["plugins"][0]["name"] == "claude-seo"
+    assert [entry["name"] for entry in mp["plugins"]] == ["agentic-harness-seo"]
     assert mp["plugins"][0]["source"] == "./"
-    source = entries["seo-cockpit"]["source"]
-    assert isinstance(source, dict), "seo-cockpit must not be a relative path inside the plugin root"
-    assert source["source"] == "git-subdir"
-    assert source["url"] == "AgriciDaniel/claude-seo"
-    assert source["path"] == "plugins/seo-cockpit"
-    assert source["ref"] == "seo-cockpit"
-    assert re.fullmatch(r"[0-9a-f]{40}", source["sha"]), source.get("sha")

@@ -2,11 +2,11 @@
 
 ## Overview
 
-All Claude SEO commands start with `/seo` followed by a subcommand.
+All Agentic Harness SEO commands start with `/seo` followed by a subcommand.
 
 ## Page-fetching script
 
-Use `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run fetch_page.py https://example.com --json` for structured
+Use `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run fetch_page.py https://example.com --json` for structured
 retrieval. Both the raw path (default, `--render never`) and the rendered path
 (`--render auto` or `--render always`) emit JSON through the same
 `render_page._json_summary` contract, so the two share one key set: `url`,
@@ -701,7 +701,7 @@ Bing Webmaster Tools + IndexNow (extension). The `seo-bing` skill ships with the
 
 ### `/seo matomo [command] [site-id]`
 
-Matomo Reporting API (extension). **Prerequisites:** Matomo extension installed (`./extensions/matomo/install.sh`), which writes the instance URL, API token, and optional default site ID to `~/.config/claude-seo/matomo.json` (0600), or to `matomo.json` in `CLAUDE_SEO_PROFILE_DIR` when it is set. `MATOMO_URL`, `MATOMO_API_TOKEN`, and `MATOMO_SITE_ID` in the environment override the file. Works against self-hosted Matomo or Matomo Cloud; an instance on a private address must be named in `CLAUDE_SEO_LOCAL_TARGETS`.
+Matomo Reporting API (extension). **Prerequisites:** Matomo extension installed (`./extensions/matomo/install.sh`), which writes the instance URL, API token, and optional default site ID to `~/.config/agentic-harness-seo/matomo.json` (0600), or to `matomo.json` in `AGENTIC_HARNESS_SEO_PROFILE_DIR` when it is set. `MATOMO_URL`, `MATOMO_API_TOKEN`, and `MATOMO_SITE_ID` in the environment override the file. Works against self-hosted Matomo or Matomo Cloud; an instance on a private address must be named in `AGENTIC_HARNESS_SEO_LOCAL_TARGETS`.
 
 Use as a GA4 alternative or supplement when you want full data ownership, no Google dependency, or privacy-first analytics.
 ```
@@ -722,7 +722,7 @@ All commands accept `--days` (default 28), `--limit` (default 50),
 
 ### `/seo posthog [command]`
 
-PostHog analytics via the PostHog MCP server (extension). The `seo-posthog` skill and agent ship with the plugin. **Prerequisites:** the PostHog MCP server registered (`./extensions/posthog/install.sh` or `install.ps1` offers to do it), connected and authenticated (`/mcp`). No credentials are stored by claude-seo. Queries run as HogQL through the MCP `exec` tool (`call execute-sql`).
+PostHog analytics via the PostHog MCP server (extension). The `seo-posthog` skill and agent ship with the plugin. **Prerequisites:** the PostHog MCP server registered (`./extensions/posthog/install.sh` or `install.ps1` offers to do it), connected and authenticated (`/mcp`). No credentials are stored by agentic-harness-seo. Queries run as HogQL through the MCP `exec` tool (`call execute-sql`).
 
 Use as a GA4 alternative or supplement when the site already sends `$pageview` events to PostHog. PostHog has no keyword data; use `/seo google` for Search Console.
 ```

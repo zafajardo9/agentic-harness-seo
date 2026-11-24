@@ -4,8 +4,8 @@
 
 1. **Matomo Reporting API** for organic traffic, landing pages, devices,
    countries, referrers, and search keywords via
-   `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run matomo_report.py`.
-2. **Live credential probe** via `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run matomo_auth.py --check`
+   `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py`.
+2. **Live credential probe** via `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_auth.py --check`
    used by the `/seo matomo` skill and by the audit orchestrator to
    decide whether to spawn the `seo-matomo` agent.
 3. A unified `seo-matomo` skill that routes the right command at the
@@ -26,19 +26,19 @@ You'll be prompted for:
 - Default `idSite` (optional, e.g. `1`); saves having to pass
   `--site-id` on every call
 
-The installer writes them to `~/.config/claude-seo/matomo.json` with `0600`
+The installer writes them to `~/.config/agentic-harness-seo/matomo.json` with `0600`
 permissions, atomically (temp file plus rename, so a crash never leaves a
 half-written or truncated credential file). This is the same location and the
 same guarded write pattern the `backlinks_auth` module uses for the Moz and
 Bing keys. The token is deliberately kept out of `~/.claude/settings.json`,
 which is a general-purpose config file that tooling reads, prints, and syncs.
 
-For a per-project profile, run the installer with `CLAUDE_SEO_PROFILE_DIR`
+For a per-project profile, run the installer with `AGENTIC_HARNESS_SEO_PROFILE_DIR`
 set to the directory that project uses. It then writes `matomo.json` there
-instead of `~/.config/claude-seo/`:
+instead of `~/.config/agentic-harness-seo/`:
 
 ```bash
-CLAUDE_SEO_PROFILE_DIR=~/.config/claude-seo/profiles/project-xyz ./extensions/matomo/install.sh
+AGENTIC_HARNESS_SEO_PROFILE_DIR=~/.config/agentic-harness-seo/profiles/project-xyz ./extensions/matomo/install.sh
 ```
 
 Environment variables still take precedence for any field the file does not
@@ -55,14 +55,14 @@ export MATOMO_SITE_ID="1"
 1. Log in to your Matomo instance as a Super User or Admin
 2. Go to **Administration -> Personal -> Security -> API Tokens**
 3. Click **Create a new token**, give it a meaningful name
-   (e.g. "claude-seo") and `view` access on the sites you want to
+   (e.g. "agentic-harness-seo") and `view` access on the sites you want to
    analyze
 4. Copy the generated `token_auth` (32 hex chars). Matomo only shows
    it once at creation
 
 ## Self-hosted instance on a private address
 
-Every request to your Matomo instance goes through claude-seo's shared SSRF
+Every request to your Matomo instance goes through agentic-harness-seo's shared SSRF
 guard, the `url_safety` module: the instance URL is validated, its hostname is
 pinned to the validated address for the life of the request, and a redirect
 away from the instance is refused rather than followed.
@@ -70,10 +70,10 @@ away from the instance is refused rather than followed.
 That guard refuses private, loopback, and link-local addresses by default, so
 an instance at `http://matomo.internal:8080`, `http://192.168.1.20`, or
 `http://localhost:8080` is refused until you say it is yours. Name it in the
-`CLAUDE_SEO_LOCAL_TARGETS` allowlist:
+`AGENTIC_HARNESS_SEO_LOCAL_TARGETS` allowlist:
 
 ```bash
-export CLAUDE_SEO_LOCAL_TARGETS="matomo.internal:8080"
+export AGENTIC_HARNESS_SEO_LOCAL_TARGETS="matomo.internal:8080"
 ```
 
 Entries are `host` or `host:port`, comma-separated, matched exactly. A bare
@@ -89,7 +89,7 @@ The allowlist is deliberately narrow, and the narrowness is the point:
   cannot use the allowlist to reach the rest of your network.
 - Cloud metadata endpoints (169.254.169.254, `metadata.google.internal`,
   100.100.100.200, and their siblings) are refused even when listed.
-- Unset, claude-seo behaves exactly as it does without the feature.
+- Unset, agentic-harness-seo behaves exactly as it does without the feature.
 
 `extensions/matomo/install.sh` and `install.ps1` detect a private instance
 address at install time and print the exact line to add.
@@ -103,9 +103,9 @@ will fail with `SSLError` on untrusted certificates.
 ## Verify
 
 ```bash
-"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run matomo_auth.py --check
-"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run matomo_report.py check --json
-"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run matomo_report.py organic --json
+"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_auth.py --check
+"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py check --json
+"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py organic --json
 ```
 
 `--check` runs `API.getMatomoVersion` against your instance and reports
@@ -129,17 +129,17 @@ have both GA4 and Matomo configured.
 ```
 
 This removes the skill, the agent, and
-`~/.config/claude-seo/matomo.json`, and clears any `MATOMO_*` entries a
+`~/.config/agentic-harness-seo/matomo.json`, and clears any `MATOMO_*` entries a
 pre-v2.4.0 installer had left in `~/.claude/settings.json`.
 
-A `matomo.json` in a `CLAUDE_SEO_PROFILE_DIR` profile stays; remove it by hand.
+A `matomo.json` in a `AGENTIC_HARNESS_SEO_PROFILE_DIR` profile stays; remove it by hand.
 
 PowerShell manual removal:
 
 ```powershell
 Remove-Item -Recurse -Force "$HOME\.claude\skills\seo-matomo"
 Remove-Item -Force "$HOME\.claude\agents\seo-matomo.md"
-Remove-Item -Force "$HOME\.config\claude-seo\matomo.json"
+Remove-Item -Force "$HOME\.config\agentic-harness-seo\matomo.json"
 ```
 
 If you installed a pre-v2.4.0 build, also open `~/.claude/settings.json` and

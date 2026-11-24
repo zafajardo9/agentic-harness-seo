@@ -4,9 +4,9 @@
 
 1. **Bing Webmaster Tools API**: inbound links, crawl stats, search
    keywords, and competitor link comparison via
-   `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run bing_webmaster.py` (already shipped with claude-seo).
+   `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run bing_webmaster.py` (already shipped with agentic-harness-seo).
 2. **IndexNow URL submission** for Amazon, Bing, Naver, Seznam.cz,
-   Yandex, and Yep via `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run indexnow_submit.py`.
+   Yandex, and Yep via `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run indexnow_submit.py`.
 3. A unified `seo-bing` skill that routes the right command at the
    right script.
 
@@ -17,7 +17,7 @@
 .\extensions\bing-webmaster\install.ps1
 ```
 
-The `seo-bing` skill ships with the claude-seo plugin, so on a plugin install
+The `seo-bing` skill ships with the agentic-harness-seo plugin, so on a plugin install
 the installer only stores your keys; run it from the plugin or repository
 folder. On a manual install (`~/.claude/skills/seo`) it also copies the skill
 with its launcher path set for that layout.

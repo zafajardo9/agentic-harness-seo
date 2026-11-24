@@ -3,11 +3,11 @@ set -euo pipefail
 SKILL_DIR="${HOME}/.claude/skills/seo-matomo"
 AGENT_FILE="${HOME}/.claude/agents/seo-matomo.md"
 SETTINGS_JSON="${HOME}/.claude/settings.json"
-CONFIG_JSON="${HOME}/.config/claude-seo/matomo.json"
+CONFIG_JSON="${HOME}/.config/agentic-harness-seo/matomo.json"
 [ -d "${SKILL_DIR}" ] && rm -rf "${SKILL_DIR}" && echo "✓ Removed ${SKILL_DIR}"
 [ -f "${AGENT_FILE}" ] && rm -f "${AGENT_FILE}" && echo "✓ Removed ${AGENT_FILE}"
-if [ -n "${CLAUDE_SEO_PROFILE_DIR:-}" ]; then
-    echo "CLAUDE_SEO_PROFILE_DIR is set: kept ${CONFIG_JSON}."
+if [ -n "${AGENTIC_HARNESS_SEO_PROFILE_DIR:-}" ]; then
+    echo "AGENTIC_HARNESS_SEO_PROFILE_DIR is set: kept ${CONFIG_JSON}."
 else
     [ -f "${CONFIG_JSON}" ] && rm -f "${CONFIG_JSON}" && echo "✓ Removed ${CONFIG_JSON}"
 fi
@@ -53,7 +53,7 @@ if removed:
 PY
 fi
 
-echo "Note: matomo.json copies in CLAUDE_SEO_PROFILE_DIR profiles were not"
+echo "Note: matomo.json copies in AGENTIC_HARNESS_SEO_PROFILE_DIR profiles were not"
 echo "touched; remove them by hand."
-echo "Note: CLAUDE_SEO_LOCAL_TARGETS, if you set it for a private instance,"
+echo "Note: AGENTIC_HARNESS_SEO_LOCAL_TARGETS, if you set it for a private instance,"
 echo "is your own environment setting and was not touched."

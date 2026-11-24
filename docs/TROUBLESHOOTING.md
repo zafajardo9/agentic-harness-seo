@@ -11,8 +11,8 @@
 For plugin installs, verify and reinstall through Claude Code:
 ```bash
 /plugin list
-/plugin marketplace add AgriciDaniel/claude-seo
-/plugin install claude-seo@agricidaniel-claude-seo
+/plugin marketplace add zafajardo9/agentic-harness-seo
+/plugin install agentic-harness-seo@zafajardo9-agentic-harness-seo
 ```
 
 For manual installs:
@@ -38,7 +38,7 @@ claude
 Caution: Prefer downloading, inspecting, then running remote scripts; the pipe-to-shell form below is the less-safe convenience option.
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AgriciDaniel/claude-seo/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main/install.sh | bash
 ```
 
 ---
@@ -58,8 +58,8 @@ Dependencies belong in the managed runtime. For a plugin install, run:
 
 For a manual install, run:
 ```bash
-~/.claude/skills/seo/scripts/claude-seo doctor
-~/.claude/skills/seo/scripts/claude-seo setup
+~/.claude/skills/seo/scripts/agentic-harness-seo doctor
+~/.claude/skills/seo/scripts/agentic-harness-seo setup
 ```
 
 Do not install individual packages, use `pip --user`, or create a PATH shim.
@@ -71,7 +71,7 @@ Do not install individual packages, use `pip --user`, or create a PATH shim.
 **Solution:** For plugin installs, reinstall the plugin first:
 
 ```bash
-/plugin install claude-seo@agricidaniel-claude-seo
+/plugin install agentic-harness-seo@zafajardo9-agentic-harness-seo
 ```
 
 For manual installs, requirements.txt is copied to the skill directory:
@@ -82,7 +82,7 @@ ls ~/.claude/skills/seo/requirements.txt
 
 If missing, download it directly:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AgriciDaniel/claude-seo/main/requirements.txt \
+curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main/requirements.txt \
   -o ~/.claude/skills/seo/requirements.txt
 ```
 
@@ -93,8 +93,8 @@ curl -fsSL https://raw.githubusercontent.com/AgriciDaniel/claude-seo/main/requir
 **Solution (v1.2.0+):** The Windows installer now tries both `python` and `py -3`. If both fail:
 
 1. Install Python from [python.org](https://python.org) and check "Add to PATH"
-2. Rerun `install.ps1`. It uses `CLAUDE_SEO_PYTHON` when set, otherwise the first of `py -3`, `python3` and `python` that is Python 3.11 to 3.14, otherwise the newest of `py -3.14` down to `py -3.11`
-3. If `py -3` is a newer Python that Claude SEO does not support yet (such as 3.15), install 3.14 alongside it, or set `CLAUDE_SEO_PYTHON` to a supported `python.exe`
+2. Rerun `install.ps1`. It uses `AGENTIC_HARNESS_SEO_PYTHON` when set, otherwise the first of `py -3`, `python3` and `python` that is Python 3.11 to 3.14, otherwise the newest of `py -3.14` down to `py -3.11`
+3. If `py -3` is a newer Python that Agentic Harness SEO does not support yet (such as 3.15), install 3.14 alongside it, or set `AGENTIC_HARNESS_SEO_PYTHON` to a supported `python.exe`
 4. Run `/seo doctor` after installation
 
 ---
@@ -115,11 +115,11 @@ interpreter and persistent browser directory:
 ### Chromium Sandbox Warning
 
 **Symptom:** rendering, screenshots or visual analysis work, but stderr shows
-`claude-seo warning: Chromium's sandbox is unavailable on this system, so the
+`agentic-harness-seo warning: Chromium's sandbox is unavailable on this system, so the
 page is rendered without it` (or `running as root`, or `disabled by
-CLAUDE_SEO_CHROMIUM_NO_SANDBOX`), and the JSON result has `"sandbox": false`.
+AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX`), and the JSON result has `"sandbox": false`.
 
-**Cause:** Claude SEO starts Chromium with its sandbox wherever the system can
+**Cause:** Agentic Harness SEO starts Chromium with its sandbox wherever the system can
 start it. Some systems cannot:
 
 - **Ubuntu 23.10 and later** (and GitHub's Ubuntu runners): AppArmor blocks
@@ -138,14 +138,14 @@ page is not contained (as root, it runs as root).
   <https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md>
 - Containers: run as a non-root user and allow user namespaces (Playwright's
   Docker guide ships a seccomp profile for this).
-- root: run Claude SEO as a regular user.
+- root: run Agentic Harness SEO as a regular user.
 
 Two environment variables change the policy:
 
 | Variable | Effect |
 |----------|--------|
-| `CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX=1` | Strict mode: never render without the sandbox; fail instead |
-| `CLAUDE_SEO_CHROMIUM_NO_SANDBOX=1` | Skip the sandbox attempt (the warning still appears) |
+| `AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX=1` | Strict mode: never render without the sandbox; fail instead |
+| `AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX=1` | Skip the sandbox attempt (the warning still appears) |
 
 Accepted values are `1`, `true`, `yes` and `on`.
 
@@ -154,7 +154,7 @@ Accepted values are `1`, `true`, `yes` and `on`.
 ### Chromium Sandbox Required but Unavailable
 
 **Symptom:** the result's `error` says `Chromium's sandbox could not start on
-this system` (or `cannot start as root`) `and CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX
+this system` (or `cannot start as root`) `and AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX
 is set, so nothing was rendered`, or that both variables are set and contradict
 each other.
 
@@ -162,7 +162,7 @@ each other.
 for why). With both variables set, strict mode wins and the launch is refused.
 
 **Solution:** enable the sandbox as described above, or unset
-`CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX` to allow the automatic fallback with a
+`AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX` to allow the automatic fallback with a
 warning. For the conflict, unset one of the two variables.
 
 ---
@@ -172,7 +172,7 @@ warning. For the conflict, unset one of the two variables.
 **Symptom:** every live fetch, or every browser command (`--render`, screenshots, Unlighthouse), fails with one of:
 
 ```text
-Refusing configured HTTP proxy '127.0.0.1': non-public address 127.0.0.1. ... name it in CLAUDE_SEO_TRUSTED_PROXIES (host:port).
+Refusing configured HTTP proxy '127.0.0.1': non-public address 127.0.0.1. ... name it in AGENTIC_HARNESS_SEO_TRUSTED_PROXIES (host:port).
 Unsupported proxy for browser rendering: scheme 'socks5'. Only http:// proxies are supported
 ```
 
@@ -181,14 +181,14 @@ Unsupported proxy for browser rendering: scheme 'socks5'. Only http:// proxies a
 **Solution:** if the proxy is yours or your platform's, name it, with its port:
 
 ```bash
-export CLAUDE_SEO_TRUSTED_PROXIES=127.0.0.1:3128
+export AGENTIC_HARNESS_SEO_TRUSTED_PROXIES=127.0.0.1:3128
 ```
 
 - The value is a comma-separated list of `host` or `host:port`. No scheme, no credentials, no wildcard, no CIDR range: such an entry is ignored. Use the host exactly as the proxy variable spells it (`localhost:3128` for `http://localhost:3128`), and brackets for IPv6 with a port (`[::1]:3128`).
-- It trusts the proxy only. The site you audit, every redirect and everything a rendered page loads must still be public. To audit a local or staging host over raw HTTP, see `CLAUDE_SEO_LOCAL_TARGETS` in SECURITY.md.
+- It trusts the proxy only. The site you audit, every redirect and everything a rendered page loads must still be public. To audit a local or staging host over raw HTTP, see `AGENTIC_HARNESS_SEO_LOCAL_TARGETS` in SECURITY.md.
 - A proxy on a link-local address or a cloud metadata address (`169.254.169.254`, `100.100.100.200`, `192.0.0.192`, `fd00:ec2::254`, `fd20:ce::254`, the `metadata.*` names, and these addresses wrapped in IPv4-mapped or 6to4 form) is refused even when listed. The message then does not mention the variable.
 - The browser needs an `http://` proxy. A SOCKS or `https://` proxy URL is refused for browser commands even when listed; plain fetches are not affected by that limit.
-- claude-seo still resolves each destination itself before it hands the request to the proxy, so "DNS resolution failed" behind a proxy means this machine cannot resolve public names, and listing the proxy will not change that.
+- agentic-harness-seo still resolves each destination itself before it hands the request to the proxy, so "DNS resolution failed" behind a proxy means this machine cannot resolve public names, and listing the proxy will not change that.
 
 See "Trusting a local proxy" in SECURITY.md for what the proxy is trusted with.
 
@@ -211,7 +211,7 @@ chmod +x ~/.claude/skills/seo/scripts/*.py
 
 **Solution:**
 
-For plugin installs, check `/plugin list` and reinstall `claude-seo@agricidaniel-claude-seo`; subagents load from the plugin, not `~/.claude/agents/`.
+For plugin installs, check `/plugin list` and reinstall `agentic-harness-seo@zafajardo9-agentic-harness-seo`; subagents load from the plugin, not `~/.claude/agents/`.
 
 For manual installs:
 
@@ -227,7 +227,7 @@ head -5 ~/.claude/agents/seo-technical.md
 
 3. Re-install agents:
 ```bash
-cp /path/to/claude-seo/agents/*.md ~/.claude/agents/
+cp /path/to/agentic-harness-seo/agents/*.md ~/.claude/agents/
 ```
 
 ---

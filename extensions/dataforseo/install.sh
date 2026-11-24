@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# DataForSEO Extension Installer for Claude SEO
+# DataForSEO Extension Installer for Agentic Harness SEO
 # Wraps everything in main() to prevent partial execution on network failure
 
 main() {
@@ -15,7 +15,7 @@ main() {
 
     echo "════════════════════════════════════════"
     echo "║   DataForSEO Extension - Installer   ║"
-    echo "║   For Claude SEO                     ║"
+    echo "║   For Agentic Harness SEO                     ║"
     echo "════════════════════════════════════════"
     echo ""
 
@@ -28,17 +28,17 @@ main() {
         SEO_SKILL_DIR="${_PLUGIN_SEO_DIR}"
     fi
     if [ ! -d "${SEO_SKILL_DIR}" ]; then
-        _GLOB_MATCH=$(ls -d "${HOME}/.claude/plugins/cache/*/claude-seo/"*/skills/seo 2>/dev/null | tail -n1 || true)
+        _GLOB_MATCH=$(ls -d "${HOME}/.claude/plugins/cache/*/agentic-harness-seo/"*/skills/seo 2>/dev/null | tail -n1 || true)
         [ -n "${_GLOB_MATCH}" ] && [ -d "${_GLOB_MATCH}" ] && SEO_SKILL_DIR="${_GLOB_MATCH}"
     fi
 
     # Check prerequisites
     if [ ! -d "${SEO_SKILL_DIR}" ]; then
-        echo "✗ Claude SEO is not installed."
-        echo "  Install it first: curl -fsSL https://raw.githubusercontent.com/AgriciDaniel/claude-seo/main/install.sh | bash"
+        echo "✗ Agentic Harness SEO is not installed."
+        echo "  Install it first: curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main/install.sh | bash"
         exit 1
     fi
-    echo "✓ Claude SEO detected"
+    echo "✓ Agentic Harness SEO detected"
 
     if ! command -v node >/dev/null 2>&1; then
         echo "✗ Node.js is required but not installed."
@@ -89,7 +89,7 @@ main() {
         SOURCE_DIR="${SCRIPT_DIR}/extensions/dataforseo"
     else
         echo "✗ Cannot find extension source files."
-        echo "  Run this script from the claude-seo repo: ./extensions/dataforseo/install.sh"
+        echo "  Run this script from the agentic-harness-seo repo: ./extensions/dataforseo/install.sh"
         exit 1
     fi
 
@@ -114,12 +114,12 @@ main() {
 
     # Credentials travel in the environment (never argv, never interpolated into the source string)
     # and the settings file is written atomically with 0600 permissions.
-    CLAUDE_SEO_USERNAME="${DFSE_USERNAME}" CLAUDE_SEO_SECRET="${DFSE_PASSWORD}" python3 - "${MCP_CONFIG_FILE}" "${FIELD_CONFIG_PATH}" <<'PY'
+    AGENTIC_HARNESS_SEO_USERNAME="${DFSE_USERNAME}" AGENTIC_HARNESS_SEO_SECRET="${DFSE_PASSWORD}" python3 - "${MCP_CONFIG_FILE}" "${FIELD_CONFIG_PATH}" <<'PY'
 import json, os, sys, tempfile
 
 settings_path, field_config = sys.argv[1:3]
-username = os.environ["CLAUDE_SEO_USERNAME"]
-password = os.environ["CLAUDE_SEO_SECRET"]
+username = os.environ["AGENTIC_HARNESS_SEO_USERNAME"]
+password = os.environ["AGENTIC_HARNESS_SEO_SECRET"]
 
 if os.path.exists(settings_path):
     try:

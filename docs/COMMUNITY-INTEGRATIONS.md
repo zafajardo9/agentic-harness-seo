@@ -1,20 +1,20 @@
 # Community integrations
 
 Integrations built and maintained by other people, in their own repositories.
-They are listed here so you can find them. They are **not** part of Claude SEO:
+They are listed here so you can find them. They are **not** part of Agentic Harness SEO:
 the maintainer has not audited their code, does not ship or update them, and
 cannot support them. Read an integration's code and install script before you
 run it, the same as for any third-party tool, and send questions and bug
 reports to its own repository.
 
-Claude SEO does not bundle third-party paid services as first-party
+Agentic Harness SEO does not bundle third-party paid services as first-party
 extensions. A separate repository listed here is the way to offer one.
 
 ## Listed
 
 | Integration | Maintainer | What it does | Cost |
 |---|---|---|---|
-| [claude-seo-proxlane](https://github.com/proxlane/claude-seo-proxlane) | [@scarsam](https://github.com/scarsam) (maintains Proxlane) | Fetches pages through a self-hosted Proxlane gateway that fails over between scraping providers and reports why a page failed (gone, blocked, rate limited). | Gateway is self-hosted; the scraping providers behind it are paid. |
+| [agentic-harness-seo-proxlane](https://github.com/proxlane/agentic-harness-seo-proxlane) | [@scarsam](https://github.com/scarsam) (maintains Proxlane) | Fetches pages through a self-hosted Proxlane gateway that fails over between scraping providers and reports why a page failed (gone, blocked, rate limited). | Gateway is self-hosted; the scraping providers behind it are paid. |
 
 ## Getting listed
 
@@ -27,7 +27,7 @@ Open an issue with a link to the repository. An integration is listed when it:
 4. Carries no tracking or affiliate links (no UTM parameters, no referral
    codes) in skill files, scripts or docs.
 5. Installs only into the user's own directories, has an uninstall script, and
-   does not change Claude SEO's files or dependencies.
+   does not change Agentic Harness SEO's files or dependencies.
 6. Keeps credentials out of the repository and out of command output.
 7. Treats fetched page content as untrusted data in its skill instructions.
 

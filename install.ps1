@@ -1,10 +1,10 @@
-# Claude SEO Installer for Windows
+# Agentic Harness SEO Installer for Windows
 # PowerShell installation script
 
 $ErrorActionPreference = "Stop"
 
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "|   Claude SEO - Installer             |" -ForegroundColor Cyan
+Write-Host "|   Agentic Harness SEO - Installer             |" -ForegroundColor Cyan
 Write-Host "|   Claude Code SEO Skill              |" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
@@ -17,8 +17,8 @@ $script:SeenPython = @()
 
 function Resolve-Python {
     # An override must be supported; it is never silently replaced.
-    if ($env:CLAUDE_SEO_PYTHON) {
-        return Test-PythonCandidate -Exe $env:CLAUDE_SEO_PYTHON -Args @()
+    if ($env:AGENTIC_HARNESS_SEO_PYTHON) {
+        return Test-PythonCandidate -Exe $env:AGENTIC_HARNESS_SEO_PYTHON -Args @()
     }
 
     # The default interpreter first, so an existing runtime keeps its Python.
@@ -112,10 +112,10 @@ $python = Resolve-Python
 if ($null -eq $python) {
     $found = 'no Python'
     if ($script:SeenPython.Count -gt 0) { $found = $script:SeenPython -join ', ' }
-    if ($env:CLAUDE_SEO_PYTHON) {
-        Write-Host "[x] CLAUDE_SEO_PYTHON must be Python 3.$MinMinor to 3.$MaxMinor. Found: $found." -ForegroundColor Red
+    if ($env:AGENTIC_HARNESS_SEO_PYTHON) {
+        Write-Host "[x] AGENTIC_HARNESS_SEO_PYTHON must be Python 3.$MinMinor to 3.$MaxMinor. Found: $found." -ForegroundColor Red
     } else {
-        Write-Host "[x] Claude SEO needs Python 3.$MinMinor to 3.$MaxMinor. Found: $found. Install Python 3.$MaxMinor from python.org or set CLAUDE_SEO_PYTHON." -ForegroundColor Red
+        Write-Host "[x] Agentic Harness SEO needs Python 3.$MinMinor to 3.$MaxMinor. Found: $found. Install Python 3.$MaxMinor from python.org or set AGENTIC_HARNESS_SEO_PYTHON." -ForegroundColor Red
     }
     exit 1
 }
@@ -139,27 +139,27 @@ try {
 # Set paths
 $SkillDir = "$env:USERPROFILE\.claude\skills\seo"
 $AgentDir = "$env:USERPROFILE\.claude\agents"
-$RepoUrl = "https://github.com/AgriciDaniel/claude-seo"
+$RepoUrl = "https://github.com/zafajardo9/agentic-harness-seo"
 # Pin to a specific release tag to prevent silent updates from main.
 # This default MUST be bumped on every release. CI guard
 # (tests/test_manifest_consistency.py) enforces this matches plugin.json.
-# Override: $env:CLAUDE_SEO_TAG = 'main'; .\install.ps1
-$RepoTag = if ($env:CLAUDE_SEO_TAG) { $env:CLAUDE_SEO_TAG } else { 'v2.6.2' }
+# Override: $env:AGENTIC_HARNESS_SEO_TAG = 'main'; .\install.ps1
+$RepoTag = if ($env:AGENTIC_HARNESS_SEO_TAG) { $env:AGENTIC_HARNESS_SEO_TAG } else { 'main' }
 
 # Create directories
 New-Item -ItemType Directory -Force -Path $SkillDir | Out-Null
 New-Item -ItemType Directory -Force -Path $AgentDir | Out-Null
 
 # Clone to temp directory
-$TempDir = Join-Path $env:TEMP "claude-seo-install"
+$TempDir = Join-Path $env:TEMP "agentic-harness-seo-install"
 if (Test-Path $TempDir) {
     Remove-Item -Recurse -Force $TempDir
 }
 
-$keepTemp = ($env:CLAUDE_SEO_KEEP_TEMP -eq '1')
+$keepTemp = ($env:AGENTIC_HARNESS_SEO_KEEP_TEMP -eq '1')
 
 try {
-    Write-Host ">> Downloading Claude SEO ($RepoTag)..." -ForegroundColor Yellow
+    Write-Host ">> Downloading Agentic Harness SEO ($RepoTag)..." -ForegroundColor Yellow
     $clone = Invoke-External -Exe 'git' -Args @('clone','--depth','1','--branch',$RepoTag,$RepoUrl,$TempDir) -Quiet
     if ($clone.ExitCode -ne 0) {
         throw "git clone failed. Output:`n$($clone.Output -join "`n")"
@@ -226,11 +226,11 @@ try {
     # Copy the stable launcher used by skill and agent instructions. It ships in
     # scripts/ (never a top-level bin/, which hosted marketplaces reject) and
     # resolves runtime.py as a sibling, so it lands beside the copied scripts.
-    $LauncherSource = Join-Path $ScriptsPath 'claude-seo'
+    $LauncherSource = Join-Path $ScriptsPath 'agentic-harness-seo'
     $SkillLauncherDir = Join-Path $SkillDir 'scripts'
     if (Test-Path $LauncherSource) {
         New-Item -ItemType Directory -Force -Path $SkillLauncherDir | Out-Null
-        Copy-Item -Force $LauncherSource (Join-Path $SkillLauncherDir 'claude-seo')
+        Copy-Item -Force $LauncherSource (Join-Path $SkillLauncherDir 'agentic-harness-seo')
     }
 
     # Copy hooks
@@ -295,8 +295,8 @@ try {
     # launcher token in installed Markdown to the absolute installed path.
     # Claude Code's Bash tool expands $HOME on Windows as well as Unix. The
     # replacement consumes the plugin-root token, so a second pass is a no-op.
-    $pluginRunner = '"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run'
-    $manualRunner = '"$HOME/.claude/skills/seo/scripts/claude-seo" run'
+    $pluginRunner = '"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run'
+    $manualRunner = '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" run'
     $installedDocs = @()
     Get-ChildItem -Path $SkillsPath -Directory | ForEach-Object {
         $sourceRoot = $_.FullName
@@ -336,10 +336,10 @@ try {
     $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
     $installedDocs | ForEach-Object {
         $text = [System.IO.File]::ReadAllText($_.FullName)
-        $pluginSetup = '"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" setup'
-        $pluginDoctor = '"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" doctor'
-        $manualSetup = '"$HOME/.claude/skills/seo/scripts/claude-seo" setup'
-        $manualDoctor = '"$HOME/.claude/skills/seo/scripts/claude-seo" doctor'
+        $pluginSetup = '"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" setup'
+        $pluginDoctor = '"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" doctor'
+        $manualSetup = '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" setup'
+        $manualDoctor = '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" doctor'
         $updated = $text.Replace($pluginRunner, $manualRunner)
         $updated = $updated.Replace($pluginSetup, $manualSetup)
         $updated = $updated.Replace($pluginDoctor, $manualDoctor)
@@ -375,7 +375,7 @@ try {
 }
 
 Write-Host ""
-Write-Host "[+] Claude SEO installed successfully!" -ForegroundColor Green
+Write-Host "[+] Agentic Harness SEO installed successfully!" -ForegroundColor Green
 Write-Host ""
 Write-Host "Usage:" -ForegroundColor Cyan
 Write-Host "  1. Start Claude Code:  claude"

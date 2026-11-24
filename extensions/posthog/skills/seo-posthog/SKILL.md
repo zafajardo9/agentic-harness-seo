@@ -5,7 +5,7 @@ metadata:
   author: AgriciDaniel
   original_author: AlexMili
   version: "2.6.2"
-compatibility: "Requires the PostHog MCP server (https://mcp.posthog.com/mcp) connected to Claude Code. No local credentials are stored by this extension. The skill and agent ship with the claude-seo plugin; extensions/posthog/install.sh registers the MCP server and, on a manual install, also copies both."
+compatibility: "Requires the PostHog MCP server (https://mcp.posthog.com/mcp) connected to Claude Code. No local credentials are stored by this extension. The skill and agent ship with the agentic-harness-seo plugin; extensions/posthog/install.sh registers the MCP server and, on a manual install, also copies both."
 ---
 
 # seo-posthog
@@ -16,7 +16,7 @@ extension ships no script and stores no token.
 
 ## Prerequisites
 
-- The skill and the `seo-posthog` agent ship with the claude-seo plugin. Run
+- The skill and the `seo-posthog` agent ship with the agentic-harness-seo plugin. Run
   `extensions/posthog/install.sh` (or `install.ps1`) to register the MCP
   server; on a manual install it also copies the skill and agent.
 - The PostHog MCP server connected and authenticated (`/mcp` in Claude Code).

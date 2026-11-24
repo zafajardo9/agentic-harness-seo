@@ -1,26 +1,40 @@
+# Config for GitHub's automatically generated release notes, used by
+# `gh release create --generate-notes` and the "Generate release notes" button.
+#
+# Notes are built from merged pull requests. Categories are matched top to
+# bottom and only the first match wins, so a PR labeled both `security` and
+# `bug` appears under Security alone, and the `"*"` catch-all must stay last.
 changelog:
+  # Dropped before categorization, so these never reach the notes at all.
   exclude:
     labels:
       - ignore-for-release
+
   categories:
     - title: Security
       labels:
         - security
+
     - title: New Features
       labels:
         - enhancement
         - feature
+
     - title: Bug Fixes
       labels:
         - bug
         - fix
+
     - title: Documentation
       labels:
         - documentation
         - docs
+
+    # Kept in sync with the labels dependabot.yml applies.
     - title: Dependencies
       labels:
         - dependencies
+
     - title: Other Changes
       labels:
         - "*"

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Shared headless renderer for claude-seo.
+Shared headless renderer for agentic-harness-seo.
 
 Every subagent that fetches HTML for analysis (technical, content, schema,
 geo, local, ecommerce, hreflang, images) calls this module instead of
@@ -95,8 +95,8 @@ ends on a blank, failed or refused page is an error with the raw fetch
 kept (``raw_fallback_available``). The limits are documented in
 SECURITY.md. Where the sandbox cannot start (Ubuntu 23.10 and later, most
 containers, root) the browser runs without it, with a warning on stderr and
-``sandbox: false``; ``CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX=1`` makes that an
-error and ``CLAUDE_SEO_CHROMIUM_NO_SANDBOX=1`` skips the sandbox attempt.
+``sandbox: false``; ``AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX=1`` makes that an
+error and ``AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX=1`` skips the sandbox attempt.
 
 CLI
 ===
@@ -966,7 +966,7 @@ def _json_summary(result: dict, *, max_text: int = 0) -> dict:
 
 def _cli() -> None:
     parser = argparse.ArgumentParser(
-        description="claude-seo shared headless renderer (Playwright + trafilatura)"
+        description="agentic-harness-seo shared headless renderer (Playwright + trafilatura)"
     )
     parser.add_argument("url", help="URL to render")
     parser.add_argument(

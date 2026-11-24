@@ -1,4 +1,4 @@
-# Claude SEO: Shopify Crawler Access extension installer (Windows).
+# Agentic Harness SEO: Shopify Crawler Access extension installer (Windows).
 #
 # Plugin installs already ship the skill (skills/seo-shopify), so nothing is
 # copied there. Manual installs (~/.claude/skills/seo) get the skill copied with
@@ -20,15 +20,15 @@ if (Test-Path (Join-Path $SkillDir "seo")) {
     if ((Test-Path (Join-Path $OwnRoot "skills/seo")) -and (Test-Path (Join-Path $OwnRoot ".claude-plugin/plugin.json"))) {
         $InstallMode = "plugin"; $PluginRoot = $OwnRoot
     } else {
-        $Cached = Get-ChildItem -Path (Join-Path $HOME ".claude/plugins/cache/*/claude-seo/*/skills/seo") -Directory -ErrorAction SilentlyContinue | Select-Object -Last 1
+        $Cached = Get-ChildItem -Path (Join-Path $HOME ".claude/plugins/cache/*/agentic-harness-seo/*/skills/seo") -Directory -ErrorAction SilentlyContinue | Select-Object -Last 1
         if ($Cached) { $InstallMode = "plugin"; $PluginRoot = Split-Path -Parent (Split-Path -Parent $Cached.FullName) }
     }
 }
-if (-not $InstallMode) { throw "claude-seo not installed (no plugin install and no ~/.claude/skills/seo)" }
+if (-not $InstallMode) { throw "agentic-harness-seo not installed (no plugin install and no ~/.claude/skills/seo)" }
 if ($InstallMode -eq "plugin") {
-    Write-Host "claude-seo plugin detected: the seo-shopify skill ships with it, nothing to copy."
+    Write-Host "agentic-harness-seo plugin detected: the seo-shopify skill ships with it, nothing to copy."
     if (-not (Test-Path (Join-Path $PluginRoot "skills/seo-shopify/SKILL.md"))) {
-        Write-Host "! This plugin version does not ship the seo-shopify skill yet. Update the claude-seo plugin, then /seo shopify will load."
+        Write-Host "! This plugin version does not ship the seo-shopify skill yet. Update the agentic-harness-seo plugin, then /seo shopify will load."
     }
 }
 if ($InstallMode -eq "manual") {
@@ -36,7 +36,7 @@ if ($InstallMode -eq "manual") {
     New-Item -ItemType Directory -Path $SkillTarget -Force | Out-Null
     # Same rewrite the main installer applies; Claude Code's Bash tool expands $HOME on Windows too.
     $Doc = [System.IO.File]::ReadAllText((Join-Path $SourceDir "skills/seo-shopify/SKILL.md"))
-    $Doc = $Doc.Replace('"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo"', '"$HOME/.claude/skills/seo/scripts/claude-seo"')
+    $Doc = $Doc.Replace('"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo"', '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo"')
     [System.IO.File]::WriteAllText((Join-Path $SkillTarget "SKILL.md"), $Doc, (New-Object System.Text.UTF8Encoding $false))
     Write-Host "Installed skill: $SkillTarget"
 }

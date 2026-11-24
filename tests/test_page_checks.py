@@ -835,12 +835,12 @@ def test_a_same_origin_canonical_keeps_the_operators_allowlist():
 
 
 def test_fetch_page_public_only_ignores_the_local_allowlist(monkeypatch):
-    """With CLAUDE_SEO_LOCAL_TARGETS naming a local server, public_only still refuses it."""
+    """With AGENTIC_HARNESS_SEO_LOCAL_TARGETS naming a local server, public_only still refuses it."""
     import socket as _socket
 
     import fetch_page
 
-    monkeypatch.setenv("CLAUDE_SEO_LOCAL_TARGETS", "127.0.0.1:8765")
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_LOCAL_TARGETS", "127.0.0.1:8765")
     connects = []
     monkeypatch.setattr(_socket.socket, "connect", lambda self, addr: connects.append(addr))
     out = fetch_page.fetch_page("http://127.0.0.1:8765/admin/delete?id=1", timeout=2, public_only=True)

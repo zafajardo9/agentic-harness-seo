@@ -1118,12 +1118,16 @@ def _from_file(path: str, base_url: Optional[str], headers_json: Optional[str]) 
     return {"url": result.pop("url"), "source": "file", "status_code": None, **result}
 
 
-def _from_url(url: str, timeout: int) -> dict:
+def check_url(url: str, timeout: int, *, public_only: bool = False) -> dict:
     if _SCRIPTS_DIR not in sys.path:
         sys.path.insert(0, _SCRIPTS_DIR)
     from fetch_page import fetch_page  # SSRF-safe fetch: url_safety validates and pins DNS
 
-    page = fetch_page(url, timeout=timeout)
+    def fetch_public(target: str, *, timeout: int, public_only: bool = True) -> dict:
+        return fetch_page(target, timeout=timeout, public_only=True, max_time=10, max_bytes=1_000_000)
+
+    fetch = fetch_public if public_only else fetch_page
+    page = fetch(url, timeout=timeout)
     if page.get("error"):
         raise _InputError(str(page["error"]))
     status = page.get("status_code")
@@ -1141,7 +1145,7 @@ def _from_url(url: str, timeout: int) -> dict:
     if page.get("too_large"):
         out["facts"]["body_truncated"] = True
     if out["facts"].get("canonical_status") == "other":
-        _probe_canonical(out, page.get("url") or url, fetch_page, timeout)
+        _probe_canonical(out, page.get("url") or url, fetch, timeout)
     return out
 
 
@@ -1170,7 +1174,7 @@ def _probe_canonical(out: dict, page_url: str, fetch, timeout: int) -> None:
         return  # absent, or cut short by _trim and so not the real URL
     # The canonical comes from the page, so it is not the operator's target:
     # fetched public-only, it can never steer a request to an address
-    # CLAUDE_SEO_LOCAL_TARGETS allows. Only the audited page's own host and
+    # AGENTIC_HARNESS_SEO_LOCAL_TARGETS allows. Only the audited page's own host and
     # port keep the operator's allowlist.
     same_origin = _origin_key(canonical) == _origin_key(page_url)
     try:
@@ -1231,7 +1235,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         else:
             if args.base_url or args.headers_json:
                 raise _InputError("--base-url and --headers-json apply to --file only", 2)
-            result = _from_url(args.url, args.timeout)
+            result = check_url(args.url, args.timeout)
     except _InputError as exc:
         print(json.dumps({"error": str(exc)}, indent=2))
         return exc.code

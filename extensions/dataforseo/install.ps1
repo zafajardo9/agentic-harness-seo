@@ -1,22 +1,22 @@
-# DataForSEO Extension Installer for Claude SEO (Windows)
+# DataForSEO Extension Installer for Agentic Harness SEO (Windows)
 # PowerShell installation script
 
 $ErrorActionPreference = "Stop"
 
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "|   DataForSEO Extension - Installer   |" -ForegroundColor Cyan
-Write-Host "|   For Claude SEO                     |" -ForegroundColor Cyan
+Write-Host "|   For Agentic Harness SEO                     |" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
 # Check prerequisites
 $SeoSkillDir = "$env:USERPROFILE\.claude\skills\seo"
 if (-not (Test-Path $SeoSkillDir)) {
-    Write-Host "[X] Claude SEO is not installed." -ForegroundColor Red
-    Write-Host "  Install it first: irm https://raw.githubusercontent.com/AgriciDaniel/claude-seo/main/install.ps1 | iex"
+    Write-Host "[X] Agentic Harness SEO is not installed." -ForegroundColor Red
+    Write-Host "  Install it first: irm https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main/install.ps1 | iex"
     exit 1
 }
-Write-Host "[OK] Claude SEO detected" -ForegroundColor Green
+Write-Host "[OK] Agentic Harness SEO detected" -ForegroundColor Green
 
 $nodeCmd = Get-Command -Name node -ErrorAction SilentlyContinue
 if ($null -eq $nodeCmd) {
@@ -68,7 +68,7 @@ if (Test-Path "$ScriptDir\skills\seo-dataforseo\SKILL.md") {
     $SourceDir = "$ScriptDir\extensions\dataforseo"
 } else {
     Write-Host "[X] Cannot find extension source files." -ForegroundColor Red
-    Write-Host "  Run this script from the claude-seo repo."
+    Write-Host "  Run this script from the agentic-harness-seo repo."
     exit 1
 }
 

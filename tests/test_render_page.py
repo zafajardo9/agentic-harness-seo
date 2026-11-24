@@ -868,7 +868,7 @@ def _render_in_sandbox_mode(page, monkeypatch, mode):
     [
         ("sandboxed", True, [True], ""),
         ("fallback", False, [True, False], "sandbox is unavailable on this system"),
-        ("opt_out", False, [False], "disabled by CLAUDE_SEO_CHROMIUM_NO_SANDBOX"),
+        ("opt_out", False, [False], "disabled by AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX"),
     ],
 )
 def test_render_json_says_whether_chromium_was_sandboxed(
@@ -928,8 +928,8 @@ def test_render_in_strict_mode_reports_the_sandbox_failure(monkeypatch) -> None:
     monkeypatch.setattr(browser_proxy.os, "geteuid", lambda: 0, raising=False)
     page = _FakeBrowserPage([(200, 20), (200, 20), (200, 20)])
     result = _render_checking_the_page(page, monkeypatch)
-    assert "CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX" in result["error"]
-    assert "CLAUDE_SEO_CHROMIUM_NO_SANDBOX=1" in result["error"]
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX" in result["error"]
+    assert "AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX=1" in result["error"]
     assert result["raw_fallback_available"] is True
     assert result["sandbox"] is None  # no browser was launched
     assert page.goto_options is None  # the browser never started

@@ -2,14 +2,24 @@
 
 ## Data Handling
 
-Claude SEO is a Claude Code skill that runs on your local machine. The core skill makes no third-party API calls by default (audits still fetch the target URLs you point them at), and does not collect, store, or transmit any personal data to a vendor.
+The local Agentic Harness SEO toolkit runs on your machine. By default, it contacts the sites you ask it to audit. Optional API integrations are listed below.
 
 ## What Stays Local
 
-- All SEO analysis runs in your Claude Code session
+- Local SEO analysis runs in your coding agent or local MCP server
 - HTML parsing, content analysis, and report generation happen locally
 - Generated reports (PDF, HTML, Excel) are saved to your local filesystem
 - No telemetry, analytics, or usage tracking
+
+## Hosted MCP connector
+
+When you use the hosted connector, your AI client sends the URL, submitted
+HTML, or selected industry to the connector operator. Live page checks make
+HTTP requests to the target page and may follow redirects or check its
+canonical URL. Submitted HTML is processed in memory without making network
+requests. The connector returns findings to the AI client and does not store
+input or results. The host and AI client may apply their own logging and
+retention policies.
 
 ## Extension APIs
 
@@ -24,8 +34,8 @@ Optional extensions make API calls to third-party services when you invoke their
 | **SE Ranking** | seranking.com/api | Domains and keywords you analyze | [SE Ranking Privacy](https://seranking.com/privacy-policy) |
 | **Profound** | Profound API (tryprofound.com) | Brands and domains you track | [Profound Privacy](https://tryprofound.com/privacy) |
 | **Bing Webmaster / IndexNow** | Bing Webmaster Tools API and IndexNow endpoints | Domains, submitted URLs, and key-verification URL data | [Microsoft Privacy](https://privacy.microsoft.com/) |
-| **Matomo** | Your own Matomo instance (self-hosted or Matomo Cloud); no claude-seo vendor is contacted | `idSite`, the report parameters (method, period, date range, segment, row limit), and `token_auth` in the POST body | [Matomo Privacy](https://matomo.org/privacy-policy/) (Cloud); self-hosted = your own policy |
-| **PostHog** | Your PostHog project, through the PostHog MCP server (`mcp.posthog.com`, or your self-hosted instance); claude-seo itself contacts no PostHog endpoint and stores no credential | Read-only HogQL queries (time window, row limit, organic-search filter) sent by the MCP server; results are read back from your own PostHog project | [PostHog Privacy](https://posthog.com/privacy) (Cloud); self-hosted = your own policy |
+| **Matomo** | Your own Matomo instance (self-hosted or Matomo Cloud); no agentic-harness-seo vendor is contacted | `idSite`, the report parameters (method, period, date range, segment, row limit), and `token_auth` in the POST body | [Matomo Privacy](https://matomo.org/privacy-policy/) (Cloud); self-hosted = your own policy |
+| **PostHog** | Your PostHog project, through the PostHog MCP server (`mcp.posthog.com`, or your self-hosted instance); agentic-harness-seo itself contacts no PostHog endpoint and stores no credential | Read-only HogQL queries (time window, row limit, organic-search filter) sent by the MCP server; results are read back from your own PostHog project | [PostHog Privacy](https://posthog.com/privacy) (Cloud); self-hosted = your own policy |
 | **Unlighthouse** | Local only, no third-party vendor | Runs Lighthouse locally against the target URL; only the target site is contacted (to crawl it). Nothing is sent to a third-party vendor. | N/A (runs locally) |
 | **Shopify Crawler Access** | Local only, no third-party vendor | Crawls the target Shopify storefront directly. The merchant's Crawler Access signature from `.shopify-env` is sent only to the https storefront origin it was issued for, never over plain http, and is never written to the crawl artifacts or printed. Nothing is sent to a third-party vendor. | N/A (runs locally) |
 
@@ -52,15 +62,15 @@ configured Matomo instance (self-hosted or Matomo Cloud):
 | `matomo_auth.py` | The configured `MATOMO_URL` | `API.getMatomoVersion` probe; `token_auth` in the POST body, never in a URL, never logged |
 | `matomo_report.py` | The configured `MATOMO_URL` | Reporting API queries for the configured `idSite`: method name, period, date range, segment, and row limit; `token_auth` in the POST body, never in a URL, never logged |
 
-The endpoint is the instance you configured and nothing else. No claude-seo
+The endpoint is the instance you configured and nothing else. No agentic-harness-seo
 vendor, telemetry endpoint, or third party sees any of it, and the URLs of the
 site you analyze are read back from your own Matomo, not sent to it.
 
 Both scripts reach the instance through `scripts/url_safety.py`, the same
-SSRF-guarded, DNS-pinned path claude-seo uses for every user-supplied or
+SSRF-guarded, DNS-pinned path agentic-harness-seo uses for every user-supplied or
 page-derived URL. Calls to fixed vendor API hosts go to those hosts directly.
 A self-hosted instance on a private address is reached by naming it in the
-`CLAUDE_SEO_LOCAL_TARGETS` allowlist; redirects away from the instance are
+`AGENTIC_HARNESS_SEO_LOCAL_TARGETS` allowlist; redirects away from the instance are
 refused rather than followed. See SECURITY.md and
 `extensions/matomo/docs/MATOMO-SETUP.md`.
 
@@ -93,6 +103,6 @@ you have one set for the `gh` CLI.
 
 ## Credentials
 
-- API keys and OAuth tokens are stored locally in `~/.config/claude-seo/`, in the `CLAUDE_SEO_PROFILE_DIR` directory, or in environment variables
+- API keys and OAuth tokens are stored locally in `~/.config/agentic-harness-seo/`, in the `AGENTIC_HARNESS_SEO_PROFILE_DIR` directory, or in environment variables
 - Credentials are never committed to the repository (blocked by `.gitignore`)
 - OAuth tokens use refresh tokens and never store client secrets in token files

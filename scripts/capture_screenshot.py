@@ -10,8 +10,8 @@ pins the destination. A Playwright route() handler also aborts any request
 whose hostname resolves to a non-public IP (defence in depth). Where the
 sandbox cannot start (Ubuntu 23.10 and later, most containers, root) the
 browser runs without it, with a warning on stderr and "sandbox": false.
-CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX=1 makes that an error;
-CLAUDE_SEO_CHROMIUM_NO_SANDBOX=1 skips the sandbox attempt.
+AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX=1 makes that an error;
+AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX=1 skips the sandbox attempt.
 
 Full-page captures (--full) get two hygiene steps before the picture is
 taken, both bounded so a page cannot hang the capture:
@@ -138,7 +138,7 @@ HIDE_OVERLAYS_MAX_MS = 5000  # the one pass that hides overlays, on a large DOM
 
 # Where a page-side step runs and where it leaves its result for the read.
 _ROOT = ":root"
-_RESULT_ATTR = "data-claude-seo-result"
+_RESULT_ATTR = "data-agentic-harness-seo-result"
 _RESULT_MAX_CHARS = 1000
 _CALL_IDS = itertools.count(1)
 
@@ -196,7 +196,7 @@ _JS_HIDE_OVERLAYS = """() => {
     const cs = getComputedStyle(el);
     if (cs.position !== 'fixed' && cs.position !== 'sticky') continue;
     if (cs.display === 'none' || cs.visibility === 'hidden') continue;
-    if (el.closest('[data-claude-seo-hidden]')) continue;
+    if (el.closest('[data-agentic-harness-seo-hidden]')) continue;
     const r = el.getBoundingClientRect();
     if (r.width < 1 || r.height < 1) continue;
     if (cs.position === 'fixed') {
@@ -208,7 +208,7 @@ _JS_HIDE_OVERLAYS = """() => {
       const offset = parseFloat(cs.bottom);
       if (Number.isNaN(offset) || Math.abs(r.bottom + offset - vh) > 2) continue;
     }
-    el.setAttribute('data-claude-seo-hidden', '');
+    el.setAttribute('data-agentic-harness-seo-hidden', '');
     el.style.setProperty('visibility', 'hidden', 'important');
     hidden++;
   }

@@ -1,15 +1,9 @@
 name: v2 audit
 
-# Local-only by design: this workflow is wired up so the v2.0.0 audit
-# pass is ready to fire the moment we authorize a push, but it never
-# runs on a push or pull_request event. The two triggers are:
-#
-#   - workflow_dispatch (manual button in the Actions UI)
-#   - workflow_call    (so future workflows can chain it in)
-#
-# Until the v2 branch is pushed, this file lives on the branch but
-# GitHub never schedules it. After we push, the maintainer triggers it
-# manually from the Actions tab to gate the v2.0.0 tag.
+# Manual release gate, not a required check. Nothing runs on push or
+# pull_request: the workflow exists so a maintainer can fire the full audit
+# from the Actions tab before tagging a release, and so a future workflow can
+# chain it in through workflow_call.
 on:
   workflow_dispatch:
     inputs:
@@ -17,15 +11,28 @@ on:
         description: "Why this audit run is happening (free text, goes to summary)"
         required: false
         default: "manual v2 audit"
+        type: string
   workflow_call:
+    inputs:
+      reason:
+        description: "Why this audit run is happening (free text, goes to summary)"
+        required: false
+        default: "chained audit run"
+        type: string
 
 permissions:
   contents: read
 
+# A gate run should finish, not be replaced by a newer dispatch.
+concurrency:
+  group: v2-audit-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   manifest:
-    name: Manifest consistency (15 assertions)
+    name: Manifest consistency
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -33,16 +40,19 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
 
-      - name: Install pytest + test deps
-        run: pip install pytest beautifulsoup4
+      - name: Install runtime + test deps
+        run: pip install -r requirements.txt pytest
 
       - name: Run manifest consistency tests
         run: pytest tests/test_manifest_consistency.py -v
 
   security:
-    name: SSRF + DNS rebinding suite
+    name: SSRF and DNS rebinding suite
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -50,31 +60,33 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
 
       - name: Install runtime + test deps
-        run: |
-          pip install pytest
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt pytest
 
       - name: Run url_safety regression battery
         run: pytest tests/test_url_safety.py -v
 
-      - name: Confirm syntactic integrity of safety + renderer modules
+      - name: Confirm syntactic integrity of safety and renderer modules
         run: |
-          python3 -m py_compile scripts/url_safety.py
-          python3 -m py_compile scripts/render_page.py
-          python3 -m py_compile scripts/fetch_page.py
-          python3 -m py_compile scripts/capture_screenshot.py
-          python3 -m py_compile scripts/google_auth.py
-          python3 -m py_compile scripts/backlinks_auth.py
+          python3 -m py_compile \
+            scripts/url_safety.py \
+            scripts/render_page.py \
+            scripts/fetch_page.py \
+            scripts/capture_screenshot.py \
+            scripts/google_auth.py \
+            scripts/backlinks_auth.py
 
   full_pytest:
     name: Full pytest suite
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
-      # sync_flow tests need an authenticated gh CLI to bypass the
-      # 60/hr anonymous rate limit. Identical to ci.yml.
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Matches ci.yml: the sync_flow tests need an authenticated gh CLI to stay
+      # clear of the 60/hr anonymous per-IP rate limit.
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -82,16 +94,15 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
 
-      - name: Install pytest + test deps
-        # Must not be tolerated with `|| true`: several test modules import
-        # scripts that call sys.exit(1) at module scope when a dependency is
-        # missing, so a swallowed install failure resurfaces later as an opaque
-        # pytest INTERNALERROR instead of the pip error that caused it. Matches
-        # ci.yml, which installs the same set without a fallback.
-        run: |
-          pip install pytest beautifulsoup4
-          pip install -r requirements.txt
+      - name: Install runtime + test deps
+        # Must not be tolerated with `|| true`: several test modules call
+        # sys.exit(1) at import time when a dependency is missing, so a
+        # swallowed install failure resurfaces as an opaque pytest
+        # INTERNALERROR instead of the pip error that caused it.
+        run: pip install -r requirements.txt pytest
 
       - name: Run pytest
         run: pytest tests/ -v
@@ -99,6 +110,7 @@ jobs:
   secret_scan:
     name: Secret scan
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -121,19 +133,31 @@ jobs:
           echo "Secret scan clean: no credentials detected in tracked files."
 
   audit_summary:
-    name: Audit summary
+    name: Audit gate summary
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     needs: [manifest, security, full_pytest, secret_scan]
     if: always()
     steps:
       - name: Emit summary
+        # Every value reaches the shell through the environment. `reason` is
+        # free text from the run inputs, so interpolating it directly into the
+        # script would let it execute as shell.
+        env:
+          REASON: ${{ inputs.reason }}
+          MANIFEST: ${{ needs.manifest.result }}
+          SECURITY: ${{ needs.security.result }}
+          FULL_PYTEST: ${{ needs.full_pytest.result }}
+          SECRET_SCAN: ${{ needs.secret_scan.result }}
         run: |
-          echo "## v2 audit summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- Reason: ${{ inputs.reason }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Manifest: ${{ needs.manifest.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Security: ${{ needs.security.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Full pytest: ${{ needs.full_pytest.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Secret scan: ${{ needs.secret_scan.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "All four must report 'success' before tagging." >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## v2 audit summary"
+            echo ""
+            echo "- Reason: ${REASON:-not given}"
+            echo "- Manifest: $MANIFEST"
+            echo "- Security: $SECURITY"
+            echo "- Full pytest: $FULL_PYTEST"
+            echo "- Secret scan: $SECRET_SCAN"
+            echo ""
+            echo "All four must report 'success' before tagging."
+          } >> "$GITHUB_STEP_SUMMARY"

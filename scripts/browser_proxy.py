@@ -8,7 +8,7 @@ run and is not a general-purpose proxy.
 What it enforces
 ================
 * Every destination goes through ``validate_public_url_strict``: the
-  ``CLAUDE_SEO_LOCAL_TARGETS`` allowlist is never read here, so rendering a
+  ``AGENTIC_HARNESS_SEO_LOCAL_TARGETS`` allowlist is never read here, so rendering a
   local or private host stays unsupported, as it was before this guard.
 * A direct connection dials a validated address, not the name, so a DNS
   answer cannot change between the check and the connect. When a host has
@@ -20,7 +20,7 @@ What it enforces
   itself, so the pin degrades to the validation, as on the raw HTTP path.
 * That policy (``url_safety.upstream_http_proxy``) wants a public
   ``http://`` proxy, or one the operator named in
-  ``CLAUDE_SEO_TRUSTED_PROXIES``, which may then sit on loopback, RFC 1918,
+  ``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES``, which may then sit on loopback, RFC 1918,
   RFC 6598 or another non-public range (never link-local or a known metadata
   address). Trusting a proxy
   changes where the guard may send a request, never which destinations it
@@ -46,8 +46,8 @@ Chromium
 with the Chromium sandbox on. Where the sandbox cannot start (Ubuntu 23.10
 and later, most containers, root) it relaunches once without it, behind the
 same guard, and prints a warning on stderr; ``chromium_sandboxed`` tells the
-caller which of the two happened. ``CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX=1``
-turns that fallback into an error, and ``CLAUDE_SEO_CHROMIUM_NO_SANDBOX=1``
+caller which of the two happened. ``AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX=1``
+turns that fallback into an error, and ``AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX=1``
 skips the sandboxed attempt.
 """
 
@@ -117,18 +117,18 @@ _HEADER_NAME_RE = re.compile(rb"^[!#$%&'*+\-.^_`|~0-9A-Za-z]+$")
 _HEADER_VALUE_BAD_RE = re.compile(rb"[\x00\r\n]")
 # SO_LINGER with a zero timeout: closing the socket sends a reset, not a FIN.
 _LINGER_RESET = struct.pack("HH" if os.name == "nt" else "ii", 1, 0)
-_PROXY_AUTH_REALM = "claude-seo egress guard"
-_PROXY_USERNAME = "claude-seo"
+_PROXY_AUTH_REALM = "agentic-harness-seo egress guard"
+_PROXY_USERNAME = "agentic-harness-seo"
 
-NO_SANDBOX_ENV = "CLAUDE_SEO_CHROMIUM_NO_SANDBOX"
-REQUIRE_SANDBOX_ENV = "CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX"
+NO_SANDBOX_ENV = "AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX"
+REQUIRE_SANDBOX_ENV = "AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX"
 USERNS_DOC_URL = (
     "https://chromium.googlesource.com/chromium/src/+/main/docs/security/"
     "apparmor-userns-restrictions.md"
 )
 # Set on the browser ``guarded_chromium`` yields; read it with
 # ``chromium_sandboxed``.
-_SANDBOXED_ATTR = "claude_seo_sandboxed"
+_SANDBOXED_ATTR = "agentic_harness_seo_sandboxed"
 # Reasons already warned about, so a run that launches several browsers
 # (``capture_screenshot.py --all``) says it once.
 _warned_reasons: set[str] = set()
@@ -756,12 +756,12 @@ def _env_flag(name: str) -> bool:
 
 
 def chromium_sandbox_enabled() -> bool:
-    """False only when ``CLAUDE_SEO_CHROMIUM_NO_SANDBOX`` opts out."""
+    """False only when ``AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX`` opts out."""
     return not _env_flag(NO_SANDBOX_ENV)
 
 
 def chromium_sandbox_required() -> bool:
-    """True when ``CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX`` forbids the fallback."""
+    """True when ``AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX`` forbids the fallback."""
     return _env_flag(REQUIRE_SANDBOX_ENV)
 
 
@@ -823,21 +823,21 @@ def _unsandboxed_warning(reason: str, root: bool) -> str:
     )
     if reason == "root":
         lines = [
-            "claude-seo warning: running as root, where Chromium's sandbox "
+            "agentic-harness-seo warning: running as root, where Chromium's sandbox "
             f"cannot start, so the page is rendered without it: {risk}.",
             f"Run as a regular user to get the sandbox, or set "
             f"{REQUIRE_SANDBOX_ENV}=1 to fail instead of rendering unsandboxed.",
         ]
     elif reason == "disabled":
         lines = [
-            f"claude-seo warning: Chromium's sandbox is disabled by "
+            f"agentic-harness-seo warning: Chromium's sandbox is disabled by "
             f"{NO_SANDBOX_ENV}, so the page is rendered without it: {risk}.",
             f"Unset it to use the sandbox where the system can start it, and "
             f"set {REQUIRE_SANDBOX_ENV}=1 to make the sandbox mandatory.",
         ]
     else:
         lines = [
-            "claude-seo warning: Chromium's sandbox is unavailable on this "
+            "agentic-harness-seo warning: Chromium's sandbox is unavailable on this "
             f"system, so the page is rendered without it: {risk}.",
             _userns_hint(),
             f"Set {REQUIRE_SANDBOX_ENV}=1 to fail instead of rendering "
@@ -877,7 +877,7 @@ def _launch(browser_type, proxy_url: str, credentials: tuple[str, str]):  # type
 
     Raises:
         ChromiumSandboxError: the sandbox cannot start and
-            ``CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX`` forbids the fallback, or
+            ``AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX`` forbids the fallback, or
             that variable and the opt-out are both set.
     """
     require = chromium_sandbox_required()
@@ -935,21 +935,21 @@ def _launch(browser_type, proxy_url: str, credentials: tuple[str, str]):  # type
 def guarded_chromium(browser_type, url: Optional[str] = None):  # type: ignore[no-untyped-def]
     """Launch Chromium with all HTTP(S) traffic forced through the local guard.
 
-    This is the only place claude-seo launches a browser. ``url`` is the page
+    This is the only place agentic-harness-seo launches a browser. ``url`` is the page
     about to be loaded: when given, an HTTP proxy configured for it that the
     guard cannot use (non-public and not named in
-    ``CLAUDE_SEO_TRUSTED_PROXIES``, or not ``http://``) raises
+    ``AGENTIC_HARNESS_SEO_TRUSTED_PROXIES``, or not ``http://``) raises
     ``URLSafetyError`` here, before the browser starts, instead of failing
     every request later.
 
     The browser is sandboxed wherever the host can start the sandbox, and
     runs without it (with a warning on stderr) where it cannot or where
-    ``CLAUDE_SEO_CHROMIUM_NO_SANDBOX`` says so. ``chromium_sandboxed(browser)``
+    ``AGENTIC_HARNESS_SEO_CHROMIUM_NO_SANDBOX`` says so. ``chromium_sandboxed(browser)``
     returns which; it is fixed at launch and never changes afterwards.
 
     Raises:
         ChromiumSandboxError: Chromium cannot start sandboxed and
-            ``CLAUDE_SEO_CHROMIUM_REQUIRE_SANDBOX`` is set. The message names
+            ``AGENTIC_HARNESS_SEO_CHROMIUM_REQUIRE_SANDBOX`` is set. The message names
             both variables.
         URLSafetyError: the configured proxy for ``url`` is refused.
     """

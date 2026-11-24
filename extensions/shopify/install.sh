@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Claude SEO: Shopify Crawler Access extension installer.
+# Agentic Harness SEO: Shopify Crawler Access extension installer.
 #
 # Plugin installs already ship the skill (skills/seo-shopify), so nothing is
 # copied there. Manual installs (~/.claude/skills/seo) get the skill copied with
 # its launcher path rewritten, because they have no ${CLAUDE_PLUGIN_ROOT}.
-# The scripts it uses (shopify_env.py, shopify_crawl.py) ship with claude-seo
+# The scripts it uses (shopify_env.py, shopify_crawl.py) ship with agentic-harness-seo
 # already. No API keys: the crawl credential is minted in the merchant's Shopify
 # admin and lives in a project-local .shopify-env (see docs/SHOPIFY-SETUP.md).
 # On request the installer creates that file from the template with mode 0600;
@@ -15,7 +15,7 @@ main() {
     SKILL_DIR="${HOME}/.claude/skills"
 
     echo "════════════════════════════════════════"
-    echo "║   Claude SEO: Shopify Crawler Access  ║"
+    echo "║   Agentic Harness SEO: Shopify Crawler Access  ║"
     echo "════════════════════════════════════════"
 
     SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 && pwd)"
@@ -35,22 +35,22 @@ main() {
         if [ -n "${_OWN_ROOT}" ] && [ -d "${_OWN_ROOT}/skills/seo" ] && [ -f "${_OWN_ROOT}/.claude-plugin/plugin.json" ]; then
             INSTALL_MODE="plugin"; PLUGIN_ROOT="${_OWN_ROOT}"
         else
-            _GLOB_MATCH=$(ls -d "${HOME}/.claude/plugins/cache/"*/claude-seo/*/skills/seo 2>/dev/null | tail -n1 || true)
+            _GLOB_MATCH=$(ls -d "${HOME}/.claude/plugins/cache/"*/agentic-harness-seo/*/skills/seo 2>/dev/null | tail -n1 || true)
             if [ -n "${_GLOB_MATCH}" ] && [ -d "${_GLOB_MATCH}" ]; then
                 INSTALL_MODE="plugin"; PLUGIN_ROOT="$(cd "${_GLOB_MATCH}/../.." >/dev/null 2>&1 && pwd)"
             fi
         fi
     fi
     if [ -z "${INSTALL_MODE}" ]; then
-        echo "✗ claude-seo base not installed (no plugin install and no ~/.claude/skills/seo)."
+        echo "✗ agentic-harness-seo base not installed (no plugin install and no ~/.claude/skills/seo)."
         exit 1
     fi
 
     if [ "${INSTALL_MODE}" = "plugin" ]; then
-        echo "✓ claude-seo plugin detected: the seo-shopify skill ships with it, nothing to copy."
+        echo "✓ agentic-harness-seo plugin detected: the seo-shopify skill ships with it, nothing to copy."
         if [ ! -f "${PLUGIN_ROOT}/skills/seo-shopify/SKILL.md" ]; then
             echo "! This plugin version does not ship the seo-shopify skill yet."
-            echo "  Update the claude-seo plugin, then /seo shopify will load."
+            echo "  Update the agentic-harness-seo plugin, then /seo shopify will load."
         fi
     fi
 
@@ -60,7 +60,7 @@ main() {
         # manual-install path. In a basic regular expression "$" is literal
         # unless it ends the expression, so the token needs no escaping.
         mkdir -p "${SKILL_DIR}/seo-shopify"
-        sed -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo"#"$HOME/.claude/skills/seo/scripts/claude-seo"#g' \
+        sed -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo"#"$HOME/.claude/skills/seo/scripts/agentic-harness-seo"#g' \
             "${SOURCE_DIR}/skills/seo-shopify/SKILL.md" > "${SKILL_DIR}/seo-shopify/SKILL.md"
         echo "✓ Installed skill: ${SKILL_DIR}/seo-shopify/SKILL.md"
     fi

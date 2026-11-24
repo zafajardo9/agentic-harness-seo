@@ -1,4 +1,4 @@
-"""Adversarial tests for CLAUDE_SEO_TRUSTED_PROXIES (PR #398, issue #280).
+"""Adversarial tests for AGENTIC_HARNESS_SEO_TRUSTED_PROXIES (PR #398, issue #280).
 
 The variable lets an operator name a proxy on loopback or a private address.
 These tests hold it to that: it trusts a proxy endpoint and nothing else. The
@@ -22,7 +22,7 @@ if _SCRIPTS not in sys.path:
 requests = pytest.importorskip("requests")
 import url_safety  # noqa: E402
 
-ENV = "CLAUDE_SEO_TRUSTED_PROXIES"
+ENV = "AGENTIC_HARNESS_SEO_TRUSTED_PROXIES"
 LOOPBACK_PROXY = "http://127.0.0.1:3128"
 
 
@@ -30,7 +30,7 @@ LOOPBACK_PROXY = "http://127.0.0.1:3128"
 def _hermetic(monkeypatch):
     """No test inherits the developer's proxy, allowlists or NO_PROXY."""
     monkeypatch.setattr(url_safety.requests.utils, "getproxies", lambda: {})
-    for name in (ENV, "CLAUDE_SEO_LOCAL_TARGETS", "NO_PROXY", "no_proxy"):
+    for name in (ENV, "AGENTIC_HARNESS_SEO_LOCAL_TARGETS", "NO_PROXY", "no_proxy"):
         monkeypatch.delenv(name, raising=False)
 
 
@@ -510,7 +510,7 @@ def test_a_listed_proxy_address_is_not_an_audit_target(monkeypatch, target) -> N
 
 def test_the_two_lists_stay_separate_in_both_directions(monkeypatch) -> None:
     monkeypatch.setenv(ENV, "127.0.0.1:3128")
-    monkeypatch.setenv("CLAUDE_SEO_LOCAL_TARGETS", "127.0.0.1:3000")
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_LOCAL_TARGETS", "127.0.0.1:3000")
     _proxies(monkeypatch, {"https": "http://127.0.0.1:3000"})
     # The local target is not a trusted proxy,
     with pytest.raises(url_safety.URLSafetyError, match="Refusing configured HTTP proxy"):
@@ -625,7 +625,7 @@ def test_a_local_target_on_the_proxy_host_keeps_working(monkeypatch) -> None:
         {"http://127.0.0.1:3000/": (302, "http://127.0.0.1:3000/next")},
         no_proxy="127.0.0.1",
     )
-    monkeypatch.setenv("CLAUDE_SEO_LOCAL_TARGETS", "127.0.0.1:3000")
+    monkeypatch.setenv("AGENTIC_HARNESS_SEO_LOCAL_TARGETS", "127.0.0.1:3000")
     assert url_safety.safe_requests_get("http://127.0.0.1:3000/", timeout=5).status_code == 200
     assert [url for url, _proxy in wire.sent] == [
         "http://127.0.0.1:3000/",
@@ -647,7 +647,7 @@ def test_nothing_in_a_response_can_add_to_the_list(monkeypatch) -> None:
         response = real_send(request, **kwargs)
         response.headers["Proxy-Authenticate"] = 'Basic realm="10.0.0.5:3128"'
         response.headers["Set-Cookie"] = f"{ENV}=10.0.0.5"
-        response.headers["X-Claude-Seo-Trusted-Proxies"] = "10.0.0.5,*"
+        response.headers["X-Agentic-Harness-Seo-Trusted-Proxies"] = "10.0.0.5,*"
         return response
 
     wire.send = hostile

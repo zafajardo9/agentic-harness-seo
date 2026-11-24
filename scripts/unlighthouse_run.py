@@ -19,7 +19,7 @@ This wrapper:
     defaults (mobile form factor, JSON reporter, generated config file).
   - Captures the JSON result the CLI writes and returns it parsed,
     normalized to a flat route list regardless of which reporter shape
-    produced it, so claude-seo agents can ingest the result without
+    produced it, so agentic-harness-seo agents can ingest the result without
     re-running Lighthouse.
 
 Route cap and per-page timeout
@@ -217,7 +217,7 @@ def run(
         return {"ok": False, "error": node_err}
 
     out_dir = Path(output_dir) if output_dir else Path(tempfile.mkdtemp(
-        prefix="claude-seo-unlighthouse-"))
+        prefix="agentic-harness-seo-unlighthouse-"))
     out_dir.mkdir(parents=True, exist_ok=True)
 
     try:
@@ -227,7 +227,7 @@ def run(
             cmd = build_cmd(target, device=device, out_dir=out_dir, config_path=config_path)
             preload = Path(__file__).with_name("unlighthouse_http_proxy.cjs")
             env = os.environ.copy()
-            env["CLAUDE_SEO_GUARD_PROXY"] = proxy_url
+            env["AGENTIC_HARNESS_SEO_GUARD_PROXY"] = proxy_url
             env["NODE_OPTIONS"] = f'{env.get("NODE_OPTIONS", "")} --require="{preload.as_posix()}"'.strip()
             proc = subprocess.run(
                 cmd,
