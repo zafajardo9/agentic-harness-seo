@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: "Agentic Harness SEO"
-abstract: "SEO analysis plugin for Claude Code: 29 sub-skills, 20 sub-agents, and 11 optional extensions. This is a fork of claude-seo by Agrici Daniel, MIT licensed; see NOTICE."
+abstract: "SEO analysis toolkit for Claude Code and other agent platforms, with 29 sub-skills, 20 sub-agents, and 11 optional extensions."
 version: 2.6.2
 license: MIT
 repository-code: "https://github.com/zafajardo9/agentic-harness-seo"

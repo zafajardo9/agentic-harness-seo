@@ -5,13 +5,13 @@
     "name": "zafajardo9"
   },
   "metadata": {
-    "description": "Comprehensive SEO analysis plugin for Claude Code. 29 sub-skills and 20 sub-agents, plus 11 optional extensions for live data (5 connect MCP servers, 6 use API keys or local tools). Fork of the upstream claude-seo by AgriciDaniel, maintained by zafajardo9. See NOTICE for attribution."
+    "description": "Agentic Harness SEO for Claude Code. 29 sub-skills, 20 sub-agents, and 11 optional extensions for live data. Maintained by zafajardo9."
   },
   "plugins": [
     {
       "name": "agentic-harness-seo",
       "source": "./",
-      "description": "Comprehensive SEO analysis plugin for Claude Code. 29 sub-skills and 20 sub-agents, plus 11 optional extensions (5 connect MCP servers, 6 use API keys or local tools). Fork of the upstream claude-seo by AgriciDaniel, maintained by zafajardo9.",
+      "description": "Audit websites and build SEO roadmaps with 29 sub-skills, 20 sub-agents, and 11 optional extensions.",
       "author": {
         "name": "zafajardo9",
         "url": "https://github.com/zafajardo9"

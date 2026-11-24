@@ -215,8 +215,7 @@ extensions/                # 11 extensions. 5 MCP: DataForSEO, Firecrawl, Banana
 3. **Security**: All scripts call `validate_url()` for SSRF protection
 4. **Config location**: `~/.config/agentic-harness-seo/` for API credentials, or the directory in `AGENTIC_HARNESS_SEO_PROFILE_DIR`
 
-## Attribution
+## Maintenance and licensing
 
-Based on the upstream `claude-seo` project by [@AgriciDaniel](https://github.com/AgriciDaniel), MIT licensed.
-This fork is maintained by [@zafajardo9](https://github.com/zafajardo9). See
-[NOTICE](NOTICE) for the copyright lines.
+Maintained by [@zafajardo9](https://github.com/zafajardo9). See [LICENSE](LICENSE)
+and [NOTICE](NOTICE) for licensing and copyright notices.

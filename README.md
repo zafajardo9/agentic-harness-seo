@@ -1,6 +1,6 @@
 <!--
   Agentic Harness SEO (agentic-harness-seo): open-source SEO audits for agent
-  harnesses. Fork of claude-seo by Agrici Daniel, MIT licensed. See NOTICE.
+  harnesses. Maintained by zafajardo9 and distributed under the MIT License.
 -->
 
 <h1 align="center">Agentic Harness SEO</h1>
@@ -383,13 +383,7 @@ in your pull request.
 
 Maintained by [zafajardo9](https://github.com/zafajardo9).
 
-## Attribution
-
-The upstream project, Claude SEO (`claude-seo`), was created by
-[Agrici Daniel](https://github.com/AgriciDaniel) and released under the MIT
-License. This repository is a fork maintained by zafajardo9. See
-[NOTICE](NOTICE) for the copyright lines that apply to the upstream work and to
-the modifications here.
+Distributed under the [MIT License](LICENSE). See [NOTICE](NOTICE) for copyright and third-party credits.
 
 ## FAQ
 

@@ -262,23 +262,14 @@ agentic-harness-seo/
 3. **Parallel Execution**: Full audits spawn up to 17 subagents simultaneously
 4. **Extension System**: 11 extensions. DataForSEO, Firecrawl, Banana, Ahrefs, and PostHog connect an MCP server; SE Ranking, Profound, Bing Webmaster, Matomo, Unlighthouse, and Shopify do not
 
-## Upstream and this fork
+## Maintenance and licensing
 
-The upstream project is `https://github.com/AgriciDaniel/claude-seo`, released
-under the MIT License. This repository,
-`https://github.com/zafajardo9/agentic-harness-seo`, is a fork maintained by
-zafajardo9. See NOTICE for the copyright lines that apply to each.
+Agentic Harness SEO is maintained by zafajardo9. See [LICENSE](LICENSE) and
+[NOTICE](NOTICE) for licensing, copyright, and third-party references.
 
-Practical rules for this fork:
-
-- `origin` is this repository. There is no private mirror, so the earlier
-  two-remote promotion workflow does not apply here.
-- Upstream URLs are attribution, not configuration. Keep them where they credit
-  the original work; point everything functional (installers, marketplace
-  metadata, the Windows smoke workflow, security advisories) at this repository.
-- The FLOW references that `scripts/sync_flow.py` downloads come from the
-  upstream `AgriciDaniel/flow` repository and keep their own CC BY 4.0
-  attribution. Do not repoint them.
+- Use this repository for installers, marketplace metadata, CI, and advisories.
+- Preserve the source and CC BY 4.0 attribution for the FLOW references managed
+  by `scripts/sync_flow.py`.
 
 ## Release notes
 

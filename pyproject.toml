@@ -5,9 +5,6 @@ description = "Comprehensive SEO analysis skill for Claude Code"
 requires-python = ">=3.11"
 license = "MIT"
 readme = "README.md"
-authors = [
-  {name = "Daniel Agrici"}
-]
 maintainers = [
   {name = "zafajardo9"}
 ]
@@ -16,7 +13,6 @@ keywords = ["seo", "claude-code", "ai-tools", "schema-markup", "e-e-a-t", "geo"]
 [project.urls]
 Homepage = "https://github.com/zafajardo9/agentic-harness-seo"
 Repository = "https://github.com/zafajardo9/agentic-harness-seo"
-Upstream = "https://github.com/AgriciDaniel/claude-seo"
 
 [tool.ruff]
 target-version = "py311"
