@@ -146,11 +146,24 @@ ask in plain language and the agent reads `AGENTS.md` and the matching skill.
 
 ## Install
 
-Use the [SEO MCP connector](docs/SEO-CONNECTOR.md) in ChatGPT, Claude chat,
-Codex, and other MCP clients to check deployed pages or project HTML and build
-an SEO roadmap from the included industry templates.
-The [ChatGPT planning plugin](docs/SEO-CONNECTOR.md#chatgpt-planning-plugin-without-hosting)
-packages the planning workflow for submission without hosting a server.
+### ChatGPT
+
+**SEO planning without hosting.** Download `agentic-harness-seo-planner.zip`
+from a successful [Build SEO planner packages run](https://github.com/zafajardo9/agentic-harness-seo/actions/workflows/openai-planner.yml)
+or build it from your checkout. On Windows, run these commands in Git Bash.
+
+```bash
+bash ./scripts/agentic-harness-seo setup --skip-browser
+bash ./scripts/agentic-harness-seo run package_openai_plugin.py dist/agentic-harness-seo-planner.zip
+```
+
+Upload the ZIP as **Skills only** in the [OpenAI Plugins dashboard](https://platform.openai.com/plugins).
+This is the developer upload path. A public Plugins Directory listing requires
+developer verification and review.
+
+**Live checks in ChatGPT.** Deploy the SEO MCP server and add its HTTPS URL as
+a custom app in ChatGPT. The connector can check deployed pages and draft HTML.
+[ChatGPT connector setup](docs/SEO-CONNECTOR.md#chatgpt-and-claude-chat)
 
 ### Claude Code
 
