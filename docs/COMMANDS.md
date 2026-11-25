@@ -568,12 +568,17 @@ PDF and HTML reports generated via WeasyPrint and matplotlib.
 
 ---
 
-### `/harness-seo generate-poster [setup [profile] | profile [brief]]`
+### `/harness-seo generate-poster <profile> [brief]`
 
-Develop a social media concept and turn it into an editable Canva design. Supply
-a profile and brief, or choose a profile and ask for an idea. Use `setup` to
-create or update a saved creative profile. Follow-up feedback in the same
-chat creates a new draft and keeps the previous Canva link available.
+Develop a social media concept and turn it into an editable Canva design.
+Before generation, the skill asks about any open choices for dimensions,
+colors, imagery, fonts, and copy. Reply **Use defaults** or change the settings
+you want. Use `setup [profile]` to create or update a saved profile.
+
+Use `/harness-seo generate-poster version [count] [direction]` to create
+alternatives to the selected draft. For example, `version 2 try different
+layouts` keeps the original available and creates two separate Canva edit
+links. The skill asks which draft to use if it cannot tell from the chat.
 
 See [poster examples and Canva setup](../README.md#generate-social-posters-in-canva).
 
@@ -828,6 +833,7 @@ Uncapped, sitemap-complete crawl of a Shopify store you administer, signed with 
 | `/harness-seo dataforseo [command]` | Live SEO data (extension) |
 | `/harness-seo image-gen [use-case] <desc>` | AI image generation (extension) |
 | `/harness-seo generate-poster <profile> [brief]` | Editable Canva social poster |
+| `/harness-seo generate-poster version [count] [direction]` | Alternatives to a Canva poster |
 | `/harness-seo firecrawl [command] <url>` | Full-site crawling (extension) |
 | `/harness-seo ahrefs [command] <url>` | Backlinks, organic keywords, and content data via the official Ahrefs MCP (extension) |
 | `/harness-seo seranking [command]` | AI Share-of-Voice across ChatGPT, Gemini, Perplexity, AI Overviews, AI Mode (extension) |

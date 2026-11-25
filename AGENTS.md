@@ -220,4 +220,4 @@ extensions/                # 11 extensions. 5 MCP: DataForSEO, Firecrawl, Banana
 ## Maintenance and licensing
 
 Maintained by [@zafajardo9](https://github.com/zafajardo9). See [LICENSE](LICENSE)
-and [NOTICE](NOTICE) for licensing and copyright notices.
+for licensing and copyright notices.

@@ -46,7 +46,7 @@ DEFAULT_DEST = Path.home() / ".agentic-harness-seo"
 TOKEN = "${CLAUDE_PLUGIN_ROOT}"
 
 COPY_DIRS = ("skills", "agents", "scripts", "schema", "data", "hooks", "extensions", "assets", "packaging")
-COPY_FILES = ("requirements.txt", "LICENSE", "NOTICE", "README.md")
+COPY_FILES = ("requirements.txt", "LICENSE", "README.md")
 SKIP_DIR_NAMES = {"__pycache__", ".git", ".venv", "node_modules"}
 
 BEGIN = "<!-- agentic-harness-seo:begin -->"

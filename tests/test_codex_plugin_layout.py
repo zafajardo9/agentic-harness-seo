@@ -27,8 +27,7 @@ def test_marketplace_points_to_a_complete_planner() -> None:
     assert {path.name for path in industries.glob("*.md")} == template_names
     for name in template_names:
         assert (industries / name).read_bytes() == (planning / "assets" / name).read_bytes()
-    for name in ("LICENSE", "NOTICE"):
-        assert (package / name).read_bytes() == (ROOT / name).read_bytes()
+    assert (package / "LICENSE").read_bytes() == (ROOT / "LICENSE").read_bytes()
 
 
 def test_marketplace_bundles_the_shared_poster_skill() -> None:

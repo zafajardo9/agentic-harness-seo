@@ -62,7 +62,9 @@ extension is also installable (see "Optional Extensions" below).
 | `/harness-seo firecrawl [command] <url>` | Full-site crawling and site mapping (extension) |
 | `/harness-seo dataforseo [command]` | Live SEO data via DataForSEO (extension) |
 | `/harness-seo image-gen [use-case] <description>` | AI image generation for SEO assets (extension) |
-| `/harness-seo generate-poster [setup [profile] \| profile [brief]]` | Set up a creative profile or generate an editable social poster in Canva |
+| `/harness-seo generate-poster <profile> [brief]` | Confirm creative settings and generate an editable social poster in Canva |
+| `/harness-seo generate-poster setup [profile]` | Create or update a creative profile |
+| `/harness-seo generate-poster version [count] [direction]` | Make alternatives from an existing Canva draft |
 | `/harness-seo bing [command] <url>` | Bing Webmaster Tools link data and IndexNow URL submission (extension) |
 | `/harness-seo shopify [crawl\|check] <url>` | Uncapped signed crawl of a Shopify store you administer, then the audit pipeline (extension) |
 | `/harness-seo flow [stage] [url\|topic]` | FLOW framework: evidence-led prompts for Find, Leverage, Optimize, Win, or Local stages |

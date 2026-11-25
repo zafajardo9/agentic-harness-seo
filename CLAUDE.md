@@ -19,7 +19,6 @@ available as optional analytics extensions (GA4 alternative or complement).
 ```
 agentic-harness-seo/
   CLAUDE.md                          # Project instructions (this file)
-  NOTICE                             # Fork attribution and copyright lines
   AGENTS.md                          # Multi-platform agent instructions (Cursor, Antigravity)
   .claude-plugin/
     plugin.json                    # Plugin manifest (v2.6.2)
@@ -266,8 +265,9 @@ agentic-harness-seo/
 
 ## Maintenance and licensing
 
-Agentic Harness SEO is maintained by zafajardo9. See [LICENSE](LICENSE) and
-[NOTICE](NOTICE) for licensing, copyright, and third-party references.
+Agentic Harness SEO is maintained by zafajardo9. See [LICENSE](LICENSE) for the
+copyright notices and the [README](README.md#license-and-contributing) for
+upstream credit.
 
 - Use this repository for installers, marketplace metadata, CI, and advisories.
 - Preserve the source and CC BY 4.0 attribution for the FLOW references managed

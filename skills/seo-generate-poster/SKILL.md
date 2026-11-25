@@ -1,16 +1,17 @@
 ---
 name: seo-generate-poster
-description: Create or revise editable social media posters in Canva using a reusable Markdown creative profile. Use for generate-poster, social poster ideas, Canva drafts, and poster profile setup.
+description: Brief, create, and version editable social media posters in Canva using a reusable Markdown creative profile. Use for generate-poster, Canva poster variations, and poster profile setup.
 metadata:
   version: "2.6.2"
 ---
 
 # Generate a social poster in Canva
 
-Use this skill directly or when the Harness SEO command routes to it. Treat
-`setup [profile]` as profile setup. Otherwise, take the first argument as the
-profile and the remaining text as the brief. In natural-language requests, use
-the named profile and topic. Use follow-up feedback to revise the current draft.
+Use this skill directly or when the Harness SEO command routes to it. Recognize
+`setup [profile]` for profile setup and `version [count] [direction]` for
+alternatives to an existing poster before interpreting the first argument as
+a profile. In natural-language requests, use the named profile and topic.
+Use follow-up feedback to revise the current draft.
 
 ## Choose a profile
 
@@ -32,10 +33,10 @@ the named profile and topic. Use follow-up feedback to revise the current draft.
 1. Use the named profile, or ask which starter to customize or what to name a
    new profile. Use the current saved file or starter as a starting point.
 2. Collect the display name, audience, tone, palette, visual direction,
-   preferred social format, recurring poster ideas, and approved calls to
-   action. Keep existing choices unless the user changes them. Ask for missing
-   decisions as needed and allow fields such as approved calls to action to be
-   left open.
+   preferred social format, heading and body fonts, recurring poster ideas,
+   and approved calls to action. Keep existing choices unless the user
+   changes them. Ask for missing decisions as needed and allow fields such
+   as approved calls to action to be left open.
 3. Show the proposed changes and confirm before updating an existing saved
    profile. Write the agreed Markdown to the user profile folder and report
    its path. Leave the bundled starter intact. If the host cannot write there,
@@ -44,18 +45,65 @@ the named profile and topic. Use follow-up feedback to revise the current draft.
 
 ## Develop the concept
 
-Use the selected profile and the user's brief. The request can override profile
-defaults for this poster. Save permanent changes only on request. If the topic
-is missing, propose one concept from the profile and wait for the user to choose
-or revise it before generating. Resolve blockers such as missing event dates
-when exact copy depends on them. Default to an Instagram feed post when no
-format is specified by the user or profile.
+Use the selected profile and the user's brief. If the topic is missing, propose
+one concept from the profile. Before sending the brief to Canva, ask one compact
+set of questions and show the suggested answers. Carry forward answers the
+user already supplied and ask only about unresolved choices.
 
-Prepare a concise brief with audience and objective, channel and format, exact
-headline and supporting copy, call to action when appropriate, visual hierarchy,
-palette and imagery. Keep important text legible at mobile size. Use only
-verified claims, contact details, logos, and assets that the user supplied or
-approved. Leave unspecified brand assets out.
+1. **Format and dimensions.** Which channel and size should this use? Offer
+   relevant options such as portrait feed (1080 × 1350), square feed
+   (1080 × 1080), story (1080 × 1920), or custom width × height. If the
+   brief and profile leave this open, suggest portrait Instagram feed.
+2. **Colors.** Use the profile palette or switch to different colors? Accept
+   names, hex values, or an approved reference.
+3. **Imagery.** Use a photo, illustration, editable vector-style icons or
+   shapes, a supplied SVG or other asset, or a text-only layout? Clarify
+   whether SVG means using an existing asset or receiving an SVG file.
+   Canva's editable design is the standard deliverable. Check connector
+   support before promising SVG import, editable paths, or SVG export.
+4. **Typography.** Use the profile's typography or specify heading and
+   body fonts? If the profile gives only a type style, suggest concrete
+   fonts and keep a matching fallback available. Flag any substitution
+   when an exact font matters.
+5. **Message.** When needed, ask about the audience, goal, wording, language,
+   or call to action. Resolve details that affect accuracy, such as event
+   dates or required citations.
+
+Invite the user to accept the suggested settings with **Use defaults** or
+answer only the items they want to change. Wait for their reply before creating
+a design. An explicit request to use defaults or proceed with all creative
+settings supplied can serve as confirmation if the necessary facts are available.
+The approved choices apply to the current brief. Save them to the profile
+only when requested.
+
+Prepare a concise brief with the confirmed settings, exact headline and
+supporting copy, call to action when appropriate, and visual hierarchy. Keep
+important text legible at mobile size. Use verified claims and assets that the
+user supplied or approved. If an exact size is essential and the available
+Canva format cannot guarantee it, tell the user before submitting and ask
+whether the nearest supported format is acceptable.
+
+## Make more versions
+
+- Use `version [count] [direction]` or natural-language requests such as
+  “I like this. Make two more versions.” Use the draft the user named or the
+  latest completed draft in the current chat if the reference is clear.
+  If no draft is available, ask for a Canva design link or ID. If several
+  drafts are plausible, ask which one to use.
+- Suggest **two** versions when the user does not give a count. If a count is
+  supplied, it must be a positive whole number. Inherit the
+  original topic, approved wording, audience, dimensions, palette, imagery
+  type, and fonts unless the user asks to change them. Offer distinct
+  directions that respect those choices, such as different arrangements of
+  the headline and visuals. Show the proposed directions and any unresolved
+  creative settings before generation. A request that gives the count,
+  identifies the draft, and explicitly confirms what to keep or change can
+  serve as confirmation.
+- Create each version as a separate editable design and pass the selected
+  design as a reference when supported. Keep the original available. Track
+  each version's job separately and report completed links even if another
+  version is pending or fails. Label each result **Open in Canva** with its
+  visual direction and include the original link for comparison.
 
 ## Create an editable Canva draft
 
@@ -84,9 +132,9 @@ approved. Leave unspecified brand assets out.
    the link once Canva returns a completed design. Keep the design and brief
    available in the current conversation. Generation creates drafts only.
 
-For a revision, reuse the selected profile and latest brief, apply the requested
-feedback, and create a new editable draft. When supported, pass the previous
-design as a reference for elements that should carry over. Keep the previous
+For a revision, reuse the confirmed settings, ask about any unresolved changes,
+and create a new editable draft with the requested feedback. When supported,
+pass the previous design as a reference for elements that should carry over. Keep the previous
 link available so the user can choose between versions. Put the new edit
 link first and label the previous one **Open the original in Canva**. The
 user can also refine the design directly in Canva.

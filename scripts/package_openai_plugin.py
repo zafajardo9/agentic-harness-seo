@@ -51,14 +51,13 @@ def main() -> None:
         "workflow.md": planning / "SKILL.md",
         **{f"industries/{path.name}": path for path in sorted((planning / "assets").glob("*.md"))},
     }
-    notices = {name: root / name for name in ("LICENSE", "NOTICE")}
+    license_file = root / "LICENSE"
     if args.sync_repo:
         for name, source in references.items():
             destination = package / "skills" / "seo-roadmap" / "references" / name
             destination.parent.mkdir(parents=True, exist_ok=True)
             copyfile(source, destination)
-        for name, source in notices.items():
-            copyfile(source, package / name)
+        copyfile(license_file, package / license_file.name)
         poster_skill = "seo-generate-poster"
         copytree(root / "skills" / poster_skill, package / "skills" / poster_skill, dirs_exist_ok=True)
         manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
@@ -90,8 +89,10 @@ def main() -> None:
         archive.write(package / "skills" / "seo-roadmap" / "SKILL.md", f"{skill_root}/SKILL.md")
         for name, source in references.items():
             archive.write(source, f"{skill_root}/references/{name}")
-        for name, source in notices.items():
-            archive.write(source, f"{skill_root}/{name}" if args.claude_skill else name)
+        archive.write(
+            license_file,
+            f"{skill_root}/{license_file.name}" if args.claude_skill else license_file.name,
+        )
     print(args.output.resolve())
 
 

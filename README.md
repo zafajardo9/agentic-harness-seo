@@ -125,6 +125,7 @@ ask in plain language and the agent reads `AGENTS.md` and the matching skill.
 |---|---|
 | `/harness-seo generate-poster <profile> [brief]` | Develop an idea and make an editable Canva draft |
 | `/harness-seo generate-poster setup [profile]` | Create or update a reusable creative profile |
+| `/harness-seo generate-poster version [count] [direction]` | Create alternatives to a Canva draft |
 
 ### Local, links and commerce
 
@@ -189,10 +190,18 @@ the profile's tone, palette, format, or recurring ideas.
 /harness-seo generate-poster setup dds
 /harness-seo generate-poster dds Create an Instagram post about our upcoming workshop
 /harness-seo generate-poster filepino
+/harness-seo generate-poster version 2 Try different layouts and keep the copy
 ```
 
+Before Canva creates a draft, the skill asks about open choices for size,
+colors, photos or illustrations, vector-style graphics or supplied SVGs, and
+heading and body fonts. Reply **Use defaults** or change the settings you
+want. Use `version` when you want more options based on a draft you like. Each
+alternative gets its own edit link, and the original stays available.
+
 In Codex, choose the installed `seo-generate-poster` skill and ask, for example,
-“Use FilePino to propose an Instagram checklist” or “Set up my DDS poster profile.”
+“Use FilePino to propose an Instagram checklist” or “Make two more versions of
+this poster with the same colors and text.”
 The starter profiles are draft creative directions. Your updates are saved under
 `~/.config/agentic-harness-seo/poster-profiles/`.
 
@@ -431,15 +440,17 @@ phrasing in the user-facing docs, and the no-em-dash house style.
 
 ## License and contributing
 
-MIT License, see [LICENSE](LICENSE) and [NOTICE](NOTICE). Contributions are
-welcome: open an issue using one of the templates and mention the checks you ran
-in your pull request.
+Distributed under the [MIT License](LICENSE). This project is a fork of
+[claude-seo](https://github.com/AgriciDaniel/claude-seo), where upstream
+contributor credits are maintained. The [FLOW framework](https://github.com/AgriciDaniel/flow)
+references are distributed under CC BY 4.0.
+
+Contributions are welcome. Open an issue using one of the templates and
+mention the checks you ran in your pull request.
 
 ## Maintainer
 
 Maintained by [zafajardo9](https://github.com/zafajardo9).
-
-Distributed under the [MIT License](LICENSE). See [NOTICE](NOTICE) for copyright and third-party credits.
 
 ## FAQ
 

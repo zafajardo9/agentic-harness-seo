@@ -38,7 +38,7 @@ def _checkout(tmp_path: Path) -> Path:
     (source / "agents").mkdir()
     (source / "agents" / "seo-technical.md").write_text("# technical\n", encoding="utf-8")
     (source / "requirements.txt").write_text("requests>=2,<3\n", encoding="utf-8")
-    (source / "NOTICE").write_text("notice\n", encoding="utf-8")
+    (source / "LICENSE").write_text("license\n", encoding="utf-8")
     (source / ".claude-plugin").mkdir()
     (source / ".claude-plugin" / "plugin.json").write_text('{"version": "0.0.0"}\n', encoding="utf-8")
     return source
@@ -65,6 +65,7 @@ def test_install_copies_layout_and_rewrites_the_token(tmp_path: Path) -> None:
     assert Path(str(result["launcher"])).is_file()
     assert (destination / "agents" / "seo-technical.md").is_file()
     assert (destination / "requirements.txt").is_file()
+    assert (destination / "LICENSE").is_file()
     assert (destination / "runtime-plugin.json").is_file()
     assert result["rewritten_docs"] == 1
 

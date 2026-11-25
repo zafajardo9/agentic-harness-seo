@@ -14,7 +14,6 @@ on:
       - scripts/runtime.py
       - requirements.txt
       - LICENSE
-      - NOTICE
 
 permissions:
   contents: read

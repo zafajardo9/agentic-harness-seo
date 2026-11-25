@@ -20,8 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   maintained by zafajardo9. Installers, marketplace metadata, the Windows smoke
   workflow, and security-advisory links point at this repository; the install
   scripts clone `main` because this fork publishes no release tags yet. Upstream
-  attribution and the MIT copyright line are unchanged in `LICENSE`, with the
-  fork notice recorded in `NOTICE`.
+  attribution is recorded in the README, and `LICENSE` includes the upstream
+  and fork copyright lines.
 - Removed the upstream promotional surfaces from the user-facing output and
   docs: the community footer the orchestrator appended after every deliverable,
   the private-marketplace install block, the YouTube and community links, the
