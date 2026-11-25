@@ -64,23 +64,29 @@ approved. Leave unspecified brand assets out.
    and the appropriate [connection steps](references/canva-connection.md).
    If the connection works but creation tools are unavailable, return the
    brief and explain which capability is unavailable.
-2. Prefer Canva's editable `create-design` with the brief and supported format
-   when `get-create-design-async-job` is also available. Use the actual tool
-   schema exposed by the connector. For pending jobs, wait for Canva's polling
-   interval and pass the job ID and latest continuation token. Poll the
-   original job on resumption. If it is still running when the host cannot
-   keep polling, report it as pending. Keep continuation tokens in the
-   conversation's tool context. For failures, report the cause and preserve the
-   brief. Avoid automatic duplicate submissions after a timeout or unclear result.
+2. Prefer Canva's editable `create-design` with the brief and supported format.
+   Use the connector's tool schema. When the host shows Canva's generation
+   progress, let that surface track the job. Otherwise, for a pending job,
+   share Canva's status and wait for its polling interval, then call
+   `get-create-design-async-job` with the job ID and latest continuation
+   token. Poll the original job on resumption. If the host cannot check the
+   job again, report it as pending. Keep continuation tokens in tool context.
+   For failures, report the cause and preserve the brief. Avoid automatic
+   duplicate submissions after a timeout or unclear result.
 3. When the connector instead exposes `generate-design` and
    `create-design-from-candidate`, show the candidates and wait for the
    user's selection before creating the editable design.
-4. Return the Canva edit link followed by a short concept summary. Use the
-   returned edit URL or, for a confirmed design ID, the documented
-   `https://www.canva.com/design/<id>/edit` form. Keep the design and brief
+4. Start every completed generation response with an explicit Markdown
+   link labeled **Open in Canva** even when a Canva preview is displayed.
+   Use the returned edit URL or, for a confirmed design ID, the documented
+   `https://www.canva.com/design/<id>/edit` form. Follow the link with a short
+   concept summary. When a job is still pending, give its status and provide
+   the link once Canva returns a completed design. Keep the design and brief
    available in the current conversation. Generation creates drafts only.
 
 For a revision, reuse the selected profile and latest brief, apply the requested
-feedback, and create a new editable draft. Keep the previous link available so
-the user can choose between versions. The user can also refine the design
-directly in Canva.
+feedback, and create a new editable draft. When supported, pass the previous
+design as a reference for elements that should carry over. Keep the previous
+link available so the user can choose between versions. Put the new edit
+link first and label the previous one **Open the original in Canva**. The
+user can also refine the design directly in Canva.

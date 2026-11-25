@@ -198,8 +198,9 @@ The starter profiles are draft creative directions. Your updates are saved under
 
 Connect your own Canva account in your host before generating a design.
 Codex uses the Canva connector from the desktop Plugins Directory. Claude Code
-uses an authenticated Canva MCP server. The skill returns an editable link and
-can generate a revised draft from your feedback in the same chat.
+uses an authenticated Canva MCP server. Each completed draft includes an
+**Open in Canva** edit link. A revision includes its own edit link and keeps the
+original link available in the same chat.
 [Canva connection steps](skills/seo-generate-poster/references/canva-connection.md)
 
 ### ChatGPT
