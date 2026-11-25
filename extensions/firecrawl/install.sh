@@ -7,7 +7,7 @@ set -euo pipefail
 main() {
     SKILL_DIR="${HOME}/.claude/skills/seo-firecrawl"
     AGENT_DIR="${HOME}/.claude/agents"
-    SEO_SKILL_DIR="${HOME}/.claude/skills/seo"
+    SEO_SKILL_DIR="${HOME}/.claude/skills/harness-seo"
     # MCP servers live in ~/.claude.json (the file `claude mcp add` writes).
     # NOT ~/.claude/settings.json - `mcpServers` is not a key Claude Code reads
     # there, so entries written to settings.json silently never load.
@@ -138,10 +138,10 @@ PY
     echo "Usage:"
     echo "  1. Start Claude Code:  claude"
     echo "  2. Run commands:"
-    echo "     /seo firecrawl crawl https://example.com"
-    echo "     /seo firecrawl map https://example.com"
-    echo "     /seo firecrawl scrape https://example.com/page"
-    echo "     /seo firecrawl search \"query\" https://example.com"
+    echo "     /harness-seo firecrawl crawl https://example.com"
+    echo "     /harness-seo firecrawl map https://example.com"
+    echo "     /harness-seo firecrawl scrape https://example.com/page"
+    echo "     /harness-seo firecrawl search \"query\" https://example.com"
     echo ""
     echo "Documentation: extensions/firecrawl/README.md"
     echo "To uninstall: ./extensions/firecrawl/uninstall.sh"

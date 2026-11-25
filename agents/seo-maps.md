@@ -57,19 +57,19 @@ Each item below is available only for the DataForSEO data the orchestrator passe
 ## Reference Files
 
 Load on-demand:
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-api-endpoints.md`: DataForSEO endpoint details and costs
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-free-apis.md`: Overpass, Geoapify, Nominatim query templates
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-geo-grid.md`: Grid algorithm, SoLV calculation, heatmap rendering
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-gbp-checklist.md`: 25-field GBP audit checklist with industry weights
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/local-seo-signals.md`: Ranking factors, review benchmarks (shared with seo-local)
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/local-schema-types.md`: LocalBusiness subtypes by industry (shared with seo-local)
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/local-schema-multilocation.md`: Multi-location schema pattern (shared with seo-local)
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-api-endpoints.md`: DataForSEO endpoint details and costs
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-free-apis.md`: Overpass, Geoapify, Nominatim query templates
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-geo-grid.md`: Grid algorithm, SoLV calculation, heatmap rendering
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-gbp-checklist.md`: 25-field GBP audit checklist with industry weights
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/local-seo-signals.md`: Ranking factors, review benchmarks (shared with seo-local)
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/local-schema-types.md`: LocalBusiness subtypes by industry (shared with seo-local)
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/local-schema-multilocation.md`: Multi-location schema pattern (shared with seo-local)
 
 ## Cross-Skill Delegation
 
-- Do NOT duplicate seo-local on-page analysis. Recommend `/seo local <url>` for website-level checks.
-- Do NOT duplicate seo-geo AI visibility analysis. Recommend `/seo geo <url>` for full GEO audit.
-- Do NOT duplicate seo-schema validation. Recommend `/seo schema <url>` for schema fixes.
+- Do NOT duplicate seo-local on-page analysis. Recommend `/harness-seo local <url>` for website-level checks.
+- Do NOT duplicate seo-geo AI visibility analysis. Recommend `/harness-seo geo <url>` for full GEO audit.
+- Do NOT duplicate seo-schema validation. Recommend `/harness-seo schema <url>` for schema fixes.
 
 ## Output Format
 

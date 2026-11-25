@@ -24,9 +24,9 @@ and aggregate the results. Useful when:
 
 | Command | Effect |
 |---|---|
-| `/seo unlighthouse <url>` | Mobile audit, up to 200 routes, JSON+HTML report in a temp dir |
-| `/seo unlighthouse <url> --device desktop` | Desktop form factor |
-| `/seo unlighthouse <url> --max-routes 50 --output-dir ./reports` | Cap + persist |
+| `/harness-seo unlighthouse <url>` | Mobile audit, up to 200 routes, JSON+HTML report in a temp dir |
+| `/harness-seo unlighthouse <url> --device desktop` | Desktop form factor |
+| `/harness-seo unlighthouse <url> --max-routes 50 --output-dir ./reports` | Cap + persist |
 
 All flags forward through `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run unlighthouse_run.py`, which handles
 url_safety pre-flight and subprocess timeout management.

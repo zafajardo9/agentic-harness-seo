@@ -25,10 +25,10 @@ DataForSEO Merchant API for live Google Shopping and Amazon data.
 
 | Command | Purpose | DataForSEO? |
 |---------|---------|-------------|
-| `/seo ecommerce <url>` | Full e-commerce SEO analysis of a product page or store | Optional |
-| `/seo ecommerce products <keyword>` | Google Shopping competitive analysis | Required |
-| `/seo ecommerce gaps <domain>` | Keyword gap: organic vs Shopping visibility | Required |
-| `/seo ecommerce schema <url>` | Product schema validation and enhancement | No |
+| `/harness-seo ecommerce <url>` | Full e-commerce SEO analysis of a product page or store | Optional |
+| `/harness-seo ecommerce products <keyword>` | Google Shopping competitive analysis | Required |
+| `/harness-seo ecommerce gaps <domain>` | Keyword gap: organic vs Shopping visibility | Required |
+| `/harness-seo ecommerce schema <url>` | Product schema validation and enhancement | No |
 
 ---
 
@@ -381,7 +381,7 @@ UCP itself is live; what's early is broad merchant adoption. Flag a literal
 2. [High] ...
 3. [Medium] ...
 
-Generate a PDF report? Use `/seo google report`
+Generate a PDF report? Use `/harness-seo google report`
 ```
 
 ## Security

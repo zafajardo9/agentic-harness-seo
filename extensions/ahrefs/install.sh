@@ -25,7 +25,7 @@ main() {
         echo "✗ Node 18+ / npx required."; exit 1;
     }
 
-    if [ ! -d "${SKILL_DIR}/seo" ]; then
+    if [ ! -d "${SKILL_DIR}/harness-seo" ]; then
         echo "✗ agentic-harness-seo base plugin not installed."
         echo "  Install it first: curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main/install.sh | bash"
         exit 1
@@ -88,7 +88,7 @@ PY
 
     echo
     echo "Done. Open a new Claude Code session and run:"
-    echo "  /seo ahrefs metrics https://example.com"
+    echo "  /harness-seo ahrefs metrics https://example.com"
     echo
     echo "Full docs: extensions/ahrefs/docs/AHREFS-SETUP.md"
 }

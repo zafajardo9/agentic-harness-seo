@@ -6,12 +6,12 @@ Agentic Harness SEO follows Anthropic's official Claude Code skill specification
 
 ## Directory Structure
 
-The plugin ships 29 sub-skills (22 core + 1 orchestrator + 1 framework integration + 5 extension mirrors) and 20 sub-agents (16 core + 1 framework integration + 3 extension mirrors).
+The plugin ships 30 sub-skills (23 core + 1 orchestrator + 1 framework integration + 5 extension mirrors) and 20 sub-agents (16 core + 1 framework integration + 3 extension mirrors).
 
 ```
 ~/.claude/plugins/.../agentic-harness-seo/
 ├── skills/
-│   ├── seo/                    # Main orchestrator
+│   ├── harness-seo/            # Main orchestrator
 │   │   ├── SKILL.md
 │   │   └── references/         # On-demand reference files (13 files)
 │   │
@@ -23,6 +23,7 @@ The plugin ships 29 sub-skills (22 core + 1 orchestrator + 1 framework integrati
 │   ├── seo-schema/             # Schema markup detection and generation
 │   ├── seo-sitemap/            # XML sitemap analysis and generation
 │   ├── seo-images/             # Image optimization analysis
+│   ├── seo-generate-poster/    # Editable Canva social posters and creative profiles
 │   ├── seo-geo/                # AI search optimization (GEO)
 │   ├── seo-agentic/            # Agent readiness (Lighthouse Agentic Browsing, WebMCP)
 │   ├── seo-local/              # Local SEO (GBP, citations, reviews)
@@ -108,14 +109,14 @@ Reference files contain static data loaded on-demand to avoid bloating the main 
 
 ## Orchestration Flow
 
-### Full Audit (`/seo audit`)
+### Full Audit (`/harness-seo audit`)
 
 ```
 User request
     │
     ▼
 ┌──────────────────┐
-│   seo            │  Main orchestrator (skills/seo/SKILL.md)
+│   harness-seo    │  Main orchestrator (skills/harness-seo/SKILL.md)
 └────────┬─────────┘
          │  Detects business type and signals
          │  Spawns subagents in parallel
@@ -154,11 +155,11 @@ User request
 ### Individual Command
 
 ```
-User Request (e.g., /seo page)
+User Request (e.g., /harness-seo page)
     │
     ▼
 ┌─────────────────┐
-│   seo       │  ← Routes to sub-skill
+│ harness-seo │  ← Routes to sub-skill
 └────────┬────────┘
          │
          ▼
@@ -212,7 +213,7 @@ User Request (e.g., /seo page)
 1. Create `skills/seo-newskill/SKILL.md`
 2. Add YAML frontmatter with name and description
 3. Write skill instructions
-4. Update main `skills/seo/SKILL.md` to route to new skill
+4. Update main `skills/harness-seo/SKILL.md` to route to new skill
 
 ### Adding a New Subagent
 
@@ -246,12 +247,12 @@ Skills and agents therefore call the launcher by its plugin-relative path,
 expands in skill body content, in `allowed-tools` Bash rules, and as an
 environment variable for hook processes. The quoting keeps the command correct
 when the plugin root contains spaces. Manual installers (`install.sh`,
-`install.ps1`) copy the launcher to `~/.claude/skills/seo/scripts/agentic-harness-seo`
+`install.ps1`) copy the launcher to `~/.claude/skills/harness-seo/scripts/agentic-harness-seo`
 and rewrite that canonical token to the absolute path in every Markdown file
 they install, because a manual install has no plugin root.
 
 Plugin environments live under persistent `CLAUDE_PLUGIN_DATA`. Manual installs
-keep the compatible `~/.claude/skills/seo/.venv` location. A state marker records
+keep the compatible `~/.claude/skills/harness-seo/.venv` location. A state marker records
 the runtime schema, requirements SHA-256, Python major and minor version, public
 plugin version, and browser state. Requirements, runtime-schema, or Python ABI
 changes require explicit setup; a version-only difference remains compatible and

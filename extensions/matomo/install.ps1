@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 if (-not (Get-Command python -ErrorAction SilentlyContinue)) { throw "Python 3 required" }
 $SkillDir = Join-Path $HOME ".claude/skills"
 $AgentsDir = Join-Path $HOME ".claude/agents"
-if (-not (Test-Path (Join-Path $SkillDir "seo"))) { throw "agentic-harness-seo not installed" }
+if (-not (Test-Path (Join-Path $SkillDir "harness-seo"))) { throw "agentic-harness-seo not installed" }
 $MatomoUrl  = Read-Host "Matomo instance URL (e.g. https://analytics.example.com)"
 if (-not $MatomoUrl) { throw "Matomo URL required" }
 $TokenSecure = Read-Host "Matomo API token_auth (32-char hex)" -AsSecureString

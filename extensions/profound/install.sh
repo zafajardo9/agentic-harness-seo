@@ -15,7 +15,7 @@ main() {
     echo "════════════════════════════════════════"
 
     command -v python3 >/dev/null 2>&1 || { echo "✗ Python 3 required."; exit 1; }
-    [ ! -d "${SKILL_DIR}/seo" ] && { echo "✗ agentic-harness-seo base not installed."; exit 1; }
+    [ ! -d "${SKILL_DIR}/harness-seo" ] && { echo "✗ agentic-harness-seo base not installed."; exit 1; }
 
     SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 && pwd)"
 
@@ -40,6 +40,6 @@ os.chmod(tmp, 0o600); os.replace(tmp, path)
 print(f"✓ Wrote env.PROFOUND_API_KEY to {path}")
 PY
 
-    echo "Done. Try: /seo profound citations brandname"
+    echo "Done. Try: /harness-seo profound citations brandname"
 }
 main "$@"

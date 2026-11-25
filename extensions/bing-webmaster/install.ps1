@@ -4,28 +4,28 @@ $SkillDir = Join-Path $HOME ".claude/skills"
 $SettingsJson = Join-Path $HOME ".claude/settings.json"
 $SourceDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 # Plugin installs already ship the skill (skills/seo-bing), so only the keys are
-# stored. Manual installs (~/.claude/skills/seo) also get the skill copied with
+# stored. Manual installs (~/.claude/skills/harness-seo) also get the skill copied with
 # its launcher path rewritten, because they have no ${CLAUDE_PLUGIN_ROOT}.
 $InstallMode = ""
 $PluginRoot = ""
-if (Test-Path (Join-Path $SkillDir "seo")) {
+if (Test-Path (Join-Path $SkillDir "harness-seo")) {
     $InstallMode = "manual"
-} elseif ($env:CLAUDE_PLUGIN_ROOT -and (Test-Path (Join-Path $env:CLAUDE_PLUGIN_ROOT "skills/seo"))) {
+} elseif ($env:CLAUDE_PLUGIN_ROOT -and (Test-Path (Join-Path $env:CLAUDE_PLUGIN_ROOT "skills/harness-seo"))) {
     $InstallMode = "plugin"; $PluginRoot = $env:CLAUDE_PLUGIN_ROOT
 } else {
     $OwnRoot = Split-Path -Parent (Split-Path -Parent $SourceDir)
-    if ((Test-Path (Join-Path $OwnRoot "skills/seo")) -and (Test-Path (Join-Path $OwnRoot ".claude-plugin/plugin.json"))) {
+    if ((Test-Path (Join-Path $OwnRoot "skills/harness-seo")) -and (Test-Path (Join-Path $OwnRoot ".claude-plugin/plugin.json"))) {
         $InstallMode = "plugin"; $PluginRoot = $OwnRoot
     } else {
-        $Cached = Get-ChildItem -Path (Join-Path $HOME ".claude/plugins/cache/*/agentic-harness-seo/*/skills/seo") -Directory -ErrorAction SilentlyContinue | Select-Object -Last 1
+        $Cached = Get-ChildItem -Path (Join-Path $HOME ".claude/plugins/cache/*/agentic-harness-seo/*/skills/harness-seo") -Directory -ErrorAction SilentlyContinue | Select-Object -Last 1
         if ($Cached) { $InstallMode = "plugin"; $PluginRoot = Split-Path -Parent (Split-Path -Parent $Cached.FullName) }
     }
 }
-if (-not $InstallMode) { throw "agentic-harness-seo not installed (no plugin install and no ~/.claude/skills/seo)" }
+if (-not $InstallMode) { throw "agentic-harness-seo not installed (no plugin install and no ~/.claude/skills/harness-seo)" }
 if ($InstallMode -eq "plugin") {
     Write-Host "agentic-harness-seo plugin detected: storing keys only."
     if (-not (Test-Path (Join-Path $PluginRoot "skills/seo-bing/SKILL.md"))) {
-        Write-Host "! This plugin version does not ship the seo-bing skill yet. Update the agentic-harness-seo plugin, then /seo bing will load."
+        Write-Host "! This plugin version does not ship the seo-bing skill yet. Update the agentic-harness-seo plugin, then /harness-seo bing will load."
     }
 }
 $BingKey = (Read-Host "Bing Webmaster Tools API key" -AsSecureString)
@@ -38,7 +38,7 @@ if ($InstallMode -eq "manual") {
     New-Item -ItemType Directory -Path $SkillTarget -Force | Out-Null
     # Same rewrite the main installer applies; Claude Code's Bash tool expands $HOME on Windows too.
     $Doc = [System.IO.File]::ReadAllText((Join-Path $SourceDir "skills/seo-bing/SKILL.md"))
-    $Doc = $Doc.Replace('"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo"', '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo"')
+    $Doc = $Doc.Replace('"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo"', '"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo"')
     [System.IO.File]::WriteAllText((Join-Path $SkillTarget "SKILL.md"), $Doc, (New-Object System.Text.UTF8Encoding $false))
     Write-Host "Installed skill: $SkillTarget"
 }
@@ -69,4 +69,4 @@ try {
     # A native command's non-zero exit does not throw, even with Stop.
     if ($LASTEXITCODE -ne 0) { throw "Nothing was saved (python exited $LASTEXITCODE). See the message above." }
 } finally { Remove-Item Env:AGENTIC_HARNESS_SEO_SECRET -ErrorAction SilentlyContinue; Remove-Item Env:AGENTIC_HARNESS_SEO_INDEXNOW_KEY -ErrorAction SilentlyContinue }
-Write-Host "Done. Restart Claude Code so the new env values load, then run: /seo bing verify-indexnow --host example.com"
+Write-Host "Done. Restart Claude Code so the new env values load, then run: /harness-seo bing verify-indexnow --host example.com"

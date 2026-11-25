@@ -19,7 +19,7 @@
 
 The `seo-bing` skill ships with the agentic-harness-seo plugin, so on a plugin install
 the installer only stores your keys; run it from the plugin or repository
-folder. On a manual install (`~/.claude/skills/seo`) it also copies the skill
+folder. On a manual install (`~/.claude/skills/harness-seo`) it also copies the skill
 with its launcher path set for that layout.
 
 You'll be prompted for:
@@ -38,7 +38,7 @@ writes only the env vars you provide.
    served at `https://example.com/<key>.txt`. The file body is the key.
 3. Run:
    ```
-   /seo bing verify-indexnow
+   /harness-seo bing verify-indexnow
    ```
    The verifier fetches your keyLocation URL and confirms the body
    matches the key, the #1 onboarding mistake.

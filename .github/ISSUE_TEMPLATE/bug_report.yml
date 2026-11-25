@@ -72,8 +72,8 @@ body:
     id: command
     attributes:
       label: Command that failed
-      description: e.g. `/seo audit https://example.com`
-      placeholder: /seo page https://example.com
+      description: e.g. `/harness-seo audit https://example.com`
+      placeholder: /harness-seo page https://example.com
     validations:
       required: true
 

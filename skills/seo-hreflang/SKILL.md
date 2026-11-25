@@ -244,7 +244,7 @@ Load `references/cultural-profiles.md` for pre-built profiles (DACH, Francophone
 
 ## Content Parity Audit
 
-**Command:** `/seo hreflang audit <directory-or-url>`
+**Command:** `/harness-seo hreflang audit <directory-or-url>`
 
 Audit content parity across all language versions of a site or local content directory.
 

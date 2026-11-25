@@ -106,5 +106,5 @@ If you are auditing, these are the high-leverage files:
 
 - No credentials or API keys are committed to this repository. `.gitignore` blocks every known credential filename pattern.
 - Install scripts write only under `~/.claude/` and `~/.config/agentic-harness-seo/`, or under the directory the user sets in `AGENTIC_HARNESS_SEO_PROFILE_DIR`.
-- Python dependencies install into an isolated virtual environment. Plugin installs use persistent `CLAUDE_PLUGIN_DATA`; manual installs use `~/.claude/skills/seo/.venv/`. The runtime never falls back to global or user package installation.
+- Python dependencies install into an isolated virtual environment. Plugin installs use persistent `CLAUDE_PLUGIN_DATA`; manual installs use `~/.claude/skills/harness-seo/.venv/`. The runtime never falls back to global or user package installation.
 - Every new fetcher of a user-supplied or page-derived URL must route through `scripts/url_safety.py`. There is no exception for "trusted" URLs.

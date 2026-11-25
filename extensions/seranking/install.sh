@@ -19,7 +19,7 @@ main() {
 
     command -v python3 >/dev/null 2>&1 || { echo "✗ Python 3 required."; exit 1; }
 
-    if [ ! -d "${SKILL_DIR}/seo" ]; then
+    if [ ! -d "${SKILL_DIR}/harness-seo" ]; then
         echo "✗ agentic-harness-seo base plugin not installed."
         exit 1
     fi
@@ -52,7 +52,7 @@ print(f"✓ Wrote env.SERANKING_API_KEY to {path}")
 PY
 
     echo
-    echo "Done. Try: /seo seranking ai-visibility brandname"
+    echo "Done. Try: /harness-seo seranking ai-visibility brandname"
     echo "Full docs: extensions/seranking/docs/SERANKING-SETUP.md"
 }
 

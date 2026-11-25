@@ -31,10 +31,10 @@ well-optimized it is.
 
 | Command | Purpose |
 |---------|---------|
-| `/seo sxo <url>` | Full SXO analysis (auto-detect keyword from page) |
-| `/seo sxo <url> <keyword>` | Full SXO analysis for a specific keyword |
-| `/seo sxo wireframe <url>` | Generate IST/SOLL wireframe with concrete placeholders |
-| `/seo sxo personas <url>` | Persona-only scoring (skip SERP analysis) |
+| `/harness-seo sxo <url>` | Full SXO analysis (auto-detect keyword from page) |
+| `/harness-seo sxo <url> <keyword>` | Full SXO analysis for a specific keyword |
+| `/harness-seo sxo wireframe <url>` | Generate IST/SOLL wireframe with concrete placeholders |
+| `/harness-seo sxo personas <url>` | Persona-only scoring (skip SERP analysis) |
 
 ## Execution Pipeline
 
@@ -148,7 +148,7 @@ Read `references/persona-scoring.md` for methodology.
 
 ### Step 7: Wireframe Generation (Optional)
 
-Only execute when `/seo sxo wireframe` is invoked.
+Only execute when `/harness-seo sxo wireframe` is invoked.
 
 Read `references/wireframe-templates.md` for templates.
 
@@ -184,12 +184,12 @@ The SXO score is **separate** from the main SEO Health Score.
 
 | Finding | Hand Off To |
 |---------|-------------|
-| E-E-A-T gaps in persona scoring | `/seo content` for deep E-E-A-T audit |
-| Missing schema types | `/seo schema` for generation |
-| Local intent detected in SERP | `/seo local` for GBP analysis |
-| Content depth gaps | `/seo page` for deep page analysis |
-| Technical issues found during fetch | `/seo technical` for full audit |
-| Image/media gaps | `/seo images` for optimization |
+| E-E-A-T gaps in persona scoring | `/harness-seo content` for deep E-E-A-T audit |
+| Missing schema types | `/harness-seo schema` for generation |
+| Local intent detected in SERP | `/harness-seo local` for GBP analysis |
+| Content depth gaps | `/harness-seo page` for deep page analysis |
+| Technical issues found during fetch | `/harness-seo technical` for full audit |
+| Image/media gaps | `/harness-seo images` for optimization |
 
 ## Output Format
 

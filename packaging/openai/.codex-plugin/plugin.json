@@ -13,9 +13,16 @@
     "longDescription": "Review accessible pages, project materials, or supplied HTML. Build an industry-specific roadmap with measurable goals, priorities, and validation steps.",
     "developerName": "zafajardo9",
     "category": "Productivity",
-    "capabilities": ["SEO launch planning", "SEO roadmap for deployed sites"],
-    "defaultPrompt": ["Build a 90-day SEO roadmap for my website.", "Turn my project materials into an SEO launch plan."],
+    "capabilities": [
+      "SEO launch planning",
+      "SEO roadmap for deployed sites"
+    ],
+    "defaultPrompt": [
+      "Build a 90-day SEO roadmap for my website.",
+      "Turn my project materials into an SEO launch plan."
+    ],
     "composerIcon": "./assets/icon.svg",
     "logo": "./assets/icon.svg"
-  }
+  },
+  "version": "2.6.2"
 }

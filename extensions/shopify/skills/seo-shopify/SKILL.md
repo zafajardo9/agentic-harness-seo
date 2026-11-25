@@ -37,9 +37,9 @@ Business-type detection, subagent delegation, scoring and reports stay as
 
 | Command | Effect |
 |---|---|
-| `/seo shopify <url>` | Precheck, signed uncapped crawl, then the `seo-audit` pipeline on the artifacts |
-| `/seo shopify crawl <url>` | Crawl only, artifacts in `./crawl` |
-| `/seo shopify check <url>` | Report whether `.shopify-env` holds a valid signature for the host |
+| `/harness-seo shopify <url>` | Precheck, signed uncapped crawl, then the `seo-audit` pipeline on the artifacts |
+| `/harness-seo shopify crawl <url>` | Crawl only, artifacts in `./crawl` |
+| `/harness-seo shopify check <url>` | Report whether `.shopify-env` holds a valid signature for the host |
 
 ## Step 1: decide the mode
 

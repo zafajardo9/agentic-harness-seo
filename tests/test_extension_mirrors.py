@@ -42,7 +42,7 @@ IDENTICAL_SKILL_MIRRORS = [
 # The plugin-install detection every mirrored extension installer shares.
 PLUGIN_AWARE_INSTALLERS = ["bing-webmaster", "shopify", "posthog"]
 LAUNCHER_TOKEN = '"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo"'
-MANUAL_LAUNCHER = '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo"'
+MANUAL_LAUNCHER = '"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo"'
 
 # The image-gen skill differs on purpose: the core copy has no scripts and
 # points at the installed Banana MCP, while the extension copy ships
@@ -96,7 +96,7 @@ def test_skill_mirror_folders_are_identical(core, ext):
 
 
 def test_bing_installers_work_for_plugin_installs():
-    """#458: the installers must not require ~/.claude/skills/seo, and must not
+    """#458: the installers must not require ~/.claude/skills/harness-seo, and must not
     copy the skill unrewritten (a copied personal skill has no plugin root)."""
     sh = (ROOT / "extensions/bing-webmaster/install.sh").read_text(encoding="utf-8")
     ps = (ROOT / "extensions/bing-webmaster/install.ps1").read_text(encoding="utf-8")
@@ -104,7 +104,7 @@ def test_bing_installers_work_for_plugin_installs():
         assert "plugins/cache/" in text
         assert "CLAUDE_PLUGIN_ROOT" in text
         assert "storing keys only" in text
-        assert '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo"' in text
+        assert '"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo"' in text
     assert 'cp "${SOURCE_DIR}/skills/seo-bing/SKILL.md"' not in sh
     assert "Copy-Item (Join-Path $SourceDir \"skills/seo-bing/SKILL.md\")" not in ps
     assert 'if [ "${INSTALL_MODE}" = "manual" ]; then' in sh
@@ -113,7 +113,7 @@ def test_bing_installers_work_for_plugin_installs():
 
 @pytest.mark.parametrize("name", PLUGIN_AWARE_INSTALLERS)
 def test_mirrored_extension_installers_detect_plugin_installs(name):
-    """A plugin install never has ~/.claude/skills/seo; the installer must look
+    """A plugin install never has ~/.claude/skills/harness-seo; the installer must look
     for the plugin too, and copy files only on a manual install."""
     sh = (ROOT / "extensions" / name / "install.sh").read_text(encoding="utf-8")
     ps = (ROOT / "extensions" / name / "install.ps1").read_text(encoding="utf-8")
@@ -121,7 +121,7 @@ def test_mirrored_extension_installers_detect_plugin_installs(name):
         assert "plugins/cache/" in text
         assert "CLAUDE_PLUGIN_ROOT" in text
         assert ".claude-plugin/plugin.json" in text
-        assert "no plugin install and no ~/.claude/skills/seo" in text
+        assert "no plugin install and no ~/.claude/skills/harness-seo" in text
     assert 'if [ "${INSTALL_MODE}" = "manual" ]; then' in sh
     assert 'if ($InstallMode -eq "manual") {' in ps
 
@@ -162,7 +162,7 @@ def _run_installer(tmp_path, name, *, manual, answer="n\n", cwd=None):
     home = tmp_path / "home"
     home.mkdir(exist_ok=True)
     if manual:
-        (home / ".claude/skills/seo").mkdir(parents=True, exist_ok=True)
+        (home / ".claude/skills/harness-seo").mkdir(parents=True, exist_ok=True)
     work = cwd or tmp_path / "work"
     work.mkdir(exist_ok=True)
     bindir = tmp_path / "bin"

@@ -18,7 +18,7 @@ Fixes #
 
 <!-- Paste the commands you ran and their result. -->
 
-- [ ] Tested with a real URL (`/seo audit https://example.com`)
+- [ ] Tested with a real URL (`/harness-seo audit https://example.com`)
 - [ ] `./scripts/agentic-harness-seo run portability_check.py` passes, if skills or agents changed
 
 ## Checklist

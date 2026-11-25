@@ -26,12 +26,12 @@ extension ships no script and stores no token.
 
 | Command | What it does |
 |---|---|
-| `/seo posthog check` | Confirm the PostHog MCP is connected and the project has `$pageview` events |
-| `/seo posthog organic` | Per-day organic search visits |
-| `/seo posthog top-pages` | Top organic landing pages |
-| `/seo posthog device` | Organic traffic by device type |
-| `/seo posthog country` | Organic traffic by country |
-| `/seo posthog referrers` | Referrer / channel breakdown |
+| `/harness-seo posthog check` | Confirm the PostHog MCP is connected and the project has `$pageview` events |
+| `/harness-seo posthog organic` | Per-day organic search visits |
+| `/harness-seo posthog top-pages` | Top organic landing pages |
+| `/harness-seo posthog device` | Organic traffic by device type |
+| `/harness-seo posthog country` | Organic traffic by country |
+| `/harness-seo posthog referrers` | Referrer / channel breakdown |
 
 Each command delegates to the `seo-posthog` agent, which runs HogQL queries
 through the MCP `exec` tool (`call execute-sql`). Options: days (default 28) and limit (default 50).
@@ -46,7 +46,7 @@ through the MCP `exec` tool (`call execute-sql`). Options: days (default 28) and
 
 ## Cross-skill delegation
 
-During `/seo audit`, the orchestrator spawns the `seo-posthog` agent when
+During `/harness-seo audit`, the orchestrator spawns the `seo-posthog` agent when
 the PostHog MCP `exec` tool is available: `mcp__posthog__exec` when the server
 is registered in lowercase, as this extension's installer does, or
 `mcp__PostHog__exec` otherwise. Either spelling counts. It can run alongside

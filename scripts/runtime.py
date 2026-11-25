@@ -455,7 +455,7 @@ def command_run(args: argparse.Namespace) -> int:
         return 2
     status = _status(root)
     if not status["ready"]:
-        print("Agentic Harness SEO runtime is not ready. Run `/seo setup` and retry.", file=sys.stderr)
+        print("Agentic Harness SEO runtime is not ready. Run `/harness-seo setup` and retry.", file=sys.stderr)
         return 3
     result = subprocess.run(
         [str(status["python_path"]), str(script), *args.script_args],

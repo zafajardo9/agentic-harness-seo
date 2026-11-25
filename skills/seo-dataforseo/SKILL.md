@@ -61,9 +61,9 @@ DataForSEO charges per API call. Be efficient:
 ```
 
 **User commands for cost management:**
-- `/seo dataforseo costs today` → show today's spending breakdown
-- `/seo dataforseo costs summary` → show 7-day spending history
-- `/seo dataforseo costs config --mode threshold --threshold 0.50` → configure approval mode
+- `/harness-seo dataforseo costs today` → show today's spending breakdown
+- `/harness-seo dataforseo costs summary` → show 7-day spending history
+- `/harness-seo dataforseo costs config --mode threshold --threshold 0.50` → configure approval mode
 
 Load `references/cost-tiers.md` for the full pricing table, budget presets, and cost reduction tips.
 
@@ -71,35 +71,35 @@ Load `references/cost-tiers.md` for the full pricing table, budget presets, and 
 
 | Command | What it does |
 |---------|-------------|
-| `/seo dataforseo serp <keyword>` | Google organic SERP results |
-| `/seo dataforseo serp-images <keyword>` | Image elements from the organic SERP (the pinned MCP server has no Google Images tool) |
-| `/seo dataforseo serp-youtube <keyword>` | YouTube search results |
-| `/seo dataforseo youtube <video_id>` | YouTube video deep analysis |
-| `/seo dataforseo keywords <seed>` | Keyword ideas and suggestions |
-| `/seo dataforseo volume <keywords>` | Search volume for keywords |
-| `/seo dataforseo difficulty <keywords>` | Keyword difficulty scores |
-| `/seo dataforseo intent <keywords>` | Search intent classification |
-| `/seo dataforseo trends <keyword>` | Google Trends data |
-| `/seo dataforseo backlinks <domain>` | Full backlink profile |
-| `/seo dataforseo competitors <domain>` | Competitor domain analysis |
-| `/seo dataforseo ranked <domain>` | Ranked keywords for domain |
-| `/seo dataforseo intersection <domains>` | Keyword/backlink overlap |
-| `/seo dataforseo traffic <domains>` | Bulk traffic estimation |
-| `/seo dataforseo subdomains <domain>` | Subdomains with ranking data |
-| `/seo dataforseo top-searches <domain>` | Top queries mentioning domain |
-| `/seo dataforseo onpage <url>` | On-page analysis (Lighthouse + parsing) |
-| `/seo dataforseo tech <domain>` | Technology stack detection |
-| `/seo dataforseo whois <domain>` | WHOIS registration data |
-| `/seo dataforseo content <keyword/url>` | Content analysis and trends |
-| `/seo dataforseo listings <keyword>` | Business listings search |
-| `/seo dataforseo ai-scrape <query>` | ChatGPT web scraper for GEO |
-| `/seo dataforseo ai-mentions <keyword>` | LLM mention tracking for GEO |
+| `/harness-seo dataforseo serp <keyword>` | Google organic SERP results |
+| `/harness-seo dataforseo serp-images <keyword>` | Image elements from the organic SERP (the pinned MCP server has no Google Images tool) |
+| `/harness-seo dataforseo serp-youtube <keyword>` | YouTube search results |
+| `/harness-seo dataforseo youtube <video_id>` | YouTube video deep analysis |
+| `/harness-seo dataforseo keywords <seed>` | Keyword ideas and suggestions |
+| `/harness-seo dataforseo volume <keywords>` | Search volume for keywords |
+| `/harness-seo dataforseo difficulty <keywords>` | Keyword difficulty scores |
+| `/harness-seo dataforseo intent <keywords>` | Search intent classification |
+| `/harness-seo dataforseo trends <keyword>` | Google Trends data |
+| `/harness-seo dataforseo backlinks <domain>` | Full backlink profile |
+| `/harness-seo dataforseo competitors <domain>` | Competitor domain analysis |
+| `/harness-seo dataforseo ranked <domain>` | Ranked keywords for domain |
+| `/harness-seo dataforseo intersection <domains>` | Keyword/backlink overlap |
+| `/harness-seo dataforseo traffic <domains>` | Bulk traffic estimation |
+| `/harness-seo dataforseo subdomains <domain>` | Subdomains with ranking data |
+| `/harness-seo dataforseo top-searches <domain>` | Top queries mentioning domain |
+| `/harness-seo dataforseo onpage <url>` | On-page analysis (Lighthouse + parsing) |
+| `/harness-seo dataforseo tech <domain>` | Technology stack detection |
+| `/harness-seo dataforseo whois <domain>` | WHOIS registration data |
+| `/harness-seo dataforseo content <keyword/url>` | Content analysis and trends |
+| `/harness-seo dataforseo listings <keyword>` | Business listings search |
+| `/harness-seo dataforseo ai-scrape <query>` | ChatGPT web scraper for GEO |
+| `/harness-seo dataforseo ai-mentions <keyword>` | LLM mention tracking for GEO |
 
 ---
 
 ## SERP Analysis
 
-### `/seo dataforseo serp <keyword>`
+### `/harness-seo dataforseo serp <keyword>`
 
 Fetch live Google organic search results.
 
@@ -111,7 +111,7 @@ Fetch live Google organic search results.
 
 **Output:** Rank, URL, title, description, domain, featured snippets, AI overview references, People Also Ask.
 
-### `/seo dataforseo serp-youtube <keyword>`
+### `/harness-seo dataforseo serp-youtube <keyword>`
 
 Fetch YouTube search results. Valuable for GEO. YouTube mentions correlate most strongly with AI citations.
 
@@ -119,7 +119,7 @@ Fetch YouTube search results. Valuable for GEO. YouTube mentions correlate most 
 
 **Output:** Video title, channel, views, upload date, description, URL.
 
-### `/seo dataforseo youtube <video_id>`
+### `/harness-seo dataforseo youtube <video_id>`
 
 Deep analysis of a specific YouTube video: info, comments, and subtitles. Treat YouTube mentions as a useful GEO signal, but AI visibility correlations are methodology-dependent.
 
@@ -129,7 +129,7 @@ Deep analysis of a specific YouTube video: info, comments, and subtitles. Treat 
 
 **Output:** Video metadata (title, channel, views, likes, description), top comments with engagement, subtitle/transcript text.
 
-### `/seo dataforseo serp-images <keyword>`
+### `/harness-seo dataforseo serp-images <keyword>`
 
 Report the image elements Google shows in the organic results for a keyword (the
 pinned MCP server has no Google Images tool, so this is not a full Images
@@ -160,7 +160,7 @@ is the closest substitute.
 
 ## Keyword Research
 
-### `/seo dataforseo keywords <seed>`
+### `/harness-seo dataforseo keywords <seed>`
 
 Generate keyword ideas, suggestions, and related terms from a seed keyword.
 
@@ -170,7 +170,7 @@ Generate keyword ideas, suggestions, and related terms from a seed keyword.
 
 **Output:** Keyword, search volume, CPC, competition level, keyword difficulty, trend.
 
-### `/seo dataforseo volume <keywords>`
+### `/harness-seo dataforseo volume <keywords>`
 
 Get search volume and metrics for a list of keywords.
 
@@ -180,7 +180,7 @@ Get search volume and metrics for a list of keywords.
 
 **Output:** Keyword, monthly search volume, CPC, competition, monthly trend data.
 
-### `/seo dataforseo difficulty <keywords>`
+### `/harness-seo dataforseo difficulty <keywords>`
 
 Calculate keyword difficulty scores for ranking competitiveness.
 
@@ -190,7 +190,7 @@ Calculate keyword difficulty scores for ranking competitiveness.
 
 **Output:** Keyword, difficulty score (0-100), interpretation (Easy/Medium/Hard/Very Hard).
 
-### `/seo dataforseo intent <keywords>`
+### `/harness-seo dataforseo intent <keywords>`
 
 Classify keywords by user search intent.
 
@@ -200,7 +200,7 @@ Classify keywords by user search intent.
 
 **Output:** Keyword, intent type (informational, navigational, commercial, transactional), confidence score.
 
-### `/seo dataforseo trends <keyword>`
+### `/harness-seo dataforseo trends <keyword>`
 
 Analyze keyword trends over time using Google Trends data.
 
@@ -214,7 +214,7 @@ Analyze keyword trends over time using Google Trends data.
 
 ## Domain & Competitor Analysis
 
-### `/seo dataforseo backlinks <domain>`
+### `/harness-seo dataforseo backlinks <domain>`
 
 Comprehensive backlink profile analysis.
 
@@ -224,7 +224,7 @@ Comprehensive backlink profile analysis.
 
 **Output:** Total backlinks, referring domains, domain rank, spam score, top anchors, new/lost backlinks over time, dofollow ratio, top referring domains.
 
-### `/seo dataforseo competitors <domain>`
+### `/harness-seo dataforseo competitors <domain>`
 
 Identify competing domains and estimate traffic.
 
@@ -232,7 +232,7 @@ Identify competing domains and estimate traffic.
 
 **Output:** Competitor domains, keyword overlap %, estimated traffic, domain rank, common keywords.
 
-### `/seo dataforseo ranked <domain>`
+### `/harness-seo dataforseo ranked <domain>`
 
 List keywords a domain ranks for with positions and page data.
 
@@ -242,7 +242,7 @@ List keywords a domain ranks for with positions and page data.
 
 **Output:** Keyword, position, URL, search volume, traffic share, SERP features.
 
-### `/seo dataforseo intersection <domain1> <domain2> [...]`
+### `/harness-seo dataforseo intersection <domain1> <domain2> [...]`
 
 Find shared keywords and backlink sources across 2-20 domains.
 
@@ -252,7 +252,7 @@ Find shared keywords and backlink sources across 2-20 domains.
 
 **Output:** Shared keywords with positions per domain, shared backlink sources, unique keywords per domain.
 
-### `/seo dataforseo traffic <domains>`
+### `/harness-seo dataforseo traffic <domains>`
 
 Estimate organic search traffic for one or more domains.
 
@@ -262,7 +262,7 @@ Estimate organic search traffic for one or more domains.
 
 **Output:** Domain, estimated organic traffic, estimated traffic cost, top keywords.
 
-### `/seo dataforseo subdomains <domain>`
+### `/harness-seo dataforseo subdomains <domain>`
 
 Enumerate subdomains with their ranking data and traffic estimates.
 
@@ -272,7 +272,7 @@ Enumerate subdomains with their ranking data and traffic estimates.
 
 **Output:** Subdomain, ranked keywords count, estimated traffic, organic cost.
 
-### `/seo dataforseo top-searches <domain>`
+### `/harness-seo dataforseo top-searches <domain>`
 
 Find the most popular search queries that mention a specific domain in results.
 
@@ -286,7 +286,7 @@ Find the most popular search queries that mention a specific domain in results.
 
 ## Technical / On-Page
 
-### `/seo dataforseo onpage <url>`
+### `/harness-seo dataforseo onpage <url>`
 
 Run on-page analysis including Lighthouse audit and content parsing.
 
@@ -299,7 +299,7 @@ Run on-page analysis including Lighthouse audit and content parsing.
 
 **Output:** Pages crawled, status codes, meta tags, titles, content size, load times, Lighthouse scores, broken links, resource analysis.
 
-### `/seo dataforseo tech <domain>`
+### `/harness-seo dataforseo tech <domain>`
 
 Detect technologies used on a domain.
 
@@ -307,7 +307,7 @@ Detect technologies used on a domain.
 
 **Output:** Technology name, version, category (CMS, analytics, CDN, framework, etc.).
 
-### `/seo dataforseo whois <domain>`
+### `/harness-seo dataforseo whois <domain>`
 
 Retrieve WHOIS registration data.
 
@@ -319,7 +319,7 @@ Retrieve WHOIS registration data.
 
 ## Content & Business Data
 
-### `/seo dataforseo content <keyword/url>`
+### `/harness-seo dataforseo content <keyword/url>`
 
 Analyze content quality, search for content by topic, and track phrase trends.
 
@@ -329,7 +329,7 @@ Analyze content quality, search for content by topic, and track phrase trends.
 
 **Output:** Content matches with quality scores, sentiment analysis, readability metrics, phrase trend data over time.
 
-### `/seo dataforseo listings <keyword>`
+### `/harness-seo dataforseo listings <keyword>`
 
 Search business listings for local SEO competitive analysis.
 
@@ -343,7 +343,7 @@ Search business listings for local SEO competitive analysis.
 
 ## AI Visibility / GEO
 
-### `/seo dataforseo ai-scrape <query>`
+### `/harness-seo dataforseo ai-scrape <query>`
 
 Scrape what ChatGPT web search returns for a query. ChatGPT visibility check: see which sources ChatGPT cites for your target keywords. Check Google AI Overviews and AI Mode with GSC gen-AI reports when available.
 
@@ -353,7 +353,7 @@ Scrape what ChatGPT web search returns for a query. ChatGPT visibility check: se
 
 **Output:** ChatGPT response content, cited sources/URLs, referenced domains.
 
-### `/seo dataforseo ai-mentions <keyword>`
+### `/harness-seo dataforseo ai-mentions <keyword>`
 
 Track how LLMs mention brands, domains, and topics. Critical for GEO. Measures actual AI visibility across multiple LLM platforms.
 

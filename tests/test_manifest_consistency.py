@@ -187,14 +187,14 @@ def _extract_section(text: str, heading: str) -> str:
 
 
 def test_orchestrator_sub_skills_list_matches_disk():
-    """skills/seo/SKILL.md Sub-Skills numbered list must equal set(skills/*) minus orchestrator itself.
+    """skills/harness-seo/SKILL.md Sub-Skills numbered list must equal set(skills/*) minus orchestrator itself.
 
     Background: v1.9.8 CI guard checks README/CLAUDE/AGENTS but not the orchestrator's
     own canonical-phrasing source. PR #92 surfaced that the orchestrator had stale "21
     specialized" claims and the list included seo-firecrawl (extension-only). This
     guard closes that gap.
     """
-    text = (REPO_ROOT / "skills" / "seo" / "SKILL.md").read_text(encoding="utf-8")
+    text = (REPO_ROOT / "skills" / "harness-seo" / "SKILL.md").read_text(encoding="utf-8")
     section = _extract_section(text, "Sub-Skills")
     listed_list = re.findall(r"^\d+\.\s+\*\*(seo-[a-z-]+)\*\*", section, re.MULTILINE)
     assert len(listed_list) == len(set(listed_list)), (
@@ -209,7 +209,7 @@ def test_orchestrator_sub_skills_list_matches_disk():
     # The orchestrator (`seo`) does not list itself.
     # seo-firecrawl is documented separately in an Optional Extensions subsection
     # because it lives only in extensions/, not in skills/.
-    expected = on_disk - {"seo"}
+    expected = on_disk - {"harness-seo"}
     assert listed == expected, (
         f"Sub-Skills list != skills/ dir. "
         f"Missing from list: {sorted(expected - listed)}. "
@@ -218,13 +218,13 @@ def test_orchestrator_sub_skills_list_matches_disk():
 
 
 def test_orchestrator_subagents_list_matches_disk():
-    """skills/seo/SKILL.md Subagents bullet list must equal set(agents/seo-*.md), no duplicates.
+    """skills/harness-seo/SKILL.md Subagents bullet list must equal set(agents/seo-*.md), no duplicates.
 
     Background: same drift pattern as Sub-Skills. Codex round 3 review surfaced that
     the Subagents list was missing seo-flow (file on disk) and included seo-firecrawl
     (no agent file on disk).
     """
-    text = (REPO_ROOT / "skills" / "seo" / "SKILL.md").read_text(encoding="utf-8")
+    text = (REPO_ROOT / "skills" / "harness-seo" / "SKILL.md").read_text(encoding="utf-8")
     section = _extract_section(text, "Subagents")
     listed_list = re.findall(r"^- `(seo-[a-z-]+)`", section, re.MULTILINE)
     assert len(listed_list) == len(set(listed_list)), (
@@ -381,7 +381,7 @@ def test_reference_files_have_at_least_one_link():
     references/ but was reachable only through a sibling cross-link, not
     through its parent SKILL.md.
 
-    Cross-skill references are legitimate (e.g. skills/seo/references/
+    Cross-skill references are legitimate (e.g. skills/harness-seo/references/
     backlink-quality.md is cited from seo-backlinks/SKILL.md) so the search
     is repo-wide rather than per-parent-skill.
 

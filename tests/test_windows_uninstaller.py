@@ -21,6 +21,6 @@ def test_windows_smoke_checks_full_partial_and_empty_uninstalls() -> None:
     text = (ROOT / ".github/workflows/windows-smoke.yml").read_text(encoding="utf-8")
 
     assert "$expectedSummary" in text
-    assert "-Filter \"seo\" -ErrorAction SilentlyContinue) +" not in text
+    assert "-Filter \"harness-seo\" -ErrorAction SilentlyContinue) +" not in text
     assert "Partial-install summary was incorrect" in text
     assert "Nothing to remove" in text

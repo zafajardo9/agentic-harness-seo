@@ -5,13 +5,13 @@
     "name": "zafajardo9"
   },
   "metadata": {
-    "description": "Agentic Harness SEO for Claude Code. 29 sub-skills, 20 sub-agents, and 11 optional extensions for live data. Maintained by zafajardo9."
+    "description": "Agentic Harness SEO for Claude Code. 30 sub-skills, 20 sub-agents, and 11 optional extensions for live data. Maintained by zafajardo9."
   },
   "plugins": [
     {
       "name": "agentic-harness-seo",
       "source": "./",
-      "description": "Audit websites and build SEO roadmaps with 29 sub-skills, 20 sub-agents, and 11 optional extensions.",
+      "description": "Audit websites and build SEO roadmaps with 30 sub-skills, 20 sub-agents, and 11 optional extensions.",
       "author": {
         "name": "zafajardo9",
         "url": "https://github.com/zafajardo9"

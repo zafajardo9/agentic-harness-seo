@@ -160,7 +160,7 @@ def instruction_block(destination: Path) -> str:
         f'    "{launcher}" run <script.py> [args]\n'
         f'    "{launcher}" doctor --json\n'
         f'    "{launcher}" setup\n\n'
-        f"Read `{root}/skills/seo/SKILL.md` first for routing, then the `SKILL.md`\n"
+        f"Read `{root}/skills/harness-seo/SKILL.md` first for routing, then the `SKILL.md`\n"
         f"of the sub-skill that matches the task. The 20 specialist agents are in\n"
         f"`{root}/agents/`.\n\n"
         "For SEO planning, use the toolkit's planning workflow. Ground a deployed\n"

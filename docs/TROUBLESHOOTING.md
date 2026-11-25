@@ -4,7 +4,7 @@
 
 ### Skill Not Loading
 
-**Symptom:** `/seo` command not recognized
+**Symptom:** `/harness-seo` command not recognized
 
 **Solutions:**
 
@@ -19,12 +19,12 @@ For manual installs:
 
 1. Verify installation:
 ```bash
-ls ~/.claude/skills/seo/SKILL.md
+ls ~/.claude/skills/harness-seo/SKILL.md
 ```
 
 2. Check SKILL.md has proper frontmatter:
 ```bash
-head -5 ~/.claude/skills/seo/SKILL.md
+head -5 ~/.claude/skills/harness-seo/SKILL.md
 ```
 Should start with `---` followed by YAML.
 
@@ -52,14 +52,14 @@ curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main
 Dependencies belong in the managed runtime. For a plugin install, run:
 
 ```bash
-/seo doctor
-/seo setup
+/harness-seo doctor
+/harness-seo setup
 ```
 
 For a manual install, run:
 ```bash
-~/.claude/skills/seo/scripts/agentic-harness-seo doctor
-~/.claude/skills/seo/scripts/agentic-harness-seo setup
+~/.claude/skills/harness-seo/scripts/agentic-harness-seo doctor
+~/.claude/skills/harness-seo/scripts/agentic-harness-seo setup
 ```
 
 Do not install individual packages, use `pip --user`, or create a PATH shim.
@@ -77,13 +77,13 @@ Do not install individual packages, use `pip --user`, or create a PATH shim.
 For manual installs, requirements.txt is copied to the skill directory:
 
 ```bash
-ls ~/.claude/skills/seo/requirements.txt
+ls ~/.claude/skills/harness-seo/requirements.txt
 ```
 
 If missing, download it directly:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main/requirements.txt \
-  -o ~/.claude/skills/seo/requirements.txt
+  -o ~/.claude/skills/harness-seo/requirements.txt
 ```
 
 ### Windows Python Detection Issues
@@ -95,7 +95,7 @@ curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main
 1. Install Python from [python.org](https://python.org) and check "Add to PATH"
 2. Rerun `install.ps1`. It uses `AGENTIC_HARNESS_SEO_PYTHON` when set, otherwise the first of `py -3`, `python3` and `python` that is Python 3.11 to 3.14, otherwise the newest of `py -3.14` down to `py -3.11`
 3. If `py -3` is a newer Python that Agentic Harness SEO does not support yet (such as 3.15), install 3.14 alongside it, or set `AGENTIC_HARNESS_SEO_PYTHON` to a supported `python.exe`
-4. Run `/seo doctor` after installation
+4. Run `/harness-seo doctor` after installation
 
 ---
 
@@ -106,8 +106,8 @@ curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main
 **Solution:** rerun managed setup so the browser is installed through the same
 interpreter and persistent browser directory:
 ```bash
-/seo setup
-/seo doctor
+/harness-seo setup
+/harness-seo doctor
 ```
 
 ---
@@ -198,7 +198,7 @@ See "Trusting a local proxy" in SECURITY.md for what the proxy is trusted with.
 
 **Solution:**
 ```bash
-chmod +x ~/.claude/skills/seo/scripts/*.py
+chmod +x ~/.claude/skills/harness-seo/scripts/*.py
 ```
 
 ---
@@ -267,7 +267,7 @@ cp /path/to/agentic-harness-seo/agents/*.md ~/.claude/agents/
 
 1. Audit crawls up to 500 pages: large sites take time
 2. Subagents run in parallel to speed up analysis
-3. For faster checks, use `/seo page` on specific URLs
+3. For faster checks, use `/harness-seo page` on specific URLs
 4. Check if site has slow response times
 
 ---
@@ -286,11 +286,11 @@ To see detailed output, check Claude Code's internal logs or run scripts directl
 
 ```bash
 # Test fetch
-python3 ~/.claude/skills/seo/scripts/fetch_page.py https://example.com
+python3 ~/.claude/skills/harness-seo/scripts/fetch_page.py https://example.com
 
 # Test parse
-python3 ~/.claude/skills/seo/scripts/parse_html.py page.html --json
+python3 ~/.claude/skills/harness-seo/scripts/parse_html.py page.html --json
 
 # Test screenshot
-python3 ~/.claude/skills/seo/scripts/capture_screenshot.py https://example.com
+python3 ~/.claude/skills/harness-seo/scripts/capture_screenshot.py https://example.com
 ```

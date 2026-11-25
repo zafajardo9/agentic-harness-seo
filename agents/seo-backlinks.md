@@ -71,10 +71,10 @@ across remaining factors. Always note which factors were scored and which were s
 
 ## Cross-Skill Delegation
 
-- For toxic link patterns beyond basic Moz Spam Score, load `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/backlink-quality.md`
-- For anchor text industry benchmarks, load `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/backlink-quality.md`
-- Do NOT duplicate seo-content analysis. Recommend `/seo content <url>` for E-E-A-T.
-- Do NOT duplicate seo-technical analysis. Recommend `/seo technical <url>` for crawlability.
+- For toxic link patterns beyond basic Moz Spam Score, load `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/backlink-quality.md`
+- For anchor text industry benchmarks, load `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/backlink-quality.md`
+- Do NOT duplicate seo-content analysis. Recommend `/harness-seo content <url>` for E-E-A-T.
+- Do NOT duplicate seo-technical analysis. Recommend `/harness-seo technical <url>` for crawlability.
 
 ## Output Format
 
@@ -109,7 +109,7 @@ If any check fails, fix the report before returning it.
 
 - If Moz rate-limits mid-analysis, return partial data and note "rate_limited: true"
 - If Common Crawl download times out, skip CC metrics and note the timeout
-- If no sources return data, report: "No backlink data available. Run `/seo backlinks setup`."
+- If no sources return data, report: "No backlink data available. Run `/harness-seo backlinks setup`."
 - Never fail silently, always report what succeeded and what failed
 - If all free sources fail, suggest DataForSEO extension: `./extensions/dataforseo/install.sh`
 
@@ -117,7 +117,7 @@ If any check fails, fix the report before returning it.
 
 Use `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run render_page.py <URL> --mode auto --json` for page HTML. `auto` does a raw fetch and only spins up Playwright when an SPA shell is detected; use `--mode always` to force a render or `--mode never` to skip Playwright entirely. The JSON exposes full `raw_content`, `content`, `extracted_text`, `is_spa`, and `publication_date`; use `--max-text` only when explicit bounded output is needed. SSRF and DNS-rebinding protection live in the bundled `url_safety.py` module, never call `requests.get` directly on user-supplied URLs.
 
-Backlink verification (`/seo backlinks verify`) primarily reads outbound `<a>` tags, which are reliably present in raw HTML. `--mode never` is the right choice for speed on bulk verification jobs.
+Backlink verification (`/harness-seo backlinks verify`) primarily reads outbound `<a>` tags, which are reliably present in raw HTML. `--mode never` is the right choice for speed on bulk verification jobs.
 
 ## Security Rules
 

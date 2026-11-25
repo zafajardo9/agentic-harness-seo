@@ -21,7 +21,7 @@ On Windows, run `.\extensions\posthog\install.ps1` in PowerShell.
 
 The `seo-posthog` skill and agent ship with the agentic-harness-seo plugin, so on a
 plugin install the installer copies nothing; run it from the plugin or repository
-folder. On a manual install (`~/.claude/skills/seo`) it copies the skill to
+folder. On a manual install (`~/.claude/skills/harness-seo`) it copies the skill to
 `~/.claude/skills/seo-posthog/` and the agent to `~/.claude/agents/seo-posthog.md`.
 In both cases it then offers to register the MCP server with `claude mcp add`.
 
@@ -47,12 +47,12 @@ allowlist and the audit orchestrator accept both spellings. Queries go through
 ## 3. Use
 
 ```
-/seo posthog check
-/seo posthog organic
-/seo posthog referrers
+/harness-seo posthog check
+/harness-seo posthog organic
+/harness-seo posthog referrers
 ```
 
-During `/seo audit`, the agent is spawned when PostHog MCP tools are available.
+During `/harness-seo audit`, the agent is spawned when PostHog MCP tools are available.
 
 ## Limits
 

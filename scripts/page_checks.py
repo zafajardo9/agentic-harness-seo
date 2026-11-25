@@ -91,10 +91,10 @@ _SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 # values is a Google rule: they are display-truncation heuristics.
 # ---------------------------------------------------------------------------
 
-# skills/seo/references/quality-gates.md, "Title Tag Requirements" (web-obs: 20 and 65)
+# skills/harness-seo/references/quality-gates.md, "Title Tag Requirements" (web-obs: 20 and 65)
 TITLE_MIN_CHARS = 30
 TITLE_MAX_CHARS = 60
-# skills/seo/references/quality-gates.md, "Meta Description Requirements" (web-obs: 165).
+# skills/harness-seo/references/quality-gates.md, "Meta Description Requirements" (web-obs: 165).
 # That file is the single source: other skills state 150-160, 130-150 and under 155.
 META_DESCRIPTION_MIN_CHARS = 120  # reported as a fact only, no finding id exists for it
 META_DESCRIPTION_MAX_CHARS = 160
@@ -103,7 +103,7 @@ URL_MAX_CHARS = 100
 # skills/seo-technical/SKILL.md, "Crawlability": Googlebot fetches the first 2MB of HTML
 HTML_MAX_BYTES = 2_000_000
 # web-obs value. This repository documents minimums per page type only
-# (skills/seo/references/quality-gates.md, "Minimum Word Counts by Page Type"), and a
+# (skills/harness-seo/references/quality-gates.md, "Minimum Word Counts by Page Type"), and a
 # script cannot know the page type, so this is a type-blind floor. Compare the
 # word_count fact with that table for the real gate.
 THIN_CONTENT_MIN_WORDS = 200

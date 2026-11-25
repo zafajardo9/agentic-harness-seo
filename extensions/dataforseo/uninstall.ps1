@@ -16,7 +16,7 @@ if (Test-Path $agentFile) {
 }
 
 # Remove field config
-$fieldConfig = "$env:USERPROFILE\.claude\skills\seo\dataforseo-field-config.json"
+$fieldConfig = "$env:USERPROFILE\.claude\skills\harness-seo\dataforseo-field-config.json"
 if (Test-Path $fieldConfig) {
     Remove-Item -Force $fieldConfig
 }

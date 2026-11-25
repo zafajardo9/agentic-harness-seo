@@ -24,13 +24,13 @@ against Matomo Cloud and self-hosted instances.
 
 | Command | Underlying script |
 |---|---|
-| `/seo matomo check` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_auth.py --check` |
-| `/seo matomo organic [site-id]` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py organic --site-id <id>` |
-| `/seo matomo top-pages` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py top-pages` |
-| `/seo matomo device` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py device` |
-| `/seo matomo country` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py country` |
-| `/seo matomo referrers` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py referrers` |
-| `/seo matomo keywords` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py keywords` |
+| `/harness-seo matomo check` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_auth.py --check` |
+| `/harness-seo matomo organic [site-id]` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py organic --site-id <id>` |
+| `/harness-seo matomo top-pages` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py top-pages` |
+| `/harness-seo matomo device` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py device` |
+| `/harness-seo matomo country` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py country` |
+| `/harness-seo matomo referrers` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py referrers` |
+| `/harness-seo matomo keywords` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_report.py keywords` |
 
 All commands accept `--days` (default 28), `--limit`, `--site-id`, and
 `--json`. The site ID falls back to `MATOMO_SITE_ID` from settings.
@@ -54,7 +54,7 @@ All commands accept `--days` (default 28), `--limit`, `--site-id`, and
   performance metrics.
 - For AI Overview / GEO citability work, route to `seo-geo`. Matomo
   offers no LLM-specific signals.
-- During `/seo audit`, the orchestrator spawns the `seo-matomo` agent
+- During `/harness-seo audit`, the orchestrator spawns the `seo-matomo` agent
   (analogous to `seo-google`) whenever `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run matomo_auth.py
   --check` succeeds. Both agents can be active simultaneously when the
   user has both GA4 and Matomo configured.

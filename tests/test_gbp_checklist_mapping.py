@@ -8,7 +8,7 @@ describes is_claimed as whether the owner verified the listing on Google Maps.
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CHECKLIST = ROOT / "skills" / "seo" / "references" / "maps-gbp-checklist.md"
+CHECKLIST = ROOT / "skills" / "harness-seo" / "references" / "maps-gbp-checklist.md"
 
 
 def test_verified_status_uses_is_claimed_and_keeps_the_point_scale() -> None:

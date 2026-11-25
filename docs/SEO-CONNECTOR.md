@@ -1,5 +1,16 @@
 # Connect Agentic Harness SEO
 
+## Codex planner marketplace
+
+Install the planner from the [repository marketplace](../README.md#codex).
+The catalog points to the self-contained plugin in `packaging/openai/`. Refresh
+the checked-in package when the planning workflow, templates, poster skill,
+starter profiles, notices, or version change:
+
+```bash
+./scripts/agentic-harness-seo run package_openai_plugin.py --sync-repo
+```
+
 ## ChatGPT planning plugin without hosting
 
 Download `agentic-harness-seo-planner.zip` from a successful **Build SEO planner

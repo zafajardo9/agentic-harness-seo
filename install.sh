@@ -5,7 +5,7 @@ set -euo pipefail
 # Wraps everything in main() to prevent partial execution on network failure
 
 main() {
-    SKILL_DIR="${HOME}/.claude/skills/seo"
+    SKILL_DIR="${HOME}/.claude/skills/harness-seo"
     AGENT_DIR="${HOME}/.claude/agents"
     REPO_URL="https://github.com/zafajardo9/agentic-harness-seo"
     # Pin to a specific release tag to prevent silent updates from main.
@@ -25,7 +25,6 @@ main() {
     command -v git >/dev/null 2>&1 || { echo "✗ Git is required but not installed."; exit 1; }
 
     # Create directories
-    mkdir -p "${SKILL_DIR}"
     mkdir -p "${AGENT_DIR}"
 
     # Clone or update
@@ -38,7 +37,18 @@ main() {
 
     # Copy skill files
     echo "→ Installing skill files..."
-    cp -r "${TEMP_DIR}/agentic-harness-seo/skills/seo/"* "${SKILL_DIR}/"
+    skill_source="${TEMP_DIR}/agentic-harness-seo/skills/harness-seo"
+    if [ ! -f "${skill_source}/SKILL.md" ]; then
+        echo "✗ Could not find the harness-seo skill in the repository clone." >&2
+        exit 1
+    fi
+    legacy_skill_dir="${HOME}/.claude/skills/seo"
+    if [ ! -e "${SKILL_DIR}" ] && [ -f "${legacy_skill_dir}/runtime-plugin.json" ] &&
+        [ -f "${legacy_skill_dir}/scripts/agentic-harness-seo" ]; then
+        mv "${legacy_skill_dir}" "${SKILL_DIR}"
+    fi
+    mkdir -p "${SKILL_DIR}"
+    cp -r "${skill_source}/"* "${SKILL_DIR}/"
 
     # Copy sub-skills
     if [ -d "${TEMP_DIR}/agentic-harness-seo/skills" ]; then
@@ -148,9 +158,9 @@ main() {
         local doc="$1" temp_doc
         temp_doc="${doc}.agentic-harness-seo-tmp"
         sed -e "s#\${CLAUDE_PLUGIN_ROOT}/skills/#${skills_root_esc}#g" \
-            -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run#"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" run#g' \
-            -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" setup#"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" setup#g' \
-            -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" doctor#"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" doctor#g' \
+            -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run#"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo" run#g' \
+            -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" setup#"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo" setup#g' \
+            -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" doctor#"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo" doctor#g' \
             "${doc}" > "${temp_doc}"
         mv "${temp_doc}" "${doc}"
     }
@@ -204,7 +214,7 @@ main() {
     echo ""
     echo "Usage:"
     echo "  1. Start Claude Code:  claude"
-    echo "  2. Run commands:       /seo audit https://example.com"
+    echo "  2. Run commands:       /harness-seo audit https://example.com"
     echo ""
     echo "Python deps location: ${SKILL_DIR}/requirements.txt"
     echo "Inspect remote scripts before piping them to bash."

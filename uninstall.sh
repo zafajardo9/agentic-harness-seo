@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # agentic-harness-seo manual-install uninstaller (Unix / macOS / Linux)
 #
-# Removes the orchestrator skill (~/.claude/skills/seo), all sub-skills
+# Removes the orchestrator skill (~/.claude/skills/harness-seo), all sub-skills
 # (~/.claude/skills/seo-*), and all sub-agents (~/.claude/agents/seo-*.md).
 #
 # Uses glob enumeration rather than a hardcoded list so future skill
@@ -26,9 +26,9 @@ main() {
     shopt -s nullglob
 
     # Remove orchestrator if present
-    if [ -d "${SKILL_DIR}/seo" ]; then
-        rm -rf "${SKILL_DIR}/seo"
-        echo "  Removed: ${SKILL_DIR}/seo"
+    if [ -d "${SKILL_DIR}/harness-seo" ]; then
+        rm -rf "${SKILL_DIR}/harness-seo"
+        echo "  Removed: ${SKILL_DIR}/harness-seo"
         removed_skills=$((removed_skills + 1))
     fi
 

@@ -69,7 +69,7 @@ def test_maps_agent_keeps_bash_and_mcp_separate():
 
 
 def test_hub_passes_paid_maps_data_to_the_maps_agent():
-    hub = _text(ROOT / "skills" / "seo" / "SKILL.md")
+    hub = _text(ROOT / "skills" / "harness-seo" / "SKILL.md")
     assert "through the seo-dataforseo agent or your own DataForSEO MCP tools" in hub
     assert "pass that data in the seo-maps prompt" in hub
     assert "must say which tier was used" in hub
@@ -86,7 +86,7 @@ def test_posthog_agent_is_read_only_and_names_both_tool_spellings():
     # The installer registers the server in lowercase, so every place that
     # names the tool must accept that spelling too.
     assert "mcp add --transport http posthog " in _text(ROOT / "extensions/posthog/install.sh")
-    for rel in ("skills/seo/SKILL.md", "extensions/posthog/skills/seo-posthog/SKILL.md",
+    for rel in ("skills/harness-seo/SKILL.md", "extensions/posthog/skills/seo-posthog/SKILL.md",
                 "extensions/posthog/docs/POSTHOG-SETUP.md"):
         doc = _text(ROOT / rel)
         assert "mcp__posthog__exec" in doc and "mcp__PostHog__exec" in doc, rel

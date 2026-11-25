@@ -1,5 +1,5 @@
 ---
-name: seo
+name: harness-seo
 description: "Comprehensive SEO analysis for any website or business type. Full site audits, single-page analysis, technical SEO (crawlability, indexability, Core Web Vitals with INP), schema markup, content quality (E-E-A-T), image optimization, sitemap analysis, and GEO for AI Overviews/ChatGPT/Perplexity. Industry detection for SaaS, e-commerce, local, publishers, agencies. Triggers on: SEO, audit, schema, Core Web Vitals, sitemap, E-E-A-T, AI Overviews, GEO, technical SEO, content quality, page speed. Use this hub only when the SEO domain is clear and the requested workflow is not; otherwise use the specific seo-* skill."
 user-invocable: true
 argument-hint: "[command] [url]"
@@ -12,7 +12,7 @@ metadata:
 
 # SEO: Universal SEO Analysis Skill
 
-**Invocation:** `/seo $ARGUMENTS`, where the first word is the command and the rest is the URL or argument.
+**Invocation:** `/harness-seo $ARGUMENTS`, where the first word is the command and the rest is the URL or argument.
 
 **Runtime:** Run bundled Python tools through
 `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run <script.py>`. That is the single
@@ -21,11 +21,11 @@ canonical form used by every skill and agent. Claude Code expands
 found without any `PATH` entry; the repository ships no top-level `bin/`
 directory because hosted marketplaces reject one. Repository users run
 `./scripts/agentic-harness-seo`; manual installers rewrite the canonical form to
-`"$HOME/.claude/skills/seo/scripts/agentic-harness-seo"`. Never invoke bundled scripts
+`"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo"`. Never invoke bundled scripts
 with a bare Python interpreter.
 
 Comprehensive SEO analysis across all industries (SaaS, local services,
-e-commerce, publishers, agencies). Orchestrates 28 sub-skills (22 core + 1 framework
+e-commerce, publishers, agencies). Orchestrates 29 sub-skills (23 core + 1 framework
 integration + 5 extension mirrors) and 20 sub-agents. A separate optional Firecrawl
 extension is also installable (see "Optional Extensions" below).
 
@@ -33,44 +33,45 @@ extension is also installable (see "Optional Extensions" below).
 
 | Command | What it does |
 |---------|-------------|
-| `/seo audit <url>` | Full website audit with parallel subagent delegation |
-| `/seo page <url>` | Deep single-page analysis |
-| `/seo sitemap <url or generate>` | Analyze or generate XML sitemaps |
-| `/seo schema <url>` | Detect, validate, and generate Schema.org markup |
-| `/seo images <url or optimize>` | Image SEO: on-page audit, SERP analysis, file optimization |
-| `/seo technical <url>` | Technical SEO audit (9 categories) |
-| `/seo content <url>` | E-E-A-T and content quality analysis |
-| `/seo content-brief <topic or url>` | Generate detailed SEO content brief with target keywords, outline, internal links |
-| `/seo geo <url>` | AI Overviews / Generative Engine Optimization |
-| `/seo agentic [audit\|fix\|lighthouse\|refresh] <url>` | Agent readiness: Lighthouse Agentic Browsing X/N, accessibility tree, AI agent access, llms.txt, Markdown, WebMCP |
-| `/seo plan <business-type>` | Strategic SEO planning |
-| `/seo programmatic [url\|plan]` | Programmatic SEO analysis and planning |
-| `/seo competitor-pages [url\|generate]` | Competitor comparison page generation |
-| `/seo local <url>` | Local SEO analysis (GBP, citations, reviews, map pack) |
-| `/seo maps [command] [args]` | Maps intelligence (geo-grid, GBP audit, reviews, competitors) |
-| `/seo hreflang [url]` | Hreflang/i18n SEO audit and generation |
-| `/seo google [command] [url]` | Google SEO APIs (GSC, PageSpeed, CrUX, Indexing, GA4) |
-| `/seo backlinks <url>` | Backlink profile analysis (free: Moz, Bing, CC; premium: DataForSEO) |
-| `/seo cluster <seed-keyword>` | SERP-based semantic clustering and content architecture |
-| `/seo sxo <url>` | Search Experience Optimization: page-type analysis, user stories, personas |
-| `/seo drift baseline <url>` | Capture SEO baseline for change monitoring |
-| `/seo drift compare <url>` | Compare current state to stored baseline |
-| `/seo drift history <url>` | Show drift history over time |
-| `/seo ecommerce <url>` | E-commerce SEO: product schema, marketplace intelligence |
-| `/seo matomo [command] [args]` | Matomo Reporting API: GA4 alternative or supplement (extension) |
-| `/seo posthog [command]` | PostHog via MCP: GA4 alternative or supplement (extension) |
-| `/seo firecrawl [command] <url>` | Full-site crawling and site mapping (extension) |
-| `/seo dataforseo [command]` | Live SEO data via DataForSEO (extension) |
-| `/seo image-gen [use-case] <description>` | AI image generation for SEO assets (extension) |
-| `/seo bing [command] <url>` | Bing Webmaster Tools link data and IndexNow URL submission (extension) |
-| `/seo shopify [crawl\|check] <url>` | Uncapped signed crawl of a Shopify store you administer, then the audit pipeline (extension) |
-| `/seo flow [stage] [url\|topic]` | FLOW framework: evidence-led prompts for Find, Leverage, Optimize, Win, or Local stages |
-| `/seo setup` | Explicitly create or refresh the isolated Python runtime and Chromium |
-| `/seo doctor` | Check runtime readiness without changing the system |
+| `/harness-seo audit <url>` | Full website audit with parallel subagent delegation |
+| `/harness-seo page <url>` | Deep single-page analysis |
+| `/harness-seo sitemap <url or generate>` | Analyze or generate XML sitemaps |
+| `/harness-seo schema <url>` | Detect, validate, and generate Schema.org markup |
+| `/harness-seo images <url or optimize>` | Image SEO: on-page audit, SERP analysis, file optimization |
+| `/harness-seo technical <url>` | Technical SEO audit (9 categories) |
+| `/harness-seo content <url>` | E-E-A-T and content quality analysis |
+| `/harness-seo content-brief <topic or url>` | Generate detailed SEO content brief with target keywords, outline, internal links |
+| `/harness-seo geo <url>` | AI Overviews / Generative Engine Optimization |
+| `/harness-seo agentic [audit\|fix\|lighthouse\|refresh] <url>` | Agent readiness: Lighthouse Agentic Browsing X/N, accessibility tree, AI agent access, llms.txt, Markdown, WebMCP |
+| `/harness-seo plan <business-type>` | Strategic SEO planning |
+| `/harness-seo programmatic [url\|plan]` | Programmatic SEO analysis and planning |
+| `/harness-seo competitor-pages [url\|generate]` | Competitor comparison page generation |
+| `/harness-seo local <url>` | Local SEO analysis (GBP, citations, reviews, map pack) |
+| `/harness-seo maps [command] [args]` | Maps intelligence (geo-grid, GBP audit, reviews, competitors) |
+| `/harness-seo hreflang [url]` | Hreflang/i18n SEO audit and generation |
+| `/harness-seo google [command] [url]` | Google SEO APIs (GSC, PageSpeed, CrUX, Indexing, GA4) |
+| `/harness-seo backlinks <url>` | Backlink profile analysis (free: Moz, Bing, CC; premium: DataForSEO) |
+| `/harness-seo cluster <seed-keyword>` | SERP-based semantic clustering and content architecture |
+| `/harness-seo sxo <url>` | Search Experience Optimization: page-type analysis, user stories, personas |
+| `/harness-seo drift baseline <url>` | Capture SEO baseline for change monitoring |
+| `/harness-seo drift compare <url>` | Compare current state to stored baseline |
+| `/harness-seo drift history <url>` | Show drift history over time |
+| `/harness-seo ecommerce <url>` | E-commerce SEO: product schema, marketplace intelligence |
+| `/harness-seo matomo [command] [args]` | Matomo Reporting API: GA4 alternative or supplement (extension) |
+| `/harness-seo posthog [command]` | PostHog via MCP: GA4 alternative or supplement (extension) |
+| `/harness-seo firecrawl [command] <url>` | Full-site crawling and site mapping (extension) |
+| `/harness-seo dataforseo [command]` | Live SEO data via DataForSEO (extension) |
+| `/harness-seo image-gen [use-case] <description>` | AI image generation for SEO assets (extension) |
+| `/harness-seo generate-poster [setup [profile] \| profile [brief]]` | Set up a creative profile or generate an editable social poster in Canva |
+| `/harness-seo bing [command] <url>` | Bing Webmaster Tools link data and IndexNow URL submission (extension) |
+| `/harness-seo shopify [crawl\|check] <url>` | Uncapped signed crawl of a Shopify store you administer, then the audit pipeline (extension) |
+| `/harness-seo flow [stage] [url\|topic]` | FLOW framework: evidence-led prompts for Find, Leverage, Optimize, Win, or Local stages |
+| `/harness-seo setup` | Explicitly create or refresh the isolated Python runtime and Chromium |
+| `/harness-seo doctor` | Check runtime readiness without changing the system |
 
 ## Runtime Setup
 
-Run setup only when the user explicitly invokes `/seo setup` or explicitly asks
+Run setup only when the user explicitly invokes `/harness-seo setup` or explicitly asks
 to repair dependencies. Execute
 `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" setup`, report core and Chromium
 status separately, and do not fall back to global or user package installation.
@@ -78,11 +79,11 @@ For diagnosis, execute
 `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" doctor --json`; its output
 intentionally omits absolute paths and environment values. If any
 `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run` command reports that setup is
-required, suggest `/seo setup` and do not improvise a `pip install`.
+required, suggest `/harness-seo setup` and do not improvise a `pip install`.
 
 ## Orchestration Logic
 
-When the user invokes `/seo audit`, delegate to subagents in parallel:
+When the user invokes `/harness-seo audit`, delegate to subagents in parallel:
 1. Detect business type (SaaS, local, ecommerce, publisher, agency, other)
 2. Spawn subagents: seo-technical, seo-content, seo-schema, seo-sitemap, seo-performance, seo-visual, seo-geo, seo-agentic
 3. If Google API credentials detected (`"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run google_auth.py --check`), also spawn seo-google agent
@@ -99,9 +100,11 @@ When the user invokes `/seo audit`, delegate to subagents in parallel:
 14. Collect results and generate unified report with SEO Health Score (0-100)
 15. **Synthesize via the 10-principle framework** (see "Synthesis Methodology" below), walk PERCEIVE → ANALYZE → VALIDATE → ACT before bucketing findings into Critical / High / Medium / Low
 16. Create prioritized action plan with dependency sequencing + falsifiability per recommendation
-17. **Offer PDF report**: "Generate a professional PDF report? Use `/seo google report full`"
+17. **Offer PDF report**: "Generate a professional PDF report? Use `/harness-seo google report full`"
 
-For individual commands, load the relevant sub-skill directly.
+For individual commands, load the relevant sub-skill directly. For
+`/harness-seo generate-poster`, load `seo-generate-poster` and pass the remaining
+arguments as given. This workflow ends with the profile or Canva design handoff.
 After any analysis command completes, offer to generate a PDF report via `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run google_report.py`.
 
 **Google update history questions** (core, spam, policy, product changes; "is the
@@ -123,8 +126,8 @@ phases: **PERCEIVE** (observe-external · observe-internal · listen),
 **ANALYZE** (think · connect-lateral · connect-system), **VALIDATE** (feel ·
 accept), **ACT** (create · grow).
 
-Full audits (`/seo audit`, `/seo page`) walk every phase before emitting the
-action plan. Narrower commands (`/seo schema`, `/seo images`, etc.) pass at
+Full audits (`/harness-seo audit`, `/harness-seo page`) walk every phase before emitting the
+action plan. Narrower commands (`/harness-seo schema`, `/harness-seo images`, etc.) pass at
 least THINK + ACCEPT before emitting (sound first principle, surfaced
 falsifiability). The Critical / High / Medium / Low priority buckets are the
 **output** of validation, not a substitute for it.
@@ -141,7 +144,7 @@ Each emitted recommendation should carry:
 
 Detect business type from homepage signals:
 - **SaaS**: pricing page, /features, /integrations, /docs, "free trial", "sign up"
-- **Local Service**: phone number, address, service area, "serving [city]", Google Maps embed --> auto-suggest `/seo local` for deeper analysis
+- **Local Service**: phone number, address, service area, "serving [city]", Google Maps embed --> auto-suggest `/harness-seo local` for deeper analysis
 - **E-commerce**: /products, /collections, /cart, "add to cart", product schema
 - **Publisher**: /blog, /articles, /topics, article schema, author pages, publication dates
 - **Agency**: /case-studies, /portfolio, /industries, "our work", client logos
@@ -195,8 +198,8 @@ Weighted aggregate of all categories:
 
 ## Sub-Skills
 
-This skill orchestrates 28 sub-skills (22 core + 1 framework integration + 5 extension
-mirrors). The orchestrator itself (`seo`) is the 29th in `skills/`, but does not
+This skill orchestrates 29 sub-skills (23 core + 1 framework integration + 5 extension
+mirrors). The orchestrator itself (`harness-seo`) is the 30th in `skills/`, but does not
 orchestrate itself, so it is not enumerated below.
 
 1. **seo-audit** -- Full website audit with parallel delegation
@@ -227,28 +230,29 @@ orchestrate itself, so it is not enumerated below.
 26. **seo-bing** -- Bing Webmaster Tools link data and IndexNow URL submission (extension mirror)
 27. **seo-shopify** -- Uncapped signed crawl of a Shopify store you administer, then the audit pipeline (extension mirror)
 28. **seo-posthog** -- PostHog analytics via the PostHog MCP server (extension mirror)
+29. **seo-generate-poster** -- Creative profiles and editable social posters via Canva
 
 ### Optional Extensions
 
 The following ship in `extensions/` rather than `skills/` and require a separate
 installer to activate (see each extension's `install.sh`/`install.ps1`):
 
-All optional extensions are reachable through `/seo` subcommands once
-installed: firecrawl, dataforseo, and image-gen, plus `/seo ahrefs`,
-`/seo bing`, `/seo matomo`, `/seo posthog`, `/seo profound`, `/seo seranking`,
-`/seo shopify`, and `/seo unlighthouse`. Each installs as its own sub-skill,
-so the model also auto-routes to their descriptions without the `/seo` prefix.
+All optional extensions are reachable through `/harness-seo` subcommands once
+installed: firecrawl, dataforseo, and image-gen, plus `/harness-seo ahrefs`,
+`/harness-seo bing`, `/harness-seo matomo`, `/harness-seo posthog`, `/harness-seo profound`, `/harness-seo seranking`,
+`/harness-seo shopify`, and `/harness-seo unlighthouse`. Each installs as its own sub-skill,
+so the model also auto-routes to their descriptions without the `/harness-seo` prefix.
 The seo-dataforseo, seo-image-gen, seo-bing, seo-shopify and seo-posthog skills
 already ship in `skills/` as mirrors; their installers only add what the skill
 needs (an MCP server, API keys, or a `.shopify-env` template).
 
 - **seo-firecrawl** -- Full-site crawling and site mapping via Firecrawl MCP. Install
   via `extensions/firecrawl/install.sh` (Unix) or `extensions/firecrawl/install.ps1`
-  (Windows). Once installed, invoke via `/seo firecrawl <command>`.
+  (Windows). Once installed, invoke via `/harness-seo firecrawl <command>`.
 - **seo-matomo** -- Self-hosted or Matomo Cloud Reporting API as a GA4
   alternative or complement. Install via
   `extensions/matomo/install.sh` (Unix) or `extensions/matomo/install.ps1`
-  (Windows). Once installed, invoke via `/seo matomo <command>` or rely
+  (Windows). Once installed, invoke via `/harness-seo matomo <command>` or rely
   on the audit orchestrator to spawn the seo-matomo agent automatically
   when credentials are present.
 

@@ -4,7 +4,7 @@
 
 This repository contains **Agentic Harness SEO**, a Tier 4 Claude Code skill for comprehensive
 SEO analysis across all industries. It follows the Agent Skills open standard and the
-3-layer architecture (directive, orchestration, execution). 29 sub-skills (22 core +
+3-layer architecture (directive, orchestration, execution). 30 sub-skills (23 core +
 1 orchestrator + 1 framework integration + 5 extension mirrors), 20 sub-agents (16 core +
 1 framework integration + 3 extension mirrors), and an extensible reference
 system cover technical SEO, content quality,
@@ -24,8 +24,8 @@ agentic-harness-seo/
   .claude-plugin/
     plugin.json                    # Plugin manifest (v2.6.2)
     marketplace.json               # Marketplace catalog for distribution
-  skills/                            # 29 sub-skills (auto-discovered)
-    seo/                           # Main orchestrator skill
+  skills/                            # 30 sub-skills (auto-discovered)
+    harness-seo/                   # Main orchestrator skill
       SKILL.md                     # Entry point, routing table, core rules
       references/                  # On-demand knowledge files (13 files)
     seo-audit/SKILL.md            # Full site audit with parallel agents
@@ -66,6 +66,7 @@ agentic-harness-seo/
       references/                # Marketplace API endpoints
     seo-dataforseo/SKILL.md     # Live SEO data via DataForSEO MCP (extension mirror)
     seo-image-gen/              # AI image generation for SEO assets (extension mirror)
+    seo-generate-poster/        # Editable Canva posters and creative profiles
       SKILL.md
       references/                # Image gen reference files (7 files)
     seo-bing/SKILL.md           # Bing Webmaster Tools and IndexNow (extension mirror)
@@ -185,41 +186,42 @@ agentic-harness-seo/
 
 | Command | Use Case |
 |---------|----------|
-| `/seo audit <url>` | Full website audit with parallel subagents |
-| `/seo page <url>` | Single page analysis |
-| `/seo technical <url>` | Technical SEO across 9 categories |
-| `/seo content <url>` | E-E-A-T and content quality |
-| `/seo content-brief <topic>` | Detailed content brief: keywords, outline, internal links |
-| `/seo schema <url>` | Schema markup detection, validation, generation |
-| `/seo sitemap <url>` | Sitemap validation |
-| `/seo sitemap generate` | Create new sitemap with industry templates |
-| `/seo images <url>` | Image optimization |
-| `/seo geo <url>` | AI search optimization (GEO) |
-| `/seo agentic <url>` | Agent readiness (Lighthouse Agentic Browsing, AI agent access, WebMCP) |
-| `/seo local <url>` | Local SEO (GBP, citations, reviews) |
-| `/seo maps [command]` | Maps intelligence (geo-grid, GBP audit, competitors) |
-| `/seo backlinks <url>` | Backlink profile analysis |
-| `/seo cluster <seed>` | SERP-based semantic clustering |
-| `/seo sxo <url>` | Search Experience Optimization |
-| `/seo drift baseline\|compare\|history <url>` | SEO drift monitoring |
-| `/seo ecommerce <url>` | E-commerce SEO |
-| `/seo hreflang [url]` | Hreflang and international SEO |
-| `/seo plan <type>` | Strategic planning by industry |
-| `/seo programmatic [url\|plan]` | Programmatic SEO analysis |
-| `/seo competitor-pages [url\|generate]` | Competitor comparison pages |
-| `/seo flow [stage] [url\|topic]` | FLOW framework prompts |
-| `/seo google [command] [url]` | Google SEO APIs (GSC, PSI, CrUX, GA4) |
-| `/seo dataforseo [command]` | Live SEO data (extension) |
-| `/seo image-gen [use-case] <desc>` | AI image generation (extension) |
-| `/seo firecrawl [command] <url>` | Full-site crawling (extension) |
-| `/seo ahrefs [command] <url>` | Backlinks, organic keywords, and content data via the official Ahrefs MCP (extension) |
-| `/seo seranking [command]` | AI Share-of-Voice across ChatGPT, Gemini, Perplexity, AI Overviews, AI Mode (extension) |
-| `/seo profound [command]` | LLM citation tracking with time-series data (extension) |
-| `/seo bing [command] <url>` | Bing Webmaster Tools + IndexNow URL submission (extension) |
-| `/seo matomo [command] [args]` | Matomo Reporting API: GA4 alternative or complement (extension) |
-| `/seo posthog [command]` | PostHog via MCP: GA4 alternative or complement (extension) |
-| `/seo unlighthouse <url>` | Multi-page Lighthouse runner, runs locally (extension) |
-| `/seo shopify [crawl\|check] <url>` | Uncapped signed crawl of a Shopify store you administer, then the audit (extension) |
+| `/harness-seo audit <url>` | Full website audit with parallel subagents |
+| `/harness-seo page <url>` | Single page analysis |
+| `/harness-seo technical <url>` | Technical SEO across 9 categories |
+| `/harness-seo content <url>` | E-E-A-T and content quality |
+| `/harness-seo content-brief <topic>` | Detailed content brief: keywords, outline, internal links |
+| `/harness-seo schema <url>` | Schema markup detection, validation, generation |
+| `/harness-seo sitemap <url>` | Sitemap validation |
+| `/harness-seo sitemap generate` | Create new sitemap with industry templates |
+| `/harness-seo images <url>` | Image optimization |
+| `/harness-seo geo <url>` | AI search optimization (GEO) |
+| `/harness-seo agentic <url>` | Agent readiness (Lighthouse Agentic Browsing, AI agent access, WebMCP) |
+| `/harness-seo local <url>` | Local SEO (GBP, citations, reviews) |
+| `/harness-seo maps [command]` | Maps intelligence (geo-grid, GBP audit, competitors) |
+| `/harness-seo backlinks <url>` | Backlink profile analysis |
+| `/harness-seo cluster <seed>` | SERP-based semantic clustering |
+| `/harness-seo sxo <url>` | Search Experience Optimization |
+| `/harness-seo drift baseline\|compare\|history <url>` | SEO drift monitoring |
+| `/harness-seo ecommerce <url>` | E-commerce SEO |
+| `/harness-seo hreflang [url]` | Hreflang and international SEO |
+| `/harness-seo plan <type>` | Strategic planning by industry |
+| `/harness-seo programmatic [url\|plan]` | Programmatic SEO analysis |
+| `/harness-seo competitor-pages [url\|generate]` | Competitor comparison pages |
+| `/harness-seo flow [stage] [url\|topic]` | FLOW framework prompts |
+| `/harness-seo google [command] [url]` | Google SEO APIs (GSC, PSI, CrUX, GA4) |
+| `/harness-seo dataforseo [command]` | Live SEO data (extension) |
+| `/harness-seo image-gen [use-case] <desc>` | AI image generation (extension) |
+| `/harness-seo generate-poster <profile> [brief]` | Editable Canva social poster or creative profile setup |
+| `/harness-seo firecrawl [command] <url>` | Full-site crawling (extension) |
+| `/harness-seo ahrefs [command] <url>` | Backlinks, organic keywords, and content data via the official Ahrefs MCP (extension) |
+| `/harness-seo seranking [command]` | AI Share-of-Voice across ChatGPT, Gemini, Perplexity, AI Overviews, AI Mode (extension) |
+| `/harness-seo profound [command]` | LLM citation tracking with time-series data (extension) |
+| `/harness-seo bing [command] <url>` | Bing Webmaster Tools + IndexNow URL submission (extension) |
+| `/harness-seo matomo [command] [args]` | Matomo Reporting API: GA4 alternative or complement (extension) |
+| `/harness-seo posthog [command]` | PostHog via MCP: GA4 alternative or complement (extension) |
+| `/harness-seo unlighthouse <url>` | Multi-page Lighthouse runner, runs locally (extension) |
+| `/harness-seo shopify [crawl\|check] <url>` | Uncapped signed crawl of a Shopify store you administer, then the audit (extension) |
 
 ## Development Rules
 
@@ -229,7 +231,7 @@ agentic-harness-seo/
 - Follow kebab-case naming for all skill directories
 - Agents invoked via Agent tool, never via Bash
 - Bundled tools run through `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run`; plugin state uses `CLAUDE_PLUGIN_DATA`
-- Manual Python dependencies install into `~/.claude/skills/seo/.venv/`
+- Manual Python dependencies install into `~/.claude/skills/harness-seo/.venv/`
 - Test with `python3 -m pytest tests/` after changes (if applicable)
 
 ## Security Rules
@@ -252,7 +254,7 @@ agentic-harness-seo/
 - **No `page-break-inside: avoid`** on any element (causes white gaps in WeasyPrint)
 - **Post-generation review**: `_review_pdf()` runs automatically, checking for empty images, thin sections, duplicates
 - **Before presenting any PDF to the user**: verify the review passes (`"status": "PASS"`)
-- **Cross-skill enforcement**: After completing ANY analysis command (audit, page, technical, content, schema, geo, local, maps), offer: "Generate a PDF report? Use `/seo google report`"
+- **Cross-skill enforcement**: After completing ANY analysis command (audit, page, technical, content, schema, geo, local, maps), offer: "Generate a PDF report? Use `/harness-seo google report`"
 - **Google logo** appears on title page when using Google API data ("Powered by Google APIs")
 
 ## Key Principles

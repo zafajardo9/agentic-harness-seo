@@ -32,11 +32,11 @@ specifically for **Amazon/Bing/Naver/Seznam.cz/Yandex/Yep indexing** and
 
 | Command | Underlying script |
 |---|---|
-| `/seo bing links <url>` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run bing_webmaster.py links <url>` |
-| `/seo bing compare <urlA> <urlB>` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run bing_webmaster.py compare <urlA> <urlB>`; both properties must be registered to the API account |
-| `/seo bing submit <url>` (single URL) | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run indexnow_submit.py --host ... --urls <url>` |
-| `/seo bing submit-batch <file>` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run indexnow_submit.py --host ... --urls-file <file>` |
-| `/seo bing verify-indexnow` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run indexnow_submit.py --host ... --verify-only` |
+| `/harness-seo bing links <url>` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run bing_webmaster.py links <url>` |
+| `/harness-seo bing compare <urlA> <urlB>` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run bing_webmaster.py compare <urlA> <urlB>`; both properties must be registered to the API account |
+| `/harness-seo bing submit <url>` (single URL) | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run indexnow_submit.py --host ... --urls <url>` |
+| `/harness-seo bing submit-batch <file>` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run indexnow_submit.py --host ... --urls-file <file>` |
+| `/harness-seo bing verify-indexnow` | `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run indexnow_submit.py --host ... --verify-only` |
 
 ## When this skill applies
 

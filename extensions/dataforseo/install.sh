@@ -7,7 +7,7 @@ set -euo pipefail
 main() {
     SKILL_DIR="${HOME}/.claude/skills/seo-dataforseo"
     AGENT_DIR="${HOME}/.claude/agents"
-    SEO_SKILL_DIR="${HOME}/.claude/skills/seo"
+    SEO_SKILL_DIR="${HOME}/.claude/skills/harness-seo"
     # MCP servers live in ~/.claude.json (the file `claude mcp add` writes).
     # NOT ~/.claude/settings.json - `mcpServers` is not a key Claude Code reads
     # there, so entries written to settings.json silently never load.
@@ -19,16 +19,16 @@ main() {
     echo "════════════════════════════════════════"
     echo ""
 
-    # Support both traditional (curl|bash → ~/.claude/skills/seo) and marketplace
-    # (plugin install → ~/.claude/plugins/cache/.../skills/seo) installations.
+    # Support both traditional (curl|bash → ~/.claude/skills/harness-seo) and marketplace
+    # (plugin install → ~/.claude/plugins/cache/.../skills/harness-seo) installations.
     # Resolve early using BASH_SOURCE so it works even when run from the plugin cache.
     _EARLY_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    _PLUGIN_SEO_DIR="$(cd "${_EARLY_SCRIPT_DIR}/../.." 2>/dev/null && pwd)/skills/seo"
+    _PLUGIN_SEO_DIR="$(cd "${_EARLY_SCRIPT_DIR}/../.." 2>/dev/null && pwd)/skills/harness-seo"
     if [ ! -d "${SEO_SKILL_DIR}" ] && [ -d "${_PLUGIN_SEO_DIR}" ]; then
         SEO_SKILL_DIR="${_PLUGIN_SEO_DIR}"
     fi
     if [ ! -d "${SEO_SKILL_DIR}" ]; then
-        _GLOB_MATCH=$(ls -d "${HOME}/.claude/plugins/cache/*/agentic-harness-seo/"*/skills/seo 2>/dev/null | tail -n1 || true)
+        _GLOB_MATCH=$(ls -d "${HOME}/.claude/plugins/cache/*/agentic-harness-seo/"*/skills/harness-seo 2>/dev/null | tail -n1 || true)
         [ -n "${_GLOB_MATCH}" ] && [ -d "${_GLOB_MATCH}" ] && SEO_SKILL_DIR="${_GLOB_MATCH}"
     fi
 
@@ -171,10 +171,10 @@ PY
     echo "Usage:"
     echo "  1. Start Claude Code:  claude"
     echo "  2. Run commands:"
-    echo "     /seo dataforseo serp best coffee shops"
-    echo "     /seo dataforseo keywords seo tools"
-    echo "     /seo dataforseo backlinks example.com"
-    echo "     /seo dataforseo ai-mentions your brand"
+    echo "     /harness-seo dataforseo serp best coffee shops"
+    echo "     /harness-seo dataforseo keywords seo tools"
+    echo "     /harness-seo dataforseo backlinks example.com"
+    echo "     /harness-seo dataforseo ai-mentions your brand"
     echo ""
     echo "All 23 commands: see extensions/dataforseo/README.md"
     echo "To uninstall: ./extensions/dataforseo/uninstall.sh"

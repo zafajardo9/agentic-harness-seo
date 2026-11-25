@@ -77,11 +77,12 @@ def test_hub_invocation_keeps_the_command_word() -> None:
     https://code.claude.com/docs/en/skills
     $ARGUMENTS is the full input. $0 is the first argument, $1 the second.
     An index with no argument stays literal, and ARGUMENTS is appended only
-    when no placeholder received a value. `/seo $1 $2` therefore drops `audit`
-    from `/seo audit https://example.com`.
+    when no placeholder received a value. `/harness-seo $1 $2` therefore drops `audit`
+    from `/harness-seo audit https://example.com`.
     """
-    text = (REPO_ROOT / "skills" / "seo" / "SKILL.md").read_text(encoding="utf-8")
+    text = (REPO_ROOT / "skills" / "harness-seo" / "SKILL.md").read_text(encoding="utf-8")
+    assert "name: harness-seo" in text.split("---", 2)[1].splitlines()
     invocation = next(line for line in text.splitlines() if line.startswith("**Invocation:**"))
     assert "$1" not in invocation
     assert "$2" not in invocation
-    assert invocation.startswith("**Invocation:** `/seo $ARGUMENTS`")
+    assert invocation.startswith("**Invocation:** `/harness-seo $ARGUMENTS`")

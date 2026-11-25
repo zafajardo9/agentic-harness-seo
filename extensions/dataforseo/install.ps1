@@ -10,7 +10,7 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
 # Check prerequisites
-$SeoSkillDir = "$env:USERPROFILE\.claude\skills\seo"
+$SeoSkillDir = "$env:USERPROFILE\.claude\skills\harness-seo"
 if (-not (Test-Path $SeoSkillDir)) {
     Write-Host "[X] Agentic Harness SEO is not installed." -ForegroundColor Red
     Write-Host "  Install it first: irm https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main/install.ps1 | iex"
@@ -144,10 +144,10 @@ Write-Host ""
 Write-Host "Usage:" -ForegroundColor Cyan
 Write-Host "  1. Start Claude Code:  claude"
 Write-Host "  2. Run commands:"
-Write-Host "     /seo dataforseo serp best coffee shops"
-Write-Host "     /seo dataforseo keywords seo tools"
-Write-Host "     /seo dataforseo backlinks example.com"
-Write-Host "     /seo dataforseo ai-mentions your brand"
+Write-Host "     /harness-seo dataforseo serp best coffee shops"
+Write-Host "     /harness-seo dataforseo keywords seo tools"
+Write-Host "     /harness-seo dataforseo backlinks example.com"
+Write-Host "     /harness-seo dataforseo ai-mentions your brand"
 Write-Host ""
 Write-Host "All 23 commands: see extensions\dataforseo\README.md"
 Write-Host "To uninstall: .\extensions\dataforseo\uninstall.ps1"

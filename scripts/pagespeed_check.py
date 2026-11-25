@@ -148,7 +148,7 @@ def run_pagespeed(
                 # so waiting rarely helps.
                 result["error"] = (
                     "PSI rate limit exceeded. No API key was used, so this request shared "
-                    "Google's public keyless quota. Add a Google API key (run `/seo google setup` "
+                    "Google's public keyless quota. Add a Google API key (run `/harness-seo google setup` "
                     "or pass --api-key) and retry."
                 )
         elif resp.status_code == 400:

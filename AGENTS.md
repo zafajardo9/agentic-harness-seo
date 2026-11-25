@@ -85,7 +85,7 @@ in case a recipe needs a specific call.
 
 ## Overview
 
-Agentic Harness SEO is a Tier 4 SEO analysis skill with 29 sub-skills (22 core + 1 orchestrator +
+Agentic Harness SEO is a Tier 4 SEO analysis skill with 30 sub-skills (23 core + 1 orchestrator +
 1 framework integration + 5 extension mirrors), 20 sub-agents (16 core + 1 framework
 integration + 3 extension mirrors), and 70 Python execution scripts.
 
@@ -93,43 +93,44 @@ integration + 3 extension mirrors), and 70 Python execution scripts.
 
 | Command | What it does |
 |---------|-------------|
-| `/seo audit <url>` | Full website audit with parallel subagent delegation |
-| `/seo page <url>` | Deep single-page analysis |
-| `/seo technical <url>` | Technical SEO audit (9 categories) |
-| `/seo content <url>` | E-E-A-T and content quality analysis |
-| `/seo content-brief <topic>` | Generate a content brief for a topic |
-| `/seo schema <url>` | Schema.org detection, validation, generation |
-| `/seo sitemap <url>` | XML sitemap analysis or generation |
-| `/seo images <url>` | Image SEO: on-page audit, SERP analysis, file optimization |
-| `/seo geo <url>` | AI Overviews / Generative Engine Optimization |
-| `/seo plan <type>` | Strategic SEO planning |
-| `/seo cluster <keyword>` | SERP-based semantic clustering and content architecture |
-| `/seo sxo <url>` | Search Experience Optimization: page-type analysis, personas |
-| `/seo drift baseline <url>` | Capture SEO baseline for change monitoring |
-| `/seo drift compare <url>` | Compare current state to stored baseline |
-| `/seo drift history <url>` | Show drift history over time |
-| `/seo ecommerce <url>` | E-commerce SEO: product schema, marketplace intelligence |
-| `/seo programmatic [url]` | Programmatic SEO at scale |
-| `/seo competitor-pages [url]` | Competitor comparison pages |
-| `/seo flow [stage]` | FLOW framework prompts (Find, Leverage, Optimize, Win, Local; prompts/sync utilities.) |
-| `/seo local <url>` | Local SEO analysis (GBP, citations, reviews) |
-| `/seo maps [cmd] [args]` | Maps intelligence (geo-grid, GBP audit, competitors) |
-| `/seo hreflang <url>` | Hreflang/i18n SEO audit, cultural profiles, content parity |
-| `/seo google [cmd] [url]` | Google SEO APIs (GSC, PageSpeed, CrUX, Indexing, GA4) |
-| `/seo backlinks <url>` | Backlink profile analysis |
-| `/seo backlinks setup` | Setup free backlink APIs |
-| `/seo backlinks verify <url>` | Verify known backlinks still exist |
-| `/seo dataforseo [cmd]` | Live SEO data via DataForSEO (extension) |
-| `/seo image-gen [use-case]` | AI image generation for SEO assets (extension) |
-| `/seo firecrawl [cmd] <url>` | Full-site crawling and site mapping (extension) |
-| `/seo ahrefs [cmd] <target>` | Ahrefs backlink and keyword data (extension) |
-| `/seo bing [cmd] <url>` | Bing Webmaster data and IndexNow (extension) |
-| `/seo profound [cmd]` | LLM brand-citation tracking (extension) |
-| `/seo seranking [cmd]` | AI share-of-voice tracking (extension) |
-| `/seo matomo [cmd] [args]` | Matomo Reporting API: GA4 alternative or supplement (extension) |
-| `/seo posthog [cmd]` | PostHog via MCP: GA4 alternative or supplement (extension) |
-| `/seo unlighthouse <url>` | Multi-page Lighthouse audits (extension) |
-| `/seo shopify [crawl\|check] <url>` | Signed crawl of a Shopify store you administer, then the audit (extension) |
+| `/harness-seo audit <url>` | Full website audit with parallel subagent delegation |
+| `/harness-seo page <url>` | Deep single-page analysis |
+| `/harness-seo technical <url>` | Technical SEO audit (9 categories) |
+| `/harness-seo content <url>` | E-E-A-T and content quality analysis |
+| `/harness-seo content-brief <topic>` | Generate a content brief for a topic |
+| `/harness-seo schema <url>` | Schema.org detection, validation, generation |
+| `/harness-seo sitemap <url>` | XML sitemap analysis or generation |
+| `/harness-seo images <url>` | Image SEO: on-page audit, SERP analysis, file optimization |
+| `/harness-seo geo <url>` | AI Overviews / Generative Engine Optimization |
+| `/harness-seo plan <type>` | Strategic SEO planning |
+| `/harness-seo cluster <keyword>` | SERP-based semantic clustering and content architecture |
+| `/harness-seo sxo <url>` | Search Experience Optimization: page-type analysis, personas |
+| `/harness-seo drift baseline <url>` | Capture SEO baseline for change monitoring |
+| `/harness-seo drift compare <url>` | Compare current state to stored baseline |
+| `/harness-seo drift history <url>` | Show drift history over time |
+| `/harness-seo ecommerce <url>` | E-commerce SEO: product schema, marketplace intelligence |
+| `/harness-seo programmatic [url]` | Programmatic SEO at scale |
+| `/harness-seo competitor-pages [url]` | Competitor comparison pages |
+| `/harness-seo flow [stage]` | FLOW framework prompts (Find, Leverage, Optimize, Win, Local; prompts/sync utilities.) |
+| `/harness-seo local <url>` | Local SEO analysis (GBP, citations, reviews) |
+| `/harness-seo maps [cmd] [args]` | Maps intelligence (geo-grid, GBP audit, competitors) |
+| `/harness-seo hreflang <url>` | Hreflang/i18n SEO audit, cultural profiles, content parity |
+| `/harness-seo google [cmd] [url]` | Google SEO APIs (GSC, PageSpeed, CrUX, Indexing, GA4) |
+| `/harness-seo backlinks <url>` | Backlink profile analysis |
+| `/harness-seo backlinks setup` | Setup free backlink APIs |
+| `/harness-seo backlinks verify <url>` | Verify known backlinks still exist |
+| `/harness-seo dataforseo [cmd]` | Live SEO data via DataForSEO (extension) |
+| `/harness-seo image-gen [use-case]` | AI image generation for SEO assets (extension) |
+| `/harness-seo generate-poster <profile> [brief]` | Editable Canva social poster or creative profile setup |
+| `/harness-seo firecrawl [cmd] <url>` | Full-site crawling and site mapping (extension) |
+| `/harness-seo ahrefs [cmd] <target>` | Ahrefs backlink and keyword data (extension) |
+| `/harness-seo bing [cmd] <url>` | Bing Webmaster data and IndexNow (extension) |
+| `/harness-seo profound [cmd]` | LLM brand-citation tracking (extension) |
+| `/harness-seo seranking [cmd]` | AI share-of-voice tracking (extension) |
+| `/harness-seo matomo [cmd] [args]` | Matomo Reporting API: GA4 alternative or supplement (extension) |
+| `/harness-seo posthog [cmd]` | PostHog via MCP: GA4 alternative or supplement (extension) |
+| `/harness-seo unlighthouse <url>` | Multi-page Lighthouse audits (extension) |
+| `/harness-seo shopify [crawl\|check] <url>` | Signed crawl of a Shopify store you administer, then the audit (extension) |
 
 ## Using with Cursor / Cursor Cloud
 
@@ -172,8 +173,8 @@ bash install.sh
 ## Architecture
 
 ```
-skills/                    # 29 sub-skills (auto-discovered)
-  seo/SKILL.md            # Main orchestrator + routing
+skills/                    # 30 sub-skills (auto-discovered)
+  harness-seo/SKILL.md    # Main orchestrator + routing
   seo-cluster/            # Semantic clustering (v1.9.0)
   seo-sxo/                # Search Experience Optimization (v1.9.0)
   seo-drift/              # SEO drift monitoring (v1.9.0)
@@ -199,6 +200,7 @@ skills/                    # 29 sub-skills (auto-discovered)
   seo-flow/               # FLOW framework integration
   seo-dataforseo/         # DataForSEO (extension)
   seo-image-gen/          # AI images (extension)
+  seo-generate-poster/   # Editable Canva posters and creative profiles
   seo-bing/               # Bing Webmaster and IndexNow (extension)
   seo-shopify/            # Shopify Crawler Access signed crawl (extension)
   seo-posthog/            # PostHog analytics via MCP (extension)

@@ -25,7 +25,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 LAUNCHER = ROOT / "scripts" / "agentic-harness-seo"
 CANONICAL = '"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo"'
-MANUAL = '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo"'
+MANUAL = '"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo"'
 
 # A bare invocation is ``agentic-harness-seo run`` with nothing in front of it. The
 # repository-relative form ``./scripts/agentic-harness-seo run`` and the canonical form
@@ -94,7 +94,7 @@ def test_instruction_files_use_the_canonical_plugin_root_form() -> None:
         if CANONICAL in (ROOT / rel).read_text(encoding="utf-8")
     ]
     assert len(carriers) > 30, "the canonical launcher form should be used repo-wide"
-    assert "skills/seo/SKILL.md" in carriers
+    assert "skills/harness-seo/SKILL.md" in carriers
     assert "agents/seo-technical.md" in carriers
 
 

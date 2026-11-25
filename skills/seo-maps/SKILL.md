@@ -25,7 +25,7 @@ how a business appears on Google Maps, Bing Places, Apple Maps, and OpenStreetMa
 
 **Boundary with seo-local:** This skill analyzes the business on maps PLATFORMS
 (via APIs). seo-local analyzes local SEO signals on the WEBSITE (via HTML fetch).
-Do not duplicate seo-local on-page analysis. Recommend `/seo local <url>` for
+Do not duplicate seo-local on-page analysis. Recommend `/harness-seo local <url>` for
 website-level checks.
 
 ---
@@ -34,13 +34,13 @@ website-level checks.
 
 | Command | What it does | Tier |
 |---------|-------------|------|
-| `/seo maps <url>` | Full maps presence audit (auto-selects tier) | 0+ |
-| `/seo maps grid <keyword> <location>` | Geo-grid rank scan (7x7, 1 keyword default) | 1+ |
-| `/seo maps reviews <business> <location>` | Cross-platform review intelligence | 1+ |
-| `/seo maps competitors <keyword> <location>` | Competitor radius mapping | 0+ |
-| `/seo maps nap <business-name>` | Cross-platform NAP verification | 0+ |
-| `/seo maps schema <business-name>` | Generate LocalBusiness JSON-LD from data | 0+ |
-| `/seo maps gbp <business> <location>` | GBP completeness audit | 1+ |
+| `/harness-seo maps <url>` | Full maps presence audit (auto-selects tier) | 0+ |
+| `/harness-seo maps grid <keyword> <location>` | Geo-grid rank scan (7x7, 1 keyword default) | 1+ |
+| `/harness-seo maps reviews <business> <location>` | Cross-platform review intelligence | 1+ |
+| `/harness-seo maps competitors <keyword> <location>` | Competitor radius mapping | 0+ |
+| `/harness-seo maps nap <business-name>` | Cross-platform NAP verification | 0+ |
+| `/harness-seo maps schema <business-name>` | Generate LocalBusiness JSON-LD from data | 0+ |
+| `/harness-seo maps gbp <business> <location>` | GBP completeness audit | 1+ |
 
 ---
 
@@ -51,12 +51,12 @@ Before any analysis, detect the available capability tier:
 ### Tier 0 (Free)
 **Detection:** DataForSEO MCP tools NOT available.
 **Capabilities:** Overpass API competitor discovery, Geoapify POI search, Nominatim geocoding, static GBP checklist, schema generation, cross-platform NAP guidance.
-**Load:** `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-free-apis.md`
+**Load:** `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-free-apis.md`
 
 ### Tier 1 (DataForSEO)
 **Detection:** `business_data_business_listings_search` MCP tool IS available.
 **Capabilities:** Everything in Tier 0 PLUS geo-grid rank tracking, live GBP profile audit, review intelligence (velocity, sentiment, distribution), GBP post activity, Q&A data, Tripadvisor/Trustpilot reviews.
-**Load:** `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-api-endpoints.md`
+**Load:** `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-api-endpoints.md`
 
 ### Tier 2 (DataForSEO + Google Maps Platform)
 **Detection:** Tier 1 available AND Google Maps API key in environment.
@@ -72,8 +72,8 @@ Before any analysis, detect the available capability tier:
 Simulates Google Maps searches from multiple GPS coordinates to show ranking
 variation across a geographic area. Requires DataForSEO.
 
-**Load:** `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-geo-grid.md` for algorithm, SoLV formula, heatmap format.
-**Load:** `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-api-endpoints.md` for Maps SERP endpoint details.
+**Load:** `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-geo-grid.md` for algorithm, SoLV formula, heatmap format.
+**Load:** `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-api-endpoints.md` for Maps SERP endpoint details.
 
 ### Workflow
 
@@ -106,7 +106,7 @@ DataForSEO credits will be consumed. Proceed?
 
 Audits the 25 fields that affect Google Business Profile quality and ranking.
 
-**Load:** `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-gbp-checklist.md` for full checklist and scoring.
+**Load:** `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-gbp-checklist.md` for full checklist and scoring.
 
 > **AI & 2026 context (third-party reported):** **Ask Maps**, reported by AP News
 > as a Gemini conversational Maps feature launched 2026-03-12 (iOS/Android,
@@ -141,7 +141,7 @@ Audits the 25 fields that affect Google Business Profile quality and ranking.
 
 Cross-platform review analysis: velocity, sentiment, rating distribution, fake detection.
 
-**Reference:** `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/local-seo-signals.md` for benchmarks (shared with seo-local).
+**Reference:** `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/local-seo-signals.md` for benchmarks (shared with seo-local).
 
 ### Workflow
 
@@ -171,7 +171,7 @@ Identify and analyze competitors within a defined radius.
 
 ### Tier 0 (Overpass API)
 
-**Load:** `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-free-apis.md` for query templates.
+**Load:** `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-free-apis.md` for query templates.
 
 1. Geocode business address
 2. Query Overpass API for businesses with same OSM tag within radius
@@ -209,7 +209,7 @@ Check business listing consistency across Google, Bing Places, Apple, and OSM.
 
 Generate LocalBusiness JSON-LD markup from collected data.
 
-**Reference:** `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/local-schema-types.md` for industry subtypes (shared with seo-local).
+**Reference:** `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/local-schema-types.md` for industry subtypes (shared with seo-local).
 
 ### Workflow
 
@@ -227,13 +227,13 @@ Generate LocalBusiness JSON-LD markup from collected data.
 ## Reference Files
 
 Load on-demand as needed (do NOT load all at startup):
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-api-endpoints.md`: DataForSEO endpoint details, params, costs
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-free-apis.md`: Overpass, Geoapify, Nominatim query templates
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-geo-grid.md`: Grid algorithm, SoLV formula, heatmap rendering
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/maps-gbp-checklist.md`: 25-field GBP audit with industry weights
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/local-seo-signals.md`: Ranking factors, review benchmarks (shared)
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/local-schema-types.md`: LocalBusiness subtypes by industry (shared)
-- `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/local-schema-multilocation.md`: Multi-location schema pattern (shared)
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-api-endpoints.md`: DataForSEO endpoint details, params, costs
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-free-apis.md`: Overpass, Geoapify, Nominatim query templates
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-geo-grid.md`: Grid algorithm, SoLV formula, heatmap rendering
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/maps-gbp-checklist.md`: 25-field GBP audit with industry weights
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/local-seo-signals.md`: Ranking factors, review benchmarks (shared)
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/local-schema-types.md`: LocalBusiness subtypes by industry (shared)
+- `${CLAUDE_PLUGIN_ROOT}/skills/harness-seo/references/local-schema-multilocation.md`: Multi-location schema pattern (shared)
 
 ---
 
@@ -257,10 +257,10 @@ Generate `MAPS-ANALYSIS-{domain}.md` with:
 
 ## Cross-Skill Delegation
 
-- Website on-page local signals: recommend `/seo local <url>`
-- Full AI search visibility: recommend `/seo geo <url>`
-- Schema validation and fixes: recommend `/seo schema <url>`
-- Live SERP and keyword data: recommend `/seo dataforseo [command]`
+- Website on-page local signals: recommend `/harness-seo local <url>`
+- Full AI search visibility: recommend `/harness-seo geo <url>`
+- Schema validation and fixes: recommend `/harness-seo schema <url>`
+- Live SERP and keyword data: recommend `/harness-seo dataforseo [command]`
 
 ---
 

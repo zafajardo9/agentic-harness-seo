@@ -4,10 +4,10 @@ Claude Code is the full-featured path. It installs the toolkit as a plugin,
 expands `${CLAUDE_PLUGIN_ROOT}` inside skill bodies, runs the schema hook, and
 fans work out to sub-agents with their own tool allowlists.
 
-There is no cross-harness plugin format. Cursor, Google Antigravity, Gemini CLI,
-OpenAI Codex CLI, Cline, Aider and Grok Build each read their own instruction
-file from the workspace, and each gives the model a shell. The portable
-installer adapts the toolkit to that contract:
+Codex also supports a [native install for the SEO Planner](../README.md#codex).
+For the full toolkit, Cursor, Google Antigravity, Gemini CLI, OpenAI Codex CLI,
+Cline, Aider and Grok Build read workspace instructions and give the model a
+shell. The portable installer sets up the full toolkit for those harnesses:
 
 1. It copies the toolkit to a stable directory, `~/.agentic-harness-seo` by default.
 2. It rewrites the `${CLAUDE_PLUGIN_ROOT}` token in the installed Markdown to that
@@ -22,7 +22,7 @@ installer adapts the toolkit to that contract:
 | Harness | File the installer writes | Notes |
 |---|---|---|
 | **Claude Code** | plugin marketplace (native) | Hooks, sub-agents, MCP extensions. Use the plugin path in the README |
-| **OpenAI Codex CLI** | `AGENTS.md` | Reads project-root `AGENTS.md`. Shell tools work as documented. No sub-agent fan-out |
+| **OpenAI Codex** | Native marketplace or portable `AGENTS.md` | Install the planner through the marketplace. Use the portable install for full audits and shell tools |
 | **Google Antigravity** | `AGENTS.md` | Reads `AGENTS.md` first, falls back to `skills/`. Skills appear as workspace knowledge |
 | **Grok Build** | `AGENTS.md` | Reads `AGENTS.md` and Claude-compatible skill layouts |
 | **Gemini CLI** | `GEMINI.md` | Reads `GEMINI.md`. Skills are activated in conversation, not as slash commands |
@@ -75,7 +75,7 @@ scripts through a system `pip install`. The launcher owns the environment.
 
 ## What the model gets
 
-The managed block points the model at `skills/seo/SKILL.md` for routing and at
+The managed block points the model at `skills/harness-seo/SKILL.md` for routing and at
 `agents/` for the 20 specialists. The skills are the same files Claude Code
 loads, so the audit logic, the scoring, and the JSON contracts do not change.
 The bundled scripts do the work in every harness: fetch, parse, call APIs, and
@@ -88,7 +88,7 @@ score.
 | Schema validation hook | Runs on every `Edit`/`Write` | Not available; run `hooks/validate-schema.py` yourself |
 | Sub-agent fan-out | Parallel, separate contexts | Sequential or in one context, depending on harness |
 | Model tiering (`model: sonnet`) | Honoured | Ignored; the harness picks the model |
-| `/seo` slash commands | Native | Ask in plain language; the model reads `AGENTS.md` or `SKILL.md` |
+| `/harness-seo` slash commands | Native | Ask in plain language; the model reads `AGENTS.md` or `SKILL.md` |
 | MCP extensions | Via the plugin's MCP config | Only where the harness supports MCP servers |
 | Drift baselines | SQLite under the data dir | Same, in the portable install's data dir |
 

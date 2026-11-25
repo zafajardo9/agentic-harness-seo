@@ -137,7 +137,7 @@ try {
 }
 
 # Set paths
-$SkillDir = "$env:USERPROFILE\.claude\skills\seo"
+$SkillDir = "$env:USERPROFILE\.claude\skills\harness-seo"
 $AgentDir = "$env:USERPROFILE\.claude\agents"
 $RepoUrl = "https://github.com/zafajardo9/agentic-harness-seo"
 # Pin to a specific release tag to prevent silent updates from main.
@@ -147,7 +147,6 @@ $RepoUrl = "https://github.com/zafajardo9/agentic-harness-seo"
 $RepoTag = if ($env:AGENTIC_HARNESS_SEO_TAG) { $env:AGENTIC_HARNESS_SEO_TAG } else { 'main' }
 
 # Create directories
-New-Item -ItemType Directory -Force -Path $SkillDir | Out-Null
 New-Item -ItemType Directory -Force -Path $AgentDir | Out-Null
 
 # Clone to temp directory
@@ -167,10 +166,17 @@ try {
 
     # Copy skill files
     Write-Host "=> Installing skill files..." -ForegroundColor Yellow
-    $skillSource = Join-Path $TempDir 'skills\seo'
-    if (-not (Test-Path $skillSource)) {
+    $skillSource = Join-Path $TempDir 'skills\harness-seo'
+    if (-not (Test-Path (Join-Path $skillSource 'SKILL.md') -PathType Leaf)) {
         throw "Could not find skill source folder in repo clone."
     }
+    $legacySkillDir = "$env:USERPROFILE\.claude\skills\seo"
+    if ((-not (Test-Path $SkillDir)) -and
+        (Test-Path (Join-Path $legacySkillDir 'runtime-plugin.json') -PathType Leaf) -and
+        (Test-Path (Join-Path $legacySkillDir 'scripts/agentic-harness-seo') -PathType Leaf)) {
+        Move-Item -LiteralPath $legacySkillDir -Destination $SkillDir
+    }
+    New-Item -ItemType Directory -Force -Path $SkillDir | Out-Null
     Copy-Item -Recurse -Force (Join-Path $skillSource '*') $SkillDir
 
     # Copy sub-skills
@@ -296,7 +302,7 @@ try {
     # Claude Code's Bash tool expands $HOME on Windows as well as Unix. The
     # replacement consumes the plugin-root token, so a second pass is a no-op.
     $pluginRunner = '"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run'
-    $manualRunner = '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" run'
+    $manualRunner = '"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo" run'
     $installedDocs = @()
     Get-ChildItem -Path $SkillsPath -Directory | ForEach-Object {
         $sourceRoot = $_.FullName
@@ -338,8 +344,8 @@ try {
         $text = [System.IO.File]::ReadAllText($_.FullName)
         $pluginSetup = '"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" setup'
         $pluginDoctor = '"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" doctor'
-        $manualSetup = '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" setup'
-        $manualDoctor = '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" doctor'
+        $manualSetup = '"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo" setup'
+        $manualDoctor = '"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo" doctor'
         $updated = $text.Replace($pluginRunner, $manualRunner)
         $updated = $updated.Replace($pluginSetup, $manualSetup)
         $updated = $updated.Replace($pluginDoctor, $manualDoctor)
@@ -379,6 +385,6 @@ Write-Host "[+] Agentic Harness SEO installed successfully!" -ForegroundColor Gr
 Write-Host ""
 Write-Host "Usage:" -ForegroundColor Cyan
 Write-Host "  1. Start Claude Code:  claude"
-Write-Host "  2. Run commands:       /seo audit https://example.com"
+Write-Host "  2. Run commands:       /harness-seo audit https://example.com"
 Write-Host ""
 Write-Host "Python deps location: $installedReqFile" -ForegroundColor Gray

@@ -29,7 +29,7 @@ and the model synthesizes the findings into a report. Nothing is uploaded to an
 SEO vendor. Optional extensions call third-party APIs only when you configure
 credentials for them.
 
-The toolkit contains **29 sub-skills**, **20 specialist sub-agents** and **68
+The toolkit contains **30 sub-skills**, **20 specialist sub-agents** and **68
 Python scripts**, plus 11 optional extensions.
 
 ## What it does
@@ -65,86 +65,142 @@ Python scripts**, plus 11 optional extensions.
 4. **Synthesize.** Findings go through PERCEIVE, ANALYZE, VALIDATE and ACT, then
    into Critical, High, Medium and Low buckets with a 0 to 100 health score.
 5. **Recommend.** Each item states why it matters, what it depends on, and how to
-   verify the fix worked. Reports are saved as Markdown, and `/seo google report`
+   verify the fix worked. Reports are saved as Markdown, and `/harness-seo google report`
    produces a PDF.
 
 ## Commands
 
-Commands are available as `/seo <command>` in Claude Code. In other harnesses,
+Commands are available as `/harness-seo <command>` in Claude Code. In other harnesses,
 ask in plain language and the agent reads `AGENTS.md` and the matching skill.
 
 ### Runtime
 
 | Command | What it does |
 |---|---|
-| `/seo setup` | Create or repair the isolated Python environment and Chromium |
-| `/seo doctor` | Report runtime readiness without changing anything |
+| `/harness-seo setup` | Create or repair the isolated Python environment and Chromium |
+| `/harness-seo doctor` | Report runtime readiness without changing anything |
 
 ### Audits and planning
 
 | Command | What it does |
 |---|---|
-| `/seo audit <url>` | Full site audit with parallel agents and a prioritized plan |
-| `/seo page <url>` | Deep single-page analysis |
-| `/seo plan <type>` | Strategic SEO plan for SaaS, local, e-commerce, publisher or agency |
+| `/harness-seo audit <url>` | Full site audit with parallel agents and a prioritized plan |
+| `/harness-seo page <url>` | Deep single-page analysis |
+| `/harness-seo plan <type>` | Strategic SEO plan for SaaS, local, e-commerce, publisher or agency |
 
 ### Technical SEO
 
 | Command | What it does |
 |---|---|
-| `/seo technical <url>` | Technical audit across nine categories |
-| `/seo sitemap <url \| generate>` | Analyze or generate XML sitemaps |
-| `/seo images <url>` | Image SEO audit and optimization advice |
-| `/seo hreflang <url>` | Hreflang and international SEO audit and generation |
-| `/seo programmatic <url>` | Programmatic SEO analysis and planning |
-| `/seo google <command>` | Google APIs: GSC, PageSpeed, CrUX, Indexing, GA4, PDF reports |
-| `/seo drift baseline \| compare \| history <url>` | Capture, compare and review drift snapshots |
+| `/harness-seo technical <url>` | Technical audit across nine categories |
+| `/harness-seo sitemap <url \| generate>` | Analyze or generate XML sitemaps |
+| `/harness-seo images <url>` | Image SEO audit and optimization advice |
+| `/harness-seo hreflang <url>` | Hreflang and international SEO audit and generation |
+| `/harness-seo programmatic <url>` | Programmatic SEO analysis and planning |
+| `/harness-seo google <command>` | Google APIs: GSC, PageSpeed, CrUX, Indexing, GA4, PDF reports |
+| `/harness-seo drift baseline \| compare \| history <url>` | Capture, compare and review drift snapshots |
 
 ### Content and strategy
 
 | Command | What it does |
 |---|---|
-| `/seo content <url>` | E-E-A-T and content quality analysis |
-| `/seo content-brief <topic>` | Content brief with target keywords, outline and internal links |
-| `/seo cluster <keyword>` | SERP-based semantic clustering and content architecture |
-| `/seo sxo <url>` | Search Experience Optimization: page types, user stories, personas |
-| `/seo flow [stage]` | FLOW framework prompts for Find, Leverage, Optimize, Win or Local |
-| `/seo competitor-pages <url>` | Competitor comparison page generation |
+| `/harness-seo content <url>` | E-E-A-T and content quality analysis |
+| `/harness-seo content-brief <topic>` | Content brief with target keywords, outline and internal links |
+| `/harness-seo cluster <keyword>` | SERP-based semantic clustering and content architecture |
+| `/harness-seo sxo <url>` | Search Experience Optimization: page types, user stories, personas |
+| `/harness-seo flow [stage]` | FLOW framework prompts for Find, Leverage, Optimize, Win or Local |
+| `/harness-seo competitor-pages <url>` | Competitor comparison page generation |
 
 ### Schema and AI search
 
 | Command | What it does |
 |---|---|
-| `/seo schema <url>` | Detect, validate and generate Schema.org markup |
-| `/seo geo <url>` | AI Overviews and Generative Engine Optimization |
-| `/seo agentic <url>` | Agent readiness: Lighthouse Agentic Browsing, llms.txt, WebMCP |
+| `/harness-seo schema <url>` | Detect, validate and generate Schema.org markup |
+| `/harness-seo geo <url>` | AI Overviews and Generative Engine Optimization |
+| `/harness-seo agentic <url>` | Agent readiness: Lighthouse Agentic Browsing, llms.txt, WebMCP |
+
+### Social posters
+
+| Command | What it does |
+|---|---|
+| `/harness-seo generate-poster <profile> [brief]` | Develop an idea and make an editable Canva draft |
+| `/harness-seo generate-poster setup [profile]` | Create or update a reusable creative profile |
 
 ### Local, links and commerce
 
 | Command | What it does |
 |---|---|
-| `/seo local <url>` | Local SEO: GBP, citations, reviews, map pack |
-| `/seo maps <command>` | Maps intelligence: geo-grid, GBP audit, reviews, competitors |
-| `/seo backlinks <url>` | Backlink profile analysis across free and configured sources |
-| `/seo ecommerce <url>` | E-commerce SEO, product schema and marketplace intelligence |
+| `/harness-seo local <url>` | Local SEO: GBP, citations, reviews, map pack |
+| `/harness-seo maps <command>` | Maps intelligence: geo-grid, GBP audit, reviews, competitors |
+| `/harness-seo backlinks <url>` | Backlink profile analysis across free and configured sources |
+| `/harness-seo ecommerce <url>` | E-commerce SEO, product schema and marketplace intelligence |
 
 ### Extensions
 
 | Command | What it does |
 |---|---|
-| `/seo dataforseo <command>` | Live SERP, keyword and merchant data (MCP) |
-| `/seo firecrawl <command> <url>` | Full-site crawling and site mapping (MCP) |
-| `/seo ahrefs <command> <target>` | Backlinks and organic keywords (MCP) |
-| `/seo seranking <command>` | AI share of voice and SERP data (API) |
-| `/seo profound <command>` | LLM citation tracking (API) |
-| `/seo bing <command> <url>` | Bing Webmaster data and IndexNow submission (API) |
-| `/seo image-gen <use-case>` | AI image generation for SEO assets (MCP) |
-| `/seo matomo <command>` | Matomo Reporting API as a GA4 alternative (API) |
-| `/seo posthog <command>` | PostHog analytics through MCP (MCP) |
-| `/seo unlighthouse <url>` | Multi-page Lighthouse audit, runs locally |
-| `/seo shopify <crawl \| check> <url>` | Signed crawl of a Shopify store you administer |
+| `/harness-seo dataforseo <command>` | Live SERP, keyword and merchant data (MCP) |
+| `/harness-seo firecrawl <command> <url>` | Full-site crawling and site mapping (MCP) |
+| `/harness-seo ahrefs <command> <target>` | Backlinks and organic keywords (MCP) |
+| `/harness-seo seranking <command>` | AI share of voice and SERP data (API) |
+| `/harness-seo profound <command>` | LLM citation tracking (API) |
+| `/harness-seo bing <command> <url>` | Bing Webmaster data and IndexNow submission (API) |
+| `/harness-seo image-gen <use-case>` | AI image generation for SEO assets (MCP) |
+| `/harness-seo matomo <command>` | Matomo Reporting API as a GA4 alternative (API) |
+| `/harness-seo posthog <command>` | PostHog analytics through MCP (MCP) |
+| `/harness-seo unlighthouse <url>` | Multi-page Lighthouse audit, runs locally |
+| `/harness-seo shopify <crawl \| check> <url>` | Signed crawl of a Shopify store you administer |
 
 ## Install
+
+### Codex
+
+To install the **Agentic Harness SEO Planner** from a local checkout, run these
+commands from the repository root.
+
+```bash
+codex plugin marketplace add .
+codex plugin add agentic-harness-seo-planner@agentic-harness-seo
+```
+
+To install from GitHub, the repository's published branch must include the
+marketplace files.
+
+```bash
+codex plugin marketplace add zafajardo9/agentic-harness-seo
+codex plugin add agentic-harness-seo-planner@agentic-harness-seo
+```
+
+After adding the marketplace, you can also select **Agentic Harness SEO** in
+the desktop Plugins Directory and install the planner there.
+
+Start a new chat and ask for an SEO launch plan, a 90-day roadmap, or the
+`seo-generate-poster` skill. The package includes six planning templates and
+two poster profiles and requires no Python setup. For live page checks, see
+[MCP setup](docs/SEO-CONNECTOR.md#codex-and-local-mcp-clients).
+For full site audits, use the portable toolkit below.
+
+### Generate social posters in Canva
+
+In Claude Code, select a profile and describe the post. Use `setup` to change
+the profile's tone, palette, format, or recurring ideas.
+
+```text
+/harness-seo generate-poster setup dds
+/harness-seo generate-poster dds Create an Instagram post about our upcoming workshop
+/harness-seo generate-poster filepino
+```
+
+In Codex, choose the installed `seo-generate-poster` skill and ask, for example,
+“Use FilePino to propose an Instagram checklist” or “Set up my DDS poster profile.”
+The starter profiles are draft creative directions. Your updates are saved under
+`~/.config/agentic-harness-seo/poster-profiles/`.
+
+Connect your own Canva account in your host before generating a design.
+Codex uses the Canva connector from the desktop Plugins Directory. Claude Code
+uses an authenticated Canva MCP server. The skill returns an editable link and
+can generate a revised draft from your feedback in the same chat.
+[Canva connection steps](skills/seo-generate-poster/references/canva-connection.md)
 
 ### ChatGPT
 
@@ -172,11 +228,11 @@ Requires Claude Code 1.0.33 or newer. Run these inside it:
 ```bash
 /plugin marketplace add zafajardo9/agentic-harness-seo
 /plugin install agentic-harness-seo@zafajardo9-agentic-harness-seo
-/seo setup
+/harness-seo setup
 ```
 
-`/seo setup` builds a private Python environment and downloads Chromium for the
-plugin. It does not touch your global Python packages. Run `/seo doctor` at any
+`/harness-seo setup` builds a private Python environment and downloads Chromium for the
+plugin. It does not touch your global Python packages. Run `/harness-seo doctor` at any
 time to check it.
 
 ### Manual install
@@ -200,10 +256,9 @@ installer first.
 
 ### Other AI harnesses
 
-There is no cross-harness plugin format. Codex CLI, Antigravity, Grok Build,
-Gemini CLI, Cursor, Cline and Aider read an instruction file from the workspace
-instead. The portable installer writes the right one and installs the toolkit
-where it can run without Claude Code:
+For the full toolkit in Codex CLI, Antigravity, Grok Build, Gemini CLI, Cursor,
+Cline or Aider, use the portable installer. It writes the harness's workspace
+instructions and installs the toolkit:
 
 ```bash
 git clone https://github.com/zafajardo9/agentic-harness-seo.git
@@ -229,12 +284,12 @@ on-page checks and load SEO planning workflows through the
 ### First audit
 
 ```bash
-/seo audit https://example.com           # full audit with a prioritized plan
-/seo page https://example.com/pricing    # one page, in depth
-/seo technical https://example.com       # crawl, index, headers, rendering
-/seo geo https://example.com             # readiness for AI search
-/seo schema https://example.com          # structured data check and generation
-/seo local https://example.com           # local SEO and Google Business Profile
+/harness-seo audit https://example.com           # full audit with a prioritized plan
+/harness-seo page https://example.com/pricing    # one page, in depth
+/harness-seo technical https://example.com       # crawl, index, headers, rendering
+/harness-seo geo https://example.com             # readiness for AI search
+/harness-seo schema https://example.com          # structured data check and generation
+/harness-seo local https://example.com           # local SEO and Google Business Profile
 ```
 
 ## Configuration
@@ -243,8 +298,8 @@ Everything works without credentials. Keys only add field data and paid sources.
 
 | Source | How to configure |
 |---|---|
-| Google APIs (GSC, PSI, CrUX, Indexing, GA4, NLP, Ads, YouTube) | `/seo google setup` |
-| Moz and Bing Webmaster backlinks | `/seo backlinks setup` |
+| Google APIs (GSC, PSI, CrUX, Indexing, GA4, NLP, Ads, YouTube) | `/harness-seo google setup` |
+| Moz and Bing Webmaster backlinks | `/harness-seo backlinks setup` |
 | Extensions | Each guide under [`extensions/`](extensions/); credentials stay in the config directory |
 
 | Environment variable | Purpose |
@@ -282,26 +337,26 @@ Local state lives in `~/.config/agentic-harness-seo` for credentials and
 
 | Agent | Role | Command |
 |---|---|---|
-| `seo-technical` | Technical SEO lead | `/seo technical` |
-| `seo-content` | Content editor and E-E-A-T | `/seo content` |
-| `seo-schema` | Structured data engineer | `/seo schema` |
-| `seo-sitemap` | Sitemap architect | `/seo sitemap` |
-| `seo-performance` | Performance engineer | `/seo audit` |
-| `seo-visual` | Visual and mobile QA | `/seo audit` |
-| `seo-geo` | AI search analyst | `/seo geo` |
-| `seo-agentic` | Agent readiness analyst | `/seo agentic` |
-| `seo-local` | Local SEO specialist | `/seo local` |
-| `seo-maps` | Maps and geo-grid analyst | `/seo maps` |
-| `seo-google` | Google data analyst | `/seo google` |
-| `seo-backlinks` | Link analyst | `/seo backlinks` |
-| `seo-cluster` | Topic strategist | `/seo cluster` |
-| `seo-sxo` | Search experience designer | `/seo sxo` |
-| `seo-drift` | Change monitor | `/seo drift` |
-| `seo-ecommerce` | E-commerce specialist | `/seo ecommerce` |
-| `seo-flow` | FLOW strategist | `/seo flow` |
-| `seo-dataforseo` | Live data analyst (extension) | `/seo dataforseo` |
-| `seo-image-gen` | Image producer (extension) | `/seo image-gen` |
-| `seo-posthog` | PostHog analyst (extension) | `/seo posthog` |
+| `seo-technical` | Technical SEO lead | `/harness-seo technical` |
+| `seo-content` | Content editor and E-E-A-T | `/harness-seo content` |
+| `seo-schema` | Structured data engineer | `/harness-seo schema` |
+| `seo-sitemap` | Sitemap architect | `/harness-seo sitemap` |
+| `seo-performance` | Performance engineer | `/harness-seo audit` |
+| `seo-visual` | Visual and mobile QA | `/harness-seo audit` |
+| `seo-geo` | AI search analyst | `/harness-seo geo` |
+| `seo-agentic` | Agent readiness analyst | `/harness-seo agentic` |
+| `seo-local` | Local SEO specialist | `/harness-seo local` |
+| `seo-maps` | Maps and geo-grid analyst | `/harness-seo maps` |
+| `seo-google` | Google data analyst | `/harness-seo google` |
+| `seo-backlinks` | Link analyst | `/harness-seo backlinks` |
+| `seo-cluster` | Topic strategist | `/harness-seo cluster` |
+| `seo-sxo` | Search experience designer | `/harness-seo sxo` |
+| `seo-drift` | Change monitor | `/harness-seo drift` |
+| `seo-ecommerce` | E-commerce specialist | `/harness-seo ecommerce` |
+| `seo-flow` | FLOW strategist | `/harness-seo flow` |
+| `seo-dataforseo` | Live data analyst (extension) | `/harness-seo dataforseo` |
+| `seo-image-gen` | Image producer (extension) | `/harness-seo image-gen` |
+| `seo-posthog` | PostHog analyst (extension) | `/harness-seo posthog` |
 
 ## Extensions
 
@@ -345,7 +400,7 @@ for the full list of outbound endpoints.
 ## Repository layout
 
 ```
-skills/        29 sub-skills, each a SKILL.md with its own references
+skills/        30 sub-skills, each a SKILL.md with its own references
 agents/        20 sub-agents with their own context and tool budgets
 scripts/       68 Python tools, plus the managed runtime and launcher
 schema/        JSON-LD templates

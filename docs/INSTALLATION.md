@@ -18,12 +18,12 @@ The recommended path. Inside Claude Code:
 ```
 /plugin marketplace add zafajardo9/agentic-harness-seo
 /plugin install agentic-harness-seo@zafajardo9-agentic-harness-seo
-/seo setup
+/harness-seo setup
 ```
 
-Plugin installation does not run package managers. `/seo setup` is an explicit,
+Plugin installation does not run package managers. `/harness-seo setup` is an explicit,
 one-time provisioning step that writes the virtual environment and browser only
-to Claude's persistent plugin data. Use `/seo doctor` for a read-only check.
+to Claude's persistent plugin data. Use `/harness-seo doctor` for a read-only check.
 
 ### Manual Install (Unix, macOS, Linux)
 
@@ -68,11 +68,11 @@ cd agentic-harness-seo
 3. **Verify the managed runtime**
 
 The installer delegates dependency and Chromium provisioning to the same runtime
-used by every skill. It creates `~/.claude/skills/seo/.venv/` and never falls
+used by every skill. It creates `~/.claude/skills/harness-seo/.venv/` and never falls
 back to global or user package installation.
 
 ```bash
-~/.claude/skills/seo/scripts/agentic-harness-seo doctor
+~/.claude/skills/harness-seo/scripts/agentic-harness-seo doctor
 ```
 
 If core setup failed, rerun the inspected installer. If only Chromium failed,
@@ -90,11 +90,11 @@ The installer copies files to:
 
 | Component | Path |
 |-----------|------|
-| Main skill | `~/.claude/skills/seo/` |
+| Main skill | `~/.claude/skills/harness-seo/` |
 | Sub-skills | `~/.claude/skills/seo-*/` |
 | Subagents | `~/.claude/agents/seo-*.md` |
-| Runtime launcher | `~/.claude/skills/seo/scripts/agentic-harness-seo` |
-| Isolated Python | `~/.claude/skills/seo/.venv/` |
+| Runtime launcher | `~/.claude/skills/harness-seo/scripts/agentic-harness-seo` |
+| Isolated Python | `~/.claude/skills/harness-seo/.venv/` |
 
 ## Verify Installation
 
@@ -107,7 +107,7 @@ claude
 2. Check that the skill is loaded:
 
 ```
-/seo
+/harness-seo
 ```
 
 You should see a help message or prompt for a URL.
@@ -151,7 +151,7 @@ curl -fsSL https://raw.githubusercontent.com/zafajardo9/agentic-harness-seo/main
 Ensure the skill is installed in the correct location:
 
 ```bash
-ls ~/.claude/skills/seo/SKILL.md
+ls ~/.claude/skills/harness-seo/SKILL.md
 ```
 
 If the file doesn't exist, re-run the installer.
@@ -161,7 +161,7 @@ If the file doesn't exist, re-run the installer.
 Run the managed setup again:
 
 ```bash
-~/.claude/skills/seo/scripts/agentic-harness-seo setup
+~/.claude/skills/harness-seo/scripts/agentic-harness-seo setup
 ```
 
 ### Playwright screenshot errors
@@ -169,8 +169,8 @@ Run the managed setup again:
 Run the managed setup again and inspect the result:
 
 ```bash
-~/.claude/skills/seo/scripts/agentic-harness-seo setup
-~/.claude/skills/seo/scripts/agentic-harness-seo doctor
+~/.claude/skills/harness-seo/scripts/agentic-harness-seo setup
+~/.claude/skills/harness-seo/scripts/agentic-harness-seo doctor
 ```
 
 ### Permission errors on Unix
@@ -178,5 +178,5 @@ Run the managed setup again and inspect the result:
 Make sure scripts are executable:
 
 ```bash
-chmod +x ~/.claude/skills/seo/scripts/*.py
+chmod +x ~/.claude/skills/harness-seo/scripts/*.py
 ```

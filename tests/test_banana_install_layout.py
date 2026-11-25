@@ -51,7 +51,7 @@ def test_standalone_installer_copies_scripts_beside_skill_file():
     installer = _text(EXTENSION / "install.sh")
     assert 'mkdir -p "${SKILL_DIR}/scripts" "${SKILL_DIR}/references"' in installer
     assert 'cp "${SOURCE_DIR}/scripts/"*.py "${SKILL_DIR}/scripts/"' in installer
-    assert '"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" run' in installer
+    assert '"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo" run' in installer
     assert '"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run' in installer
 
 

@@ -38,54 +38,54 @@ The installer will:
 
 | Command | Description |
 |---------|-------------|
-| `/seo dataforseo serp <keyword>` | Google organic SERP results (also supports Bing/Yahoo via `se` parameter) |
-| `/seo dataforseo serp-images <keyword>` | Image elements from the organic SERP (the pinned MCP server has no Google Images tool) |
-| `/seo dataforseo serp-youtube <keyword>` | YouTube search results |
-| `/seo dataforseo youtube <video_id>` | YouTube video deep analysis (info, comments, subtitles) |
+| `/harness-seo dataforseo serp <keyword>` | Google organic SERP results (also supports Bing/Yahoo via `se` parameter) |
+| `/harness-seo dataforseo serp-images <keyword>` | Image elements from the organic SERP (the pinned MCP server has no Google Images tool) |
+| `/harness-seo dataforseo serp-youtube <keyword>` | YouTube search results |
+| `/harness-seo dataforseo youtube <video_id>` | YouTube video deep analysis (info, comments, subtitles) |
 
 ### Keyword Research
 
 | Command | Description |
 |---------|-------------|
-| `/seo dataforseo keywords <seed>` | Keyword ideas, suggestions, and related terms |
-| `/seo dataforseo volume <keywords>` | Search volume for keyword list |
-| `/seo dataforseo difficulty <keywords>` | Keyword difficulty scores |
-| `/seo dataforseo intent <keywords>` | Search intent classification |
-| `/seo dataforseo trends <keyword>` | Google Trends data over time |
+| `/harness-seo dataforseo keywords <seed>` | Keyword ideas, suggestions, and related terms |
+| `/harness-seo dataforseo volume <keywords>` | Search volume for keyword list |
+| `/harness-seo dataforseo difficulty <keywords>` | Keyword difficulty scores |
+| `/harness-seo dataforseo intent <keywords>` | Search intent classification |
+| `/harness-seo dataforseo trends <keyword>` | Google Trends data over time |
 
 ### Domain & Competitor Analysis
 
 | Command | Description |
 |---------|-------------|
-| `/seo dataforseo backlinks <domain>` | Full backlink profile with spam scores |
-| `/seo dataforseo competitors <domain>` | Competing domains and traffic estimates |
-| `/seo dataforseo ranked <domain>` | Keywords a domain ranks for |
-| `/seo dataforseo intersection <domains>` | Keyword/backlink overlap (2-20 domains) |
-| `/seo dataforseo traffic <domains>` | Bulk traffic estimation |
-| `/seo dataforseo subdomains <domain>` | Subdomains with ranking data |
-| `/seo dataforseo top-searches <domain>` | Top queries mentioning domain |
+| `/harness-seo dataforseo backlinks <domain>` | Full backlink profile with spam scores |
+| `/harness-seo dataforseo competitors <domain>` | Competing domains and traffic estimates |
+| `/harness-seo dataforseo ranked <domain>` | Keywords a domain ranks for |
+| `/harness-seo dataforseo intersection <domains>` | Keyword/backlink overlap (2-20 domains) |
+| `/harness-seo dataforseo traffic <domains>` | Bulk traffic estimation |
+| `/harness-seo dataforseo subdomains <domain>` | Subdomains with ranking data |
+| `/harness-seo dataforseo top-searches <domain>` | Top queries mentioning domain |
 
 ### Technical / On-Page
 
 | Command | Description |
 |---------|-------------|
-| `/seo dataforseo onpage <url>` | On-page analysis (Lighthouse + content parsing) |
-| `/seo dataforseo tech <domain>` | Technology stack detection |
-| `/seo dataforseo whois <domain>` | WHOIS registration data |
+| `/harness-seo dataforseo onpage <url>` | On-page analysis (Lighthouse + content parsing) |
+| `/harness-seo dataforseo tech <domain>` | Technology stack detection |
+| `/harness-seo dataforseo whois <domain>` | WHOIS registration data |
 
 ### Content & Business Data
 
 | Command | Description |
 |---------|-------------|
-| `/seo dataforseo content <keyword/url>` | Content analysis, search, and phrase trends |
-| `/seo dataforseo listings <keyword>` | Business listings search |
+| `/harness-seo dataforseo content <keyword/url>` | Content analysis, search, and phrase trends |
+| `/harness-seo dataforseo listings <keyword>` | Business listings search |
 
 ### AI Visibility / GEO
 
 | Command | Description |
 |---------|-------------|
-| `/seo dataforseo ai-scrape <query>` | ChatGPT web scraper for GEO visibility |
-| `/seo dataforseo ai-mentions <keyword>` | LLM mention tracking across AI platforms |
+| `/harness-seo dataforseo ai-scrape <query>` | ChatGPT web scraper for GEO visibility |
+| `/harness-seo dataforseo ai-mentions <keyword>` | LLM mention tracking across AI platforms |
 
 ## API Modules
 
@@ -123,11 +123,11 @@ The extension includes a custom `field-config.json` that reduces API response si
 
 When installed, other Agentic Harness SEO skills automatically detect DataForSEO availability and use live data:
 
-- **`/seo audit`**: Uses real SERP, backlink, and on-page data
-- **`/seo technical`**: Uses on-page analysis for real technical data
-- **`/seo content`**: Uses keyword volume, difficulty, and intent data
-- **`/seo geo`**: Uses ChatGPT scraper and LLM mentions for GEO signals
-- **`/seo plan`**: Uses competitor and keyword data for strategy
+- **`/harness-seo audit`**: Uses real SERP, backlink, and on-page data
+- **`/harness-seo technical`**: Uses on-page analysis for real technical data
+- **`/harness-seo content`**: Uses keyword volume, difficulty, and intent data
+- **`/harness-seo geo`**: Uses ChatGPT scraper and LLM mentions for GEO signals
+- **`/harness-seo plan`**: Uses competitor and keyword data for strategy
 
 ## Troubleshooting
 

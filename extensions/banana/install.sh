@@ -7,7 +7,7 @@ set -euo pipefail
 main() {
     SKILL_DIR="${HOME}/.claude/skills/seo-image-gen"
     AGENT_DIR="${HOME}/.claude/agents"
-    SEO_SKILL_DIR="${HOME}/.claude/skills/seo"
+    SEO_SKILL_DIR="${HOME}/.claude/skills/harness-seo"
     # MCP servers live in ~/.claude.json (the file `claude mcp add` writes).
     # NOT ~/.claude/settings.json - `mcpServers` is not a key Claude Code reads
     # there, so entries written to settings.json silently never load.
@@ -163,9 +163,9 @@ PY
     for installed_doc in "${SKILL_DIR}/SKILL.md" "${SKILL_DIR}/references/"*.md "${AGENT_DIR}/seo-image-gen.md"; do
         [ -f "${installed_doc}" ] || continue
         temp_doc="${installed_doc}.agentic-harness-seo-tmp"
-        sed -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run#"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" run#g' \
-            -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" setup#"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" setup#g' \
-            -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" doctor#"$HOME/.claude/skills/seo/scripts/agentic-harness-seo" doctor#g' \
+        sed -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run#"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo" run#g' \
+            -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" setup#"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo" setup#g' \
+            -e 's#"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" doctor#"$HOME/.claude/skills/harness-seo/scripts/agentic-harness-seo" doctor#g' \
             "${installed_doc}" > "${temp_doc}"
         mv "${temp_doc}" "${installed_doc}"
     done
@@ -180,12 +180,12 @@ PY
     echo "Usage:"
     echo "  1. Start Claude Code:  claude"
     echo "  2. Run commands:"
-    echo "     /seo image-gen og \"Professional SaaS dashboard\""
-    echo "     /seo image-gen hero \"Dramatic sunset over city skyline\""
-    echo "     /seo image-gen product \"Wireless headphones on marble\""
-    echo "     /seo image-gen infographic \"SEO ranking factors 2026\""
-    echo "     /seo image-gen custom \"Any creative concept\""
-    echo "     /seo image-gen batch \"Product variations\" 3"
+    echo "     /harness-seo image-gen og \"Professional SaaS dashboard\""
+    echo "     /harness-seo image-gen hero \"Dramatic sunset over city skyline\""
+    echo "     /harness-seo image-gen product \"Wireless headphones on marble\""
+    echo "     /harness-seo image-gen infographic \"SEO ranking factors 2026\""
+    echo "     /harness-seo image-gen custom \"Any creative concept\""
+    echo "     /harness-seo image-gen batch \"Product variations\" 3"
     echo ""
     echo "Full docs: extensions/banana/README.md"
     echo "To uninstall: ./extensions/banana/uninstall.sh"

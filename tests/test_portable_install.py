@@ -30,8 +30,8 @@ def _checkout(tmp_path: Path) -> Path:
     (source / "scripts").mkdir(parents=True)
     (source / "scripts" / "agentic-harness-seo").write_text("#!/usr/bin/env bash\n", encoding="utf-8")
     (source / "scripts" / "runtime.py").write_text("# runtime\n", encoding="utf-8")
-    (source / "skills" / "seo").mkdir(parents=True)
-    (source / "skills" / "seo" / "SKILL.md").write_text(
+    (source / "skills" / "harness-seo").mkdir(parents=True)
+    (source / "skills" / "harness-seo" / "SKILL.md").write_text(
         'Run:\n\n    "${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run parse_html.py\n',
         encoding="utf-8",
     )
@@ -68,7 +68,7 @@ def test_install_copies_layout_and_rewrites_the_token(tmp_path: Path) -> None:
     assert (destination / "runtime-plugin.json").is_file()
     assert result["rewritten_docs"] == 1
 
-    skill = (destination / "skills" / "seo" / "SKILL.md").read_text(encoding="utf-8")
+    skill = (destination / "skills" / "harness-seo" / "SKILL.md").read_text(encoding="utf-8")
     assert "${CLAUDE_PLUGIN_ROOT}" not in skill
     assert destination.as_posix() in skill
 

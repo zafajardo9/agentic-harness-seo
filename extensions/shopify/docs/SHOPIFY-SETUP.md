@@ -26,7 +26,7 @@ you or your client administer. Everything else keeps crawling unsigned.
 
 No API keys. The `seo-shopify` skill ships with the agentic-harness-seo plugin, so on a
 plugin install the installer copies nothing; run it from the plugin or repository
-folder. On a manual install (`~/.claude/skills/seo`) it copies the skill next to
+folder. On a manual install (`~/.claude/skills/harness-seo`) it copies the skill next to
 the other skills with its launcher path rewritten. The scripts ship with
 agentic-harness-seo already. In both cases it offers to create `.shopify-env` in the
 current folder from the template, readable by you only (mode 0600), and never
@@ -117,7 +117,7 @@ work tree without being ignored.
 "${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run shopify_crawl.py https://shop.example --out ./crawl
 ```
 
-Or in Claude Code: `/seo shopify https://shop.example`.
+Or in Claude Code: `/harness-seo shopify https://shop.example`.
 
 ## Security notes
 
