@@ -37,6 +37,7 @@ def test_marketplace_bundles_the_shared_poster_skill() -> None:
     assert {
         Path("SKILL.md"),
         Path("references/canva-connection.md"),
+        Path("references/creative-brief.md"),
         Path("references/profiles/dds.md"),
         Path("references/profiles/filepino.md"),
     } <= files

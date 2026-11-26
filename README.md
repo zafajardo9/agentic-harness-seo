@@ -193,10 +193,13 @@ the profile's tone, palette, format, or recurring ideas.
 /harness-seo generate-poster version 2 Try different layouts and keep the copy
 ```
 
-Before Canva creates a draft, the skill asks about open choices for size,
-colors, photos or illustrations, vector-style graphics or supplied SVGs, and
-heading and body fonts. Reply **Use defaults** or change the settings you
-want. Use `version` when you want more options based on a draft you like. Each
+Before Canva creates a draft, the skill extracts the facts, data, tone, and
+ideas from your brief and any material you supply. It proposes three layout
+and format ideas with text wireframes and recommends one, then asks about open
+choices for size, colors, photos or illustrations, vector-style graphics or
+supplied SVGs, and heading and body fonts. Reply **Use defaults** or change the
+settings you want. It then shows a final brief with the exact poster copy, and
+creates nothing in Canva until you reply **Approve**. Use `version` when you want more options based on a draft you like. Each
 alternative gets its own edit link, and the original stays available.
 
 In Codex, choose the installed `seo-generate-poster` skill and ask, for example,

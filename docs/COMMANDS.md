@@ -571,9 +571,15 @@ PDF and HTML reports generated via WeasyPrint and matplotlib.
 ### `/harness-seo generate-poster <profile> [brief]`
 
 Develop a social media concept and turn it into an editable Canva design.
-Before generation, the skill asks about any open choices for dimensions,
-colors, imagery, fonts, and copy. Reply **Use defaults** or change the settings
-you want. Use `setup [profile]` to create or update a saved profile.
+The skill first extracts the facts, data, tone, ideas, and must-include or
+must-avoid items from your brief and any supplied material, labelling each
+with its source. It proposes three layout and format ideas (for example a
+single portrait post, a carousel, or a story) with text wireframes showing
+where each fact goes, and recommends one. It then asks about open choices for
+the chosen idea, size, colors, imagery, fonts, and copy. Reply **Use defaults** or change the settings you
+want. Finally it shows a versioned final brief with the exact poster copy and
+Canva request. Nothing is created in Canva until you reply **Approve**. Use
+`setup [profile]` to create or update a saved profile.
 
 Use `/harness-seo generate-poster version [count] [direction]` to create
 alternatives to the selected draft. For example, `version 2 try different
