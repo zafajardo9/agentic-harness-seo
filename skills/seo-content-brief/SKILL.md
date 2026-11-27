@@ -17,6 +17,8 @@ metadata:
   category: seo
 ---
 
+For shell-capable hosts that do not expand the launcher placeholder, resolve the toolkit root from this skill's installed path. Walk up to the ancestor containing `scripts/agentic-harness-seo` and `requirements.txt`, then use the absolute launcher path. Resolve toolkit-relative assets from that same root.
+
 # SEO Content Brief Generator
 
 Generate research-backed content briefs that help writers produce pages capable of outranking current top results. Briefs include competitor analysis with gap scoring, per-section word count breakdowns, keyword placement rules, and page-type-specific templates.

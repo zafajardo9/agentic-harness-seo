@@ -117,3 +117,75 @@ def test_agents_md_tool_mapping_table_includes_codex_cline_aider() -> None:
         assert tool in text, f"AGENTS.md mapping table must include {tool}"
     for col in ("Codex", "Cline", "Aider"):
         assert col in text, f"AGENTS.md mapping table must include {col} column"
+
+
+# ---------------------------------------------------------------------------
+# Cross-platform catalog: every command loads in Claude Code, Codex and the
+# Agent Skills hosts (Antigravity, Gemini CLI, Cursor).
+# ---------------------------------------------------------------------------
+
+
+def test_repo_catalog_is_exposed_on_every_platform() -> None:
+    errors = [f for f in pc.check_catalog() if f["severity"] == "error"]
+    assert errors == [], "\n".join(
+        f"{e['path']}: {e['rule']}: {e['message']}" for e in errors
+    )
+
+
+def test_check_one_flags_launcher_without_fallback(tmp_path) -> None:
+    bad = tmp_path / "SKILL.md"
+    bad.write_text(
+        '---\nname: seo-x\ndescription: x\n---\n'
+        'Run `"${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run x.py`.\n'
+    )
+    assert "launcher-without-fallback" in [f["rule"] for f in pc.check_one(bad)]
+    bad.write_text(bad.read_text() + f"\nHosts that {pc.LAUNCHER_FALLBACK}: walk up.\n")
+    assert "launcher-without-fallback" not in [f["rule"] for f in pc.check_one(bad)]
+
+
+def _plugin(tmp_path, claude_skills, codex_skills):
+    import json
+    for rel in ("skills/seo-a", "extensions/ext/skills/seo-b"):
+        d = tmp_path / rel
+        d.mkdir(parents=True)
+        name = d.name
+        (d / "SKILL.md").write_text(f"---\nname: {name}\ndescription: x\n---\nbody\n")
+    for manifest, skills in ((".claude-plugin", claude_skills), (".codex-plugin", codex_skills)):
+        (tmp_path / manifest).mkdir()
+        (tmp_path / manifest / "plugin.json").write_text(json.dumps({"skills": skills}))
+    return tmp_path
+
+
+def test_check_catalog_passes_when_both_manifests_expose_everything(tmp_path) -> None:
+    root = _plugin(tmp_path, ["./extensions/ext/skills/"],
+                   ["./skills/", "./extensions/ext/skills/"])
+    assert pc.check_catalog(root) == []
+
+
+def test_check_catalog_flags_skill_missing_from_a_manifest(tmp_path) -> None:
+    root = _plugin(tmp_path, [], ["./skills/", "./extensions/ext/skills/"])
+    findings = pc.check_catalog(root)
+    assert [(f["rule"], f["path"]) for f in findings] == [
+        ("not-exposed", ".claude-plugin/plugin.json")
+    ]
+    assert "seo-b" in findings[0]["message"]
+
+
+def test_check_catalog_flags_name_folder_mismatch(tmp_path) -> None:
+    root = _plugin(tmp_path, ["./extensions/ext/skills/"],
+                   ["./skills/", "./extensions/ext/skills/"])
+    (root / "skills/seo-a/SKILL.md").write_text("---\nname: seo-other\ndescription: x\n---\n")
+    assert [f["rule"] for f in pc.check_catalog(root)] == ["name-dir-mismatch"]
+
+
+def test_check_catalog_flags_duplicate_and_missing_paths(tmp_path) -> None:
+    root = _plugin(tmp_path, ["./extensions/ext/skills/"],
+                   ["./skills/", "./extensions/ext/skills/", "./nope/"])
+    dup = root / "extensions/ext2/skills/seo-a"
+    dup.mkdir(parents=True)
+    (dup / "SKILL.md").write_text("---\nname: seo-a\ndescription: x\n---\n")
+    import json
+    (root / ".codex-plugin/plugin.json").write_text(json.dumps(
+        {"skills": ["./skills/", "./extensions/ext/skills/", "./extensions/ext2/skills/", "./nope/"]}))
+    rules = sorted(f["rule"] for f in pc.check_catalog(root))
+    assert rules == ["duplicate-skill", "manifest-missing-path"]

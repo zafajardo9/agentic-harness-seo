@@ -8,7 +8,7 @@
       "name": "agentic-harness-seo-planner",
       "source": {
         "source": "local",
-        "path": "./packaging/openai"
+        "path": "./"
       },
       "policy": {
         "installation": "AVAILABLE",

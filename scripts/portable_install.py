@@ -13,7 +13,7 @@ expand no such variable. This installer closes that gap:
 4. optionally writes the harness's native instruction file into a project:
    ``AGENTS.md`` (Codex, Antigravity, Grok), ``GEMINI.md`` (Gemini CLI),
    ``.cursor/rules/*.mdc`` (Cursor), ``.clinerules/*.md`` (Cline) and
-   ``CONVENTIONS.md`` (Aider).
+   ``CONVENTIONS.md`` (Aider), and registers the catalog in native skill folders.
 
 It uses only the standard library and never touches the network. Run it with a
 supported Python (3.11 to 3.14), from the repository checkout::
@@ -37,6 +37,8 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+
+from workflow_catalog import split_skill, workflows
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DEST = Path.home() / ".agentic-harness-seo"
@@ -63,9 +65,18 @@ HARNESS_TARGETS = {
     "aider": ("CONVENTIONS.md", "markdown"),
 }
 
+SKILL_TARGETS = {
+    "codex": ".agents/skills",
+    "antigravity": ".agents/skills",
+    "gemini": ".agents/skills",
+    "cursor": ".agents/skills",
+    "grok": ".grok/skills",
+    "cline": ".cline/skills",
+}
+
 CURSOR_FRONTMATTER = (
     "---\n"
-    "description: Agentic Harness SEO audit toolkit (29 skills, 20 agents)\n"
+    "description: Agentic Harness SEO audit toolkit and workflow catalog\n"
     "alwaysApply: false\n"
     "---\n"
 )
@@ -151,6 +162,7 @@ def instruction_block(destination: Path) -> str:
     """The managed block written into a harness's own instruction file."""
     root = destination.as_posix()
     launcher = f"{root}/scripts/agentic-harness-seo"
+    catalog = ", ".join(f"`{name}`" for name in workflows(destination))
     return (
         f"{BEGIN}\n"
         "## Agentic Harness SEO\n\n"
@@ -163,6 +175,7 @@ def instruction_block(destination: Path) -> str:
         f"Read `{root}/skills/harness-seo/SKILL.md` first for routing, then the `SKILL.md`\n"
         f"of the sub-skill that matches the task. The 20 specialist agents are in\n"
         f"`{root}/agents/`.\n\n"
+        f"Available workflows: {catalog}.\n\n"
         "For SEO planning, use the toolkit's planning workflow. Ground a deployed\n"
         "site's plan in live page checks. For a project in development, inspect\n"
         "its routes and metadata, and check rendered HTML when available.\n\n"
@@ -191,6 +204,30 @@ def _upsert_block(path: Path, block: str, style: str) -> None:
             existing += "\n"
         updated = prefix + existing + block
     _write(path, updated)
+
+
+def _register_skills(project: Path, destination: Path, harnesses: list[str]) -> tuple[list[str], list[str]]:
+    registered, conflicts = [], []
+    catalog = workflows(destination)
+    paths = dict.fromkeys(SKILL_TARGETS[name] for name in harnesses if name in SKILL_TARGETS)
+    for folder in paths:
+        for name, skill in catalog.items():
+            path = project / folder / name / "SKILL.md"
+            if not path.resolve().is_relative_to(project) or path.is_symlink() or (
+                path.exists() and (not path.is_file() or BEGIN not in _read(path))
+            ):
+                conflicts.append(path.as_posix())
+                continue
+            frontmatter, _ = split_skill(skill)
+            _write(path, (
+                f"---\n{frontmatter}\n---\n\n{BEGIN}\n"
+                f"Read the installed [{name} workflow](<{skill.as_posix()}>) and follow it. "
+                "Use the user's request as the workflow arguments and resolve relative resources "
+                "from the installed workflow's directory. "
+                f"The toolkit root is `{destination.as_posix()}`.\n{END}\n"
+            ))
+            registered.append(path.as_posix())
+    return registered, conflicts
 
 
 def install(
@@ -234,6 +271,7 @@ def install(
     shim = _write_launcher_shim(destination)
 
     adapters: list[str] = []
+    registered, conflicts = [], []
     if project:
         project_root = Path(project).expanduser().resolve()
         block = instruction_block(destination)
@@ -243,6 +281,7 @@ def install(
             _upsert_block(target, block, style)
             if target.as_posix() not in adapters:
                 adapters.append(target.as_posix())
+        registered, conflicts = _register_skills(project_root, destination, harnesses or [])
 
     return {
         "destination": destination.as_posix(),
@@ -250,6 +289,8 @@ def install(
         "shim": shim.as_posix(),
         "rewritten_docs": rewritten,
         "adapters": adapters,
+        "registered_skills": registered,
+        "skill_conflicts": conflicts,
     }
 
 
@@ -305,6 +346,9 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Rewrote {result['rewritten_docs']} Markdown file(s) to the install path.")
     for adapter in result["adapters"]:
         print(f"Wrote:       {adapter}")
+    print(f"Registered {len(result['registered_skills'])} skill entries.")
+    for conflict in result["skill_conflicts"]:
+        print(f"Kept existing skill: {conflict}")
     if setup_note:
         print(f"Setup:       {setup_note}")
     print("")

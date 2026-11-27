@@ -4,7 +4,7 @@
 
 This repository contains **Agentic Harness SEO**, a Tier 4 Claude Code skill for comprehensive
 SEO analysis across all industries. It follows the Agent Skills open standard and the
-3-layer architecture (directive, orchestration, execution). 30 sub-skills (23 core +
+3-layer architecture (directive, orchestration, execution). 31 sub-skills (24 core +
 1 orchestrator + 1 framework integration + 5 extension mirrors), 20 sub-agents (16 core +
 1 framework integration + 3 extension mirrors), and an extensible reference
 system cover technical SEO, content quality,
@@ -21,9 +21,9 @@ agentic-harness-seo/
   CLAUDE.md                          # Project instructions (this file)
   AGENTS.md                          # Multi-platform agent instructions (Cursor, Antigravity)
   .claude-plugin/
-    plugin.json                    # Plugin manifest (v2.6.2)
+    plugin.json                    # Plugin manifest (v2.6.3)
     marketplace.json               # Marketplace catalog for distribution
-  skills/                            # 30 sub-skills (auto-discovered)
+  skills/                            # 31 sub-skills (auto-discovered)
     harness-seo/                   # Main orchestrator skill
       SKILL.md                     # Entry point, routing table, core rules
       references/                  # On-demand knowledge files (13 files)

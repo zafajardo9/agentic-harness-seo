@@ -5,7 +5,13 @@
 !scripts/*.py
 !scripts/agentic-harness-seo
 !skills/
-!skills/seo-plan/
-!skills/seo-plan/SKILL.md
-!skills/seo-plan/assets/
-!skills/seo-plan/assets/*.md
+!skills/**/
+!skills/**/*.md
+!skills/**/*.txt
+!skills/**/*.html
+!extensions/
+!extensions/*/
+!extensions/*/skills/
+!extensions/*/skills/**/
+!extensions/*/skills/**/*.md
+!extensions/*/skills/**/*.txt

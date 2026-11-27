@@ -33,7 +33,8 @@ python3 scripts/portable_install.py --project ~/my-site --harnesses all
 ```
 
 It copies the toolkit to `~/.agentic-harness-seo`, rewrites the launcher token in
-the installed Markdown, adds a wrapper under `bin/`, and writes a managed block
+the installed Markdown, registers workflows in the host's workspace skill
+directory, adds a launcher wrapper, and writes a managed block
 into `AGENTS.md` (Codex, Antigravity, Grok), `GEMINI.md` (Gemini CLI),
 `.cursor/rules/agentic-harness-seo.mdc` (Cursor), `.clinerules/` (Cline) or
 `CONVENTIONS.md` (Aider). The full matrix, including what each harness loses
@@ -56,13 +57,13 @@ managed environment.
 
 | Harness | Instruction file | How it loads Agentic Harness SEO |
 |---|---|---|
-| **Cursor** | `.cursor/rules/agentic-harness-seo.mdc` | The portable install writes the rule; symlink `skills/` and `agents/` into `.cursor/rules/` for per-skill rules. Commands are text prompts |
-| **Cursor Cloud Agents** | `AGENTS.md` | Push the repo; Cloud Agents read `AGENTS.md` at session start |
-| **Google Antigravity** | `AGENTS.md` | Reads `AGENTS.md` first, falls back to `skills/` |
-| **Gemini CLI** | `GEMINI.md` | `gemini init` loads `GEMINI.md`; skills are activated in conversation |
-| **Grok Build** | `AGENTS.md` | Reads `AGENTS.md` and Claude-compatible skill layouts; `grok inspect` verifies discovery. See the [official compatibility guide](https://docs.x.ai/build/features/skills-plugins-marketplaces) |
-| **OpenAI Codex CLI** | `AGENTS.md` | Reads project-root `AGENTS.md`; Claude-specific tool names are aliased to Codex equivalents |
-| **Cline** | `.clinerules/agentic-harness-seo.md` | Loads `.clinerules/`; sub-agent delegation happens in one context |
+| **Cursor** | `.cursor/rules/agentic-harness-seo.mdc` | Discovers project skills from `.agents/skills/` |
+| **Cursor Cloud Agents** | `AGENTS.md` | Install the portable toolkit in the agent environment or sync skills using Cursor |
+| **Google Antigravity** | `AGENTS.md` | Discovers project skills from `.agents/skills/` |
+| **Gemini CLI** | `GEMINI.md` | Discovers project skills from `.agents/skills/` |
+| **Grok Build** | `AGENTS.md` | Discovers project skills from `.grok/skills/`. `grok inspect` lists them |
+| **OpenAI Codex CLI** | `AGENTS.md` | Uses the native marketplace or discovers project skills from `.agents/skills/` |
+| **Cline** | `.clinerules/agentic-harness-seo.md` | Discovers project skills from `.cline/skills/` when Skills is enabled |
 | **Aider** | `CONVENTIONS.md` or `AGENTS.md` | No sub-agent dispatch; the seo-* skills run inline |
 
 ### Tool-name compatibility
@@ -85,7 +86,7 @@ in case a recipe needs a specific call.
 
 ## Overview
 
-Agentic Harness SEO is a Tier 4 SEO analysis skill with 30 sub-skills (23 core + 1 orchestrator +
+Agentic Harness SEO is a Tier 4 SEO analysis skill with 31 sub-skills (24 core + 1 orchestrator +
 1 framework integration + 5 extension mirrors), 20 sub-agents (16 core + 1 framework
 integration + 3 extension mirrors), and 70 Python execution scripts.
 
@@ -173,7 +174,7 @@ bash install.sh
 ## Architecture
 
 ```
-skills/                    # 30 sub-skills (auto-discovered)
+skills/                    # 31 sub-skills (auto-discovered)
   harness-seo/SKILL.md    # Main orchestrator + routing
   seo-cluster/            # Semantic clustering (v1.9.0)
   seo-sxo/                # Search Experience Optimization (v1.9.0)

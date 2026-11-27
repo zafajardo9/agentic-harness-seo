@@ -1,0 +1,37 @@
+{
+  "name": "agentic-harness-seo-planner",
+  "description": "Audit websites, analyze search performance, and build SEO roadmaps.",
+  "author": {
+    "name": "zafajardo9"
+  },
+  "repository": "https://github.com/zafajardo9/agentic-harness-seo",
+  "license": "MIT",
+  "skills": [
+    "./skills/",
+    "./extensions/ahrefs/skills/",
+    "./extensions/firecrawl/skills/",
+    "./extensions/matomo/skills/",
+    "./extensions/profound/skills/",
+    "./extensions/seranking/skills/",
+    "./extensions/unlighthouse/skills/"
+  ],
+  "interface": {
+    "displayName": "Agentic Harness SEO",
+    "shortDescription": "SEO audits, analysis and plans",
+    "longDescription": "Run technical and content audits, inspect structured data, plan SEO work, and use optional analytics and search integrations.",
+    "developerName": "zafajardo9",
+    "category": "Productivity",
+    "capabilities": [
+      "Site and page audits",
+      "Search and content analysis",
+      "SEO planning and reporting"
+    ],
+    "defaultPrompt": [
+      "Run a technical SEO audit for my website.",
+      "Build a 90-day SEO roadmap for my website."
+    ],
+    "composerIcon": "./packaging/openai/assets/icon.svg",
+    "logo": "./packaging/openai/assets/icon.svg"
+  },
+  "version": "2.6.3"
+}

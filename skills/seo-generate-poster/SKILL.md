@@ -2,7 +2,7 @@
 name: seo-generate-poster
 description: Extract the user's facts, tone, and ideas into a creative brief, get explicit approval, then create and version editable social media posters in Canva using a reusable Markdown creative profile. Use for generate-poster, Canva poster variations, and poster profile setup.
 metadata:
-  version: "2.6.2"
+  version: "2.6.3"
 ---
 
 # Generate a social poster in Canva

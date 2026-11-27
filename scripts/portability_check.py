@@ -19,7 +19,11 @@ ignored, not rejected):
   - ``metadata``     (a dict; metadata.version is read by the consistency tests)
 
 The check walks every ``SKILL.md`` under ``skills/`` and ``extensions/``
-and reports portability findings. Severity:
+and reports portability findings. It also checks the catalog as a whole:
+every skill's ``name`` matches its folder, a skill that calls the
+``${CLAUDE_PLUGIN_ROOT}`` launcher says how to resolve it in hosts that do
+not expand it, and both native plugin manifests (Claude Code and Codex)
+expose every workflow exactly once. Severity:
 
   - ``error``: a harness will outright reject the file (missing required
               field, malformed YAML, name not kebab-case).
@@ -51,6 +55,17 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 _NAME_RE = re.compile(r"^[a-z][a-z0-9-]{1,62}[a-z0-9]$")
 _FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---", re.DOTALL)
+
+LAUNCHER_TOKEN = "${CLAUDE_PLUGIN_ROOT}"
+LAUNCHER_FALLBACK = "do not expand the launcher placeholder"
+
+# Native plugin manifests. Each must expose every workflow exactly once.
+# Claude Code always loads ./skills/ and adds the manifest's "skills" paths;
+# Codex loads only the paths its manifest lists.
+MANIFESTS = {
+    "claude": (".claude-plugin/plugin.json", ["./skills/"]),
+    "codex": (".codex-plugin/plugin.json", []),
+}
 
 
 def _find_skill_files() -> list[Path]:
@@ -170,6 +185,19 @@ def check_one(path: Path) -> list[dict]:
                        "tool name. Move comments below the frontmatter.",
         })
 
+    # Only Claude Code expands the launcher token. Codex, Antigravity and
+    # the other hosts load the same file, so it must say how to find the
+    # toolkit root when the token stays literal.
+    if LAUNCHER_TOKEN in text and LAUNCHER_FALLBACK not in text:
+        findings.append({
+            "severity": "error", "path": relpath,
+            "rule": "launcher-without-fallback",
+            "message": f"uses {LAUNCHER_TOKEN} but lacks the paragraph for "
+                       "hosts that do not expand it (Codex, Antigravity, "
+                       f"Gemini CLI, Cursor). Add the sentence containing "
+                       f"'{LAUNCHER_FALLBACK}' that the other skills use.",
+        })
+
     # metadata.version is referenced by the consistency tests but is
     # purely informational for non-Claude harnesses.
     if frontmatter.get("metadata", ""):
@@ -182,6 +210,84 @@ def check_one(path: Path) -> list[dict]:
                            "metadata.version on every skill",
             })
 
+    return findings
+
+
+def _workflow_names(root: Path) -> set[str]:
+    """Unique workflow names: core skills plus every extension skill."""
+    paths = list((root / "skills").glob("*/SKILL.md"))
+    paths += list((root / "extensions").glob("*/skills/*/SKILL.md"))
+    return {p.parent.name for p in paths}
+
+
+def check_catalog(root: Path = REPO_ROOT) -> list[dict]:
+    """Repo-wide checks that make every workflow load on every platform.
+
+    - ``name-dir-mismatch``: Codex, Antigravity and Gemini CLI follow the
+      Agent Skills spec, which requires ``name`` to equal the folder name.
+    - ``not-exposed``: a native plugin manifest leaves a workflow out, so
+      that platform never shows the command.
+    - ``duplicate-skill``: a manifest loads two folders with one name.
+    - ``manifest-*``: a manifest is missing, unreadable, or lists a path
+      that does not exist.
+    """
+    findings: list[dict] = []
+    for path in sorted(list((root / "skills").glob("*/SKILL.md"))
+                       + list((root / "extensions").glob("*/skills/*/SKILL.md"))):
+        fm = _parse_frontmatter(path.read_text(encoding="utf-8")) or {}
+        name = fm.get("name", "").strip()
+        if name and name != path.parent.name:
+            findings.append({
+                "severity": "error", "path": str(path.relative_to(root)),
+                "rule": "name-dir-mismatch",
+                "message": f"name {name!r} must match its folder "
+                           f"{path.parent.name!r} (Agent Skills spec; Codex "
+                           "and Antigravity key skills on the folder)",
+            })
+
+    expected = _workflow_names(root)
+    for platform, (manifest_rel, implicit) in MANIFESTS.items():
+        manifest_path = root / manifest_rel
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as exc:
+            findings.append({
+                "severity": "error", "path": manifest_rel,
+                "rule": "manifest-unreadable", "message": str(exc),
+            })
+            continue
+        listed = manifest.get("skills", [])
+        if isinstance(listed, str):
+            listed = [listed]
+        seen: dict[str, Path] = {}
+        for rel in [*implicit, *listed]:
+            base = root / rel
+            if not base.is_dir():
+                findings.append({
+                    "severity": "error", "path": manifest_rel,
+                    "rule": "manifest-missing-path",
+                    "message": f"{platform} manifest lists {rel!r}, which "
+                               "is not a directory",
+                })
+                continue
+            for skill in sorted(base.glob("*/SKILL.md")):
+                name = skill.parent.name
+                if name in seen and seen[name] != skill:
+                    findings.append({
+                        "severity": "error", "path": manifest_rel,
+                        "rule": "duplicate-skill",
+                        "message": f"{platform} loads {name!r} twice: "
+                                   f"{seen[name].relative_to(root)} and "
+                                   f"{skill.relative_to(root)}",
+                    })
+                seen.setdefault(name, skill)
+        for name in sorted(expected - set(seen)):
+            findings.append({
+                "severity": "error", "path": manifest_rel,
+                "rule": "not-exposed",
+                "message": f"{platform} plugin does not expose {name!r}; "
+                           "add its skills/ folder to the manifest",
+            })
     return findings
 
 
@@ -198,6 +304,7 @@ def main() -> int:
     all_findings: list[dict] = []
     for path in paths:
         all_findings.extend(check_one(path))
+    all_findings.extend(check_catalog())
 
     error_count = sum(1 for f in all_findings if f["severity"] == "error")
     warning_count = sum(1 for f in all_findings if f["severity"] == "warning")

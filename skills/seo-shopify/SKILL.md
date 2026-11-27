@@ -3,9 +3,11 @@ name: seo-shopify
 description: "Uncapped, sitemap-complete crawl of a Shopify storefront using the merchant's Crawler Access signature from a project-local .shopify-env, feeding the standard seo-audit pipeline. Use when the user says 'Shopify audit', 'crawl the whole store', 'Crawler access', 'signature-agent', 'web-bot-auth', 'rate limited while crawling', or audits a host listed in .shopify-env."
 metadata:
   original_author: Nordalux
-  version: "2.6.2"
+  version: "2.6.3"
 compatibility: "Requires a Shopify store the user administers (the signature is minted in the store's admin) and a .shopify-env file in the folder the audit runs from. Without it, seo-audit runs unchanged."
 ---
+
+For shell-capable hosts that do not expand the launcher placeholder, resolve the toolkit root from this skill's installed path. Walk up to the ancestor containing `scripts/agentic-harness-seo` and `requirements.txt`, then use the absolute launcher path. Resolve toolkit-relative assets from that same root.
 
 # seo-shopify
 

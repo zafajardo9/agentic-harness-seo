@@ -6,9 +6,11 @@ argument-hint: "[command] [url]"
 license: MIT
 metadata:
   author: AgriciDaniel
-  version: "2.6.2"
+  version: "2.6.3"
   category: seo
 ---
+
+For shell-capable hosts that do not expand the launcher placeholder, resolve the toolkit root from this skill's installed path. Walk up to the ancestor containing `scripts/agentic-harness-seo` and `requirements.txt`, then use the absolute launcher path. Resolve toolkit-relative assets from that same root.
 
 # SEO: Universal SEO Analysis Skill
 
@@ -25,7 +27,7 @@ directory because hosted marketplaces reject one. Repository users run
 with a bare Python interpreter.
 
 Comprehensive SEO analysis across all industries (SaaS, local services,
-e-commerce, publishers, agencies). Orchestrates 29 sub-skills (23 core + 1 framework
+e-commerce, publishers, agencies). Orchestrates 30 sub-skills (24 core + 1 framework
 integration + 5 extension mirrors) and 20 sub-agents. A separate optional Firecrawl
 extension is also installable (see "Optional Extensions" below).
 
@@ -200,7 +202,7 @@ Weighted aggregate of all categories:
 
 ## Sub-Skills
 
-This skill orchestrates 29 sub-skills (23 core + 1 framework integration + 5 extension
+This skill orchestrates 30 sub-skills (24 core + 1 framework integration + 5 extension
 mirrors). The orchestrator itself (`harness-seo`) is the 30th in `skills/`, but does not
 orchestrate itself, so it is not enumerated below.
 
@@ -233,17 +235,16 @@ orchestrate itself, so it is not enumerated below.
 27. **seo-shopify** -- Uncapped signed crawl of a Shopify store you administer, then the audit pipeline (extension mirror)
 28. **seo-posthog** -- PostHog analytics via the PostHog MCP server (extension mirror)
 29. **seo-generate-poster** -- Creative profiles and editable social posters via Canva
+30. **seo-roadmap** -- Evidence-based SEO roadmaps and launch plans for chat and coding agents
 
 ### Optional Extensions
 
-The following ship in `extensions/` rather than `skills/` and require a separate
-installer to activate (see each extension's `install.sh`/`install.ps1`):
+The skill catalog includes all extension workflows. Use each extension's
+`install.sh` or `install.ps1` to configure the credentials or connector it needs.
 
-All optional extensions are reachable through `/harness-seo` subcommands once
-installed: firecrawl, dataforseo, and image-gen, plus `/harness-seo ahrefs`,
+The routing menu includes subcommands for firecrawl, dataforseo, and image-gen, plus `/harness-seo ahrefs`,
 `/harness-seo bing`, `/harness-seo matomo`, `/harness-seo posthog`, `/harness-seo profound`, `/harness-seo seranking`,
-`/harness-seo shopify`, and `/harness-seo unlighthouse`. Each installs as its own sub-skill,
-so the model also auto-routes to their descriptions without the `/harness-seo` prefix.
+`/harness-seo shopify`, and `/harness-seo unlighthouse`. Select the corresponding skill directly or ask for the workflow by name.
 The seo-dataforseo, seo-image-gen, seo-bing, seo-shopify and seo-posthog skills
 already ship in `skills/` as mirrors; their installers only add what the skill
 needs (an MCP server, API keys, or a `.shopify-env` template).

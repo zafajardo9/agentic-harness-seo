@@ -2,9 +2,11 @@
 name: seo-unlighthouse
 description: Multi-page Lighthouse audit via the MIT-licensed Unlighthouse CLI. Free-tier alternative to running PageSpeed against every URL on a site, no API quota burn, runs locally.
 metadata:
-  version: "2.6.2"
+  version: "2.6.3"
 compatibility: "Requires Node 18+ and the unlighthouse npm package. Run extensions/unlighthouse/install.sh to pre-warm."
 ---
+
+For shell-capable hosts that do not expand the launcher placeholder, resolve the toolkit root from this skill's installed path. Walk up to the ancestor containing `scripts/agentic-harness-seo` and `requirements.txt`, then use the absolute launcher path. Resolve toolkit-relative assets from that same root.
 
 # seo-unlighthouse
 

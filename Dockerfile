@@ -4,7 +4,8 @@ RUN useradd --create-home seo
 WORKDIR /app
 COPY --chown=seo:seo requirements.txt /app/
 COPY --chown=seo:seo scripts /app/scripts
-COPY --chown=seo:seo skills/seo-plan /app/skills/seo-plan
+COPY --chown=seo:seo skills /app/skills
+COPY --chown=seo:seo extensions /app/extensions
 USER seo
 ENV AGENTIC_HARNESS_SEO_DATA_DIR=/home/seo/runtime
 RUN bash scripts/agentic-harness-seo setup --skip-browser

@@ -2,9 +2,11 @@
 name: seo-ahrefs
 description: Ahrefs API analyst (extension). Reads referring domains, backlinks, organic keywords, and content explorer data via the tested @ahrefs/mcp@0.0.11 server. Pairs with seo-backlinks for multi-source confidence weighting.
 metadata:
-  version: "2.6.2"
+  version: "2.6.3"
 compatibility: "Tested with @ahrefs/mcp@0.0.11 (installed by extensions/ahrefs/install.sh)."
 ---
+
+For shell-capable hosts that do not expand the launcher placeholder, resolve the toolkit root from this skill's installed path. Walk up to the ancestor containing `scripts/agentic-harness-seo` and `requirements.txt`, then use the absolute launcher path. Resolve toolkit-relative assets from that same root.
 
 # seo-ahrefs
 

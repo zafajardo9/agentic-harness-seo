@@ -1,57 +1,57 @@
 # Connect Agentic Harness SEO
 
-## Codex planner marketplace
+## Codex and Claude Code
 
-Install the planner from the [repository marketplace](../README.md#codex).
-The catalog points to the self-contained plugin in `packaging/openai/`. Refresh
-the checked-in package when the planning workflow, templates, poster skill,
-starter profiles, license, or version change:
+Install from the [repository marketplace](../README.md#install). Both native
+manifests register the same core skills, optional extension workflows, and
+`seo-roadmap` entry. Run `claude plugin validate .` to see the Claude Code
+commands. In Codex, select a workflow by its skill name in the composer.
+
+When adding a skill or changing a planning template, refresh both manifests
+and the bundled roadmap references:
 
 ```bash
 ./scripts/agentic-harness-seo run package_openai_plugin.py --sync-repo
 ```
 
-## ChatGPT planning plugin without hosting
+## Hosted plugin packages
 
-Download `agentic-harness-seo-planner.zip` from a successful **Build SEO planner
-packages** run in GitHub Actions, or build it from a checkout using the
-commands below. The ZIP includes the roadmap skill, shared planning workflow, and six industry
-templates. It uses the evidence available to the chat, such as accessible web
-pages and supplied project materials.
+Download the ZIP for your host from the **Build SEO plugin packages** GitHub
+Actions workflow, or build both from a clean checkout:
 
 ```bash
-bash ./scripts/agentic-harness-seo setup --skip-browser
-bash ./scripts/agentic-harness-seo run package_openai_plugin.py dist/agentic-harness-seo-planner.zip
+./scripts/agentic-harness-seo setup --skip-browser
+./scripts/agentic-harness-seo run package_openai_plugin.py dist/agentic-harness-seo-planner.zip
+./scripts/agentic-harness-seo run package_openai_plugin.py dist/agentic-harness-seo-claude.zip --claude-plugin
 ```
 
-Upload the ZIP in the OpenAI Plugins dashboard as a **Skills only** plugin.
-Public directory publication requires developer verification and review.
-OpenAI currently requires a separate submission for a version with MCP if the
-original plugin was submitted as skills only. [OpenAI plugin submission guide](https://developers.openai.com/plugins/deploy/submission)
+- **ChatGPT** uses `agentic-harness-seo-planner.zip`. Upload it as a skills-only
+  plugin in the OpenAI Plugins dashboard. Enable the uploaded plugin in ChatGPT,
+  then search the skill picker for entries such as `seo-audit` or `seo-roadmap`.
+  Public listings require submission and review. [OpenAI upload guide](https://developers.openai.com/plugins/deploy/submission)
+- **Claude chat and Cowork** use `agentic-harness-seo-claude.zip`. Upload it as a
+  custom **plugin** in Claude. Use `/` or the `+` menu to find the installed
+  workflows. The separate `seo-roadmap.zip` remains available for accounts
+  that want a standalone planning skill. [Claude plugin guide](https://support.claude.com/en/articles/13837440-use-plugins-in-claude)
 
-## Claude chat planning skill without hosting
-
-Download `seo-roadmap.zip` from the **Build SEO planner packages** workflow or
-build it locally:
-
-```bash
-bash ./scripts/agentic-harness-seo setup --skip-browser
-bash ./scripts/agentic-harness-seo run package_openai_plugin.py dist/seo-roadmap.zip --claude-skill
-```
-
-In Claude, open **Customize → Skills → Create skill → Upload a skill** and
-upload the ZIP. With the skill enabled, ask Claude to use the SEO roadmap
-skill for a deployed URL or an unpublished project. It uses available chat
-evidence and the bundled templates. [Claude custom skills](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
+The hosted packages include the same workflow names. They use the host's
+available browsing, connectors, and supplied evidence. Features that require
+a local shell, Chromium, credentials, or persistent storage depend on the
+host's runtime and connected services. Each workflow identifies evidence gaps
+when those capabilities are unavailable.
 
 ## SEO tools over MCP
 
-The MCP server provides three tools for SEO planning.
+The MCP server lists and loads the same workflows for clients with MCP tools.
+Clients that support MCP prompts can also select each workflow by name in their
+prompt picker.
 
 | Tool | Input | Result |
 | --- | --- | --- |
 | `seo_audit_page` | One public HTTP(S) page URL | Findings and evidence from the toolkit's deterministic on-page checks |
 | `seo_check_html` | Rendered HTML and the intended URL | The same checks on supplied HTML, without fetching the URL |
+| `seo_list_workflows` | None | Names of all packaged workflows |
+| `seo_workflow` | Skill name and optional bundled resource path | Workflow instructions, resource list, or one bundled resource |
 | `seo_planning_framework` | An industry such as `saas`, `local-service`, or `ecommerce` | The existing planning workflow and an industry template for the assistant to use |
 
 The live tool checks raw HTML, including server-rendered markup. For a
@@ -103,7 +103,7 @@ codex mcp add agentic-harness-seo -- bash "$PWD/scripts/agentic-harness-seo" run
 codex mcp get agentic-harness-seo
 ```
 
-Start a new Codex chat after registration. Other local MCP clients can use the
+Start a new Codex chat after registration. Ask for `seo_list_workflows` to browse the catalog. Other local MCP clients can use the
 same command and arguments with the stdio transport. Remote MCP clients can use
 the HTTPS endpoint. Claude Code can also use the
 [native marketplace plugin](../README.md#install) for the full toolkit.

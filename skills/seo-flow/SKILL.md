@@ -11,9 +11,11 @@ argument-hint: "[stage] [url|topic]"
 license: MIT
 metadata:
   author: AgriciDaniel
-  version: "2.6.2"
+  version: "2.6.3"
   category: seo
 ---
+
+For shell-capable hosts that do not expand the launcher placeholder, resolve the toolkit root from this skill's installed path. Walk up to the ancestor containing `scripts/agentic-harness-seo` and `requirements.txt`, then use the absolute launcher path. Resolve toolkit-relative assets from that same root.
 
 # FLOW Framework: Find · Leverage · Optimize · Win
 

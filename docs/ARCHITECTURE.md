@@ -6,7 +6,7 @@ Agentic Harness SEO follows Anthropic's official Claude Code skill specification
 
 ## Directory Structure
 
-The plugin ships 30 sub-skills (23 core + 1 orchestrator + 1 framework integration + 5 extension mirrors) and 20 sub-agents (16 core + 1 framework integration + 3 extension mirrors).
+The plugin ships 31 sub-skills (24 core + 1 orchestrator + 1 framework integration + 5 extension mirrors) and 20 sub-agents (16 core + 1 framework integration + 3 extension mirrors).
 
 ```
 ~/.claude/plugins/.../agentic-harness-seo/

@@ -48,7 +48,7 @@ body:
     attributes:
       label: Agentic Harness SEO version
       description: Output of `./scripts/agentic-harness-seo --version`, or the tag you installed
-      placeholder: v2.6.2
+      placeholder: v2.6.3
 
   - type: input
     id: os

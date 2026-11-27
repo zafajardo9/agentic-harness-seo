@@ -29,7 +29,7 @@ and the model synthesizes the findings into a report. Nothing is uploaded to an
 SEO vendor. Optional extensions call third-party APIs only when you configure
 credentials for them.
 
-The toolkit contains **30 sub-skills**, **20 specialist sub-agents** and **68
+The toolkit contains **31 sub-skills**, **20 specialist sub-agents** and **68
 Python scripts**, plus 11 optional extensions.
 
 ## What it does
@@ -72,6 +72,19 @@ Python scripts**, plus 11 optional extensions.
 
 Commands are available as `/harness-seo <command>` in Claude Code. In other harnesses,
 ask in plain language and the agent reads `AGENTS.md` and the matching skill.
+
+All 37 workflows (31 core skills plus the 6 extension-only ones: `seo-ahrefs`,
+`seo-firecrawl`, `seo-matomo`, `seo-profound`, `seo-seranking`, `seo-unlighthouse`)
+appear on every platform:
+
+| Platform | Where to find them |
+|---|---|
+| Claude Code plugin | Type `/agentic-harness-seo:` or `/seo` in the slash menu. Each skill is its own command, such as `/agentic-harness-seo:seo-audit <url>`. |
+| Codex plugin | Skill picker in the composer. |
+| Antigravity, Gemini CLI, Cursor | `.agents/skills/` after `python3 scripts/portable_install.py --project <dir> --harnesses antigravity,gemini,cursor`. |
+
+`python3 scripts/portability_check.py` fails CI if a skill drops off either plugin
+manifest or stops working in hosts that do not expand `CLAUDE_PLUGIN_ROOT`.
 
 ### Runtime
 
@@ -156,8 +169,8 @@ ask in plain language and the agent reads `AGENTS.md` and the matching skill.
 
 ### Codex
 
-To install the **Agentic Harness SEO Planner** from a local checkout, run these
-commands from the repository root.
+To install **Agentic Harness SEO** from a clean local checkout, run these
+commands from the repository root. The existing plugin ID is used for upgrades.
 
 ```bash
 codex plugin marketplace add .
@@ -173,13 +186,20 @@ codex plugin add agentic-harness-seo-planner@agentic-harness-seo
 ```
 
 After adding the marketplace, you can also select **Agentic Harness SEO** in
-the desktop Plugins Directory and install the planner there.
+the desktop Plugins Directory and install it there. To refresh a Git-based
+installation, run `codex plugin marketplace upgrade agentic-harness-seo` and
+repeat `codex plugin add` with the same plugin ID.
 
-Start a new chat and ask for an SEO launch plan, a 90-day roadmap, or the
-`seo-generate-poster` skill. The package includes six planning templates and
-two poster profiles and requires no Python setup. For live page checks, see
-[MCP setup](docs/SEO-CONNECTOR.md#codex-and-local-mcp-clients).
-For full site audits, use the portable toolkit below.
+Start a new chat and search the 37-workflow skill catalog for `seo-audit`, `seo-technical`,
+`seo-schema`, or any other workflow. Select `harness-seo` to see the command
+catalog, or ask for a workflow in plain language. For bundled shell checks,
+ask Codex to run the toolkit's `setup` workflow once. Provider workflows
+require their corresponding account or connector.
+
+For the same selectable workflow catalog in ChatGPT and Claude chat, use
+the [hosted plugin packages](docs/SEO-CONNECTOR.md). For workspace installation
+in Codex, Cursor, Gemini CLI, Antigravity, Grok Build, and Cline, see the
+[portable installer](docs/HARNESSES.md).
 
 ### Generate social posters in Canva
 
@@ -215,38 +235,30 @@ uses an authenticated Canva MCP server. Each completed draft includes an
 original link available in the same chat.
 [Canva connection steps](skills/seo-generate-poster/references/canva-connection.md)
 
-### ChatGPT
+### ChatGPT and Claude chat
 
-**SEO planning without hosting.** Download `agentic-harness-seo-planner.zip`
-from a successful [Build SEO planner packages run](https://github.com/zafajardo9/agentic-harness-seo/actions/workflows/openai-planner.yml)
-or build it from your checkout. On Windows, run these commands in Git Bash.
+Download the ZIP for your host from the [Build SEO plugin packages workflow](https://github.com/zafajardo9/agentic-harness-seo/actions/workflows/openai-planner.yml).
+Both packages include the same selectable workflows:
 
-```bash
-bash ./scripts/agentic-harness-seo setup --skip-browser
-bash ./scripts/agentic-harness-seo run package_openai_plugin.py dist/agentic-harness-seo-planner.zip
-```
+- **ChatGPT:** Upload `agentic-harness-seo-planner.zip` as **Skills only** in the OpenAI Plugins dashboard.
+- **Claude chat and Cowork:** Upload `agentic-harness-seo-claude.zip` as a custom plugin in Claude.
 
-Upload the ZIP as **Skills only** in the [OpenAI Plugins dashboard](https://platform.openai.com/plugins).
-This is the developer upload path. A public Plugins Directory listing requires
-developer verification and review.
-
-**Live checks in ChatGPT.** Deploy the SEO MCP server and add its HTTPS URL as
-a custom app in ChatGPT. The connector can check deployed pages and draft HTML.
-[ChatGPT connector setup](docs/SEO-CONNECTOR.md#chatgpt-and-claude-chat)
+See the [hosted plugin and connector setup](docs/SEO-CONNECTOR.md) for build,
+upload, and live page check instructions.
 
 ### Claude Code
 
-Requires Claude Code 1.0.33 or newer. Run these inside it:
+Use a current Claude Code release. Run these commands in a session:
 
 ```bash
 /plugin marketplace add zafajardo9/agentic-harness-seo
 /plugin install agentic-harness-seo@zafajardo9-agentic-harness-seo
-/harness-seo setup
+/agentic-harness-seo:harness-seo setup
 ```
 
-`/harness-seo setup` builds a private Python environment and downloads Chromium for the
-plugin. It does not touch your global Python packages. Run `/harness-seo doctor` at any
-time to check it.
+Setup builds a private Python environment and downloads Chromium. Run
+`/agentic-harness-seo:harness-seo doctor` to check it. Start a session with
+`claude --plugin-dir .` to try changes from a local checkout.
 
 ### Manual install
 
@@ -270,8 +282,8 @@ installer first.
 ### Other AI harnesses
 
 For the full toolkit in Codex CLI, Antigravity, Grok Build, Gemini CLI, Cursor,
-Cline or Aider, use the portable installer. It writes the harness's workspace
-instructions and installs the toolkit:
+Cline or Aider, use the portable installer. It installs the toolkit, writes
+workspace instructions, and registers the workflows in hosts with a skill picker:
 
 ```bash
 git clone https://github.com/zafajardo9/agentic-harness-seo.git
@@ -291,7 +303,7 @@ export PATH="$HOME/.agentic-harness-seo/bin:$PATH"
 `cline`, `aider` or `all`. What each harness keeps and loses against Claude Code
 (sub-agent fan-out, hooks, MCP, model tiering) is in
 [docs/HARNESSES.md](docs/HARNESSES.md). ChatGPT and Claude chat can run
-on-page checks and load SEO planning workflows through the
+on-page checks and load the full SEO workflow catalog through the
 [MCP connector](docs/SEO-CONNECTOR.md).
 
 ### First audit
@@ -413,7 +425,7 @@ for the full list of outbound endpoints.
 ## Repository layout
 
 ```
-skills/        30 sub-skills, each a SKILL.md with its own references
+skills/        31 sub-skills, each a SKILL.md with its own references
 agents/        20 sub-agents with their own context and tool budgets
 scripts/       68 Python tools, plus the managed runtime and launcher
 schema/        JSON-LD templates

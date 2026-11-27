@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Exposed the same SEO workflow catalog in Codex, Claude Code, ChatGPT and
+  Claude chat packages, workspace skill folders, and the MCP connector. Added
+  build artifacts for both hosted plugin formats.
+
 ### Changed
 
 - Renamed the product and its identifiers from `claude-seo` to

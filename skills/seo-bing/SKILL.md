@@ -5,9 +5,11 @@ user-invocable: true
 argument-hint: "[command] [url]"
 license: MIT
 metadata:
-  version: "2.6.2"
+  version: "2.6.3"
 compatibility: "Requires BING_WEBMASTER_API_KEY and (optionally) INDEXNOW_KEY in ~/.claude/settings.json env. The skill ships with the agentic-harness-seo plugin; run extensions/bing-webmaster/install.sh once to store the keys."
 ---
+
+For shell-capable hosts that do not expand the launcher placeholder, resolve the toolkit root from this skill's installed path. Walk up to the ancestor containing `scripts/agentic-harness-seo` and `requirements.txt`, then use the absolute launcher path. Resolve toolkit-relative assets from that same root.
 
 # seo-bing
 

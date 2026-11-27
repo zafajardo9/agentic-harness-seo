@@ -1,10 +1,13 @@
 [project]
 name = "agentic-harness-seo"
-version = "2.6.2"
-description = "Comprehensive SEO analysis skill for Claude Code"
+version = "2.6.3"
+description = "SEO workflows for coding agents, hosted chat, and MCP clients"
 requires-python = ">=3.11"
 license = "MIT"
 readme = "README.md"
+authors = [
+  {name = "Daniel Agrici"}
+]
 maintainers = [
   {name = "zafajardo9"}
 ]

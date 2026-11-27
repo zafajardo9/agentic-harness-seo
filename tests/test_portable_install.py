@@ -9,11 +9,13 @@ from __future__ import annotations
 
 import importlib.util
 import re
+import sys
 from pathlib import Path
 
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 SPEC = importlib.util.spec_from_file_location(
     "portable_install", ROOT / "scripts" / "portable_install.py"
 )
@@ -32,7 +34,7 @@ def _checkout(tmp_path: Path) -> Path:
     (source / "scripts" / "runtime.py").write_text("# runtime\n", encoding="utf-8")
     (source / "skills" / "harness-seo").mkdir(parents=True)
     (source / "skills" / "harness-seo" / "SKILL.md").write_text(
-        'Run:\n\n    "${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run parse_html.py\n',
+        '---\nname: harness-seo\ndescription: Audit a site.\n---\n\nRun:\n\n    "${CLAUDE_PLUGIN_ROOT}/scripts/agentic-harness-seo" run parse_html.py\n',
         encoding="utf-8",
     )
     (source / "agents").mkdir()
@@ -136,3 +138,21 @@ def test_install_requires_force_for_an_unrelated_directory(tmp_path: Path) -> No
     portable_install.install(source, destination, force=True)
     assert (destination / "keep.txt").is_file()
     assert (destination / "scripts" / "agentic-harness-seo").is_file()
+
+
+def test_portable_skill_registration_keeps_existing_skills(tmp_path: Path) -> None:
+    source = _checkout(tmp_path)
+    destination = tmp_path / "install"
+    project = tmp_path / "site"
+    existing = project / ".agents/skills/harness-seo/SKILL.md"
+    existing.parent.mkdir(parents=True)
+    existing.write_text("My workflow", encoding="utf-8")
+
+    result = portable_install.install(source, destination, ["codex", "gemini", "grok", "cline"], project)
+
+    assert result["skill_conflicts"] == [existing.as_posix()]
+    assert existing.read_text(encoding="utf-8") == "My workflow"
+    registered = [project / root / "harness-seo/SKILL.md" for root in (".grok/skills", ".cline/skills")]
+    assert result["registered_skills"] == [path.as_posix() for path in registered]
+    for path in registered:
+        assert (destination / "skills/harness-seo/SKILL.md").as_posix() in path.read_text(encoding="utf-8")

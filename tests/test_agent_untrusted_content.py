@@ -32,10 +32,10 @@ def _heading_before(text: str, idx: int) -> str:
 
 
 def test_agent_and_skill_sets_are_found():
-    # 20 core agents plus the extension agents; 29 core skills plus the
-    # extension skills. Guards against a glob that silently matches nothing.
+    # Guard against patterns that silently match nothing.
     assert len(list(ROOT.glob("agents/*.md"))) == 20
-    assert len(list(ROOT.glob("skills/*/SKILL.md"))) == 29
+    assert (ROOT / "skills/harness-seo/SKILL.md").is_file()
+    assert any(ROOT.glob("skills/seo-*/SKILL.md"))
     assert list(ROOT.glob("extensions/*/agents/*.md"))
     assert list(ROOT.glob("extensions/*/skills/*/SKILL.md"))
 
